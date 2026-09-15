@@ -1,0 +1,57 @@
+{
+  "name": "confere",
+  "private": true,
+  "type": "module",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "dotenv": "^17.4.2",
+      "zod": "^4.4.3",
+      "@types/bun": "^1.3.14",
+      "elysia": "^1.4.29",
+      "@trpc/server": "^11.18.0",
+      "better-auth": "1.6.23",
+      "@trpc/client": "^11.18.0",
+      "@better-auth/expo": "1.6.23"
+    }
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "dev:native": "turbo run dev -F native",
+    "dev:server": "turbo run dev -F server",
+    "db:push": "turbo run db:push -F @confere/db",
+    "db:studio": "turbo run db:studio -F @confere/db",
+    "db:generate": "turbo run db:generate -F @confere/db",
+    "db:migrate": "turbo run db:migrate -F @confere/db",
+    "db:start": "docker compose up -d postgres",
+    "db:watch": "docker compose up postgres",
+    "db:stop": "docker compose stop postgres",
+    "db:down": "docker compose down postgres",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "check": "biome check --write .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "zod": "catalog:",
+    "@confere/env": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^6",
+    "@types/bun": "catalog:",
+    "@confere/config": "workspace:*",
+    "turbo": "^2.10.2",
+    "@biomejs/biome": "^2.5.2",
+    "vitest": "^4.1.10"
+  },
+  "packageManager": "bun@1.3.14"
+}

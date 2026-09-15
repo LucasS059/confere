@@ -1,0 +1,3 @@
+{
+  "extends": "@confere/config/tsconfig.base.json"
+}
