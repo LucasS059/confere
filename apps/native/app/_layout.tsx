@@ -15,6 +15,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Splash } from "@/components/splash";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
+import { authClient } from "@/lib/auth-client";
 
 import { queryClient } from "@/utils/trpc";
 
@@ -25,14 +26,20 @@ export const unstable_settings = {
   initialRouteName: "(drawer)",
 };
 
-function StackLayout() {
+function StackLayout({ isSignedIn }: { isSignedIn: boolean }) {
   return (
     <Stack screenOptions={{}}>
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="modal"
-        options={{ title: "Modal", presentation: "modal" }}
-      />
+      <Stack.Protected guard={isSignedIn}>
+        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="modal"
+          options={{ title: "Modal", presentation: "modal" }}
+        />
+      </Stack.Protected>
+      <Stack.Protected guard={!isSignedIn}>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ title: "Criar conta" }} />
+      </Stack.Protected>
     </Stack>
   );
 }
@@ -43,6 +50,7 @@ export default function Layout() {
     InstrumentSans_500Medium,
     InstrumentSans_600SemiBold,
   });
+  const { data: session, isPending } = authClient.useSession();
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
   useEffect(() => {
@@ -51,7 +59,7 @@ export default function Layout() {
   }, []);
 
   // A font failure must not trap the user on the splash.
-  const isReady = (fontsLoaded || !!fontsError) && minTimeElapsed;
+  const isReady = (fontsLoaded || !!fontsError) && !isPending && minTimeElapsed;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -59,7 +67,7 @@ export default function Layout() {
         <KeyboardProvider>
           <AppThemeProvider>
             <HeroUINativeProvider>
-              <StackLayout />
+              <StackLayout isSignedIn={!!session} />
               {!isReady && <Splash fontsLoaded={fontsLoaded} />}
             </HeroUINativeProvider>
           </AppThemeProvider>

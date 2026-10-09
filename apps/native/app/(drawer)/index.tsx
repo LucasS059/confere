@@ -3,8 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, Chip, useThemeColor } from "heroui-native";
 import { Pressable, Text, View } from "react-native";
 import { Container } from "@/components/container";
-import { SignIn } from "@/components/sign-in";
-import { SignUp } from "@/components/sign-up";
 import { authClient } from "@/lib/auth-client";
 import { queryClient, trpc } from "@/utils/trpc";
 
@@ -96,13 +94,6 @@ export default function Home() {
           <Card.Description>{privateData.data?.message}</Card.Description>
         )}
       </Card>
-
-      {!session?.user && (
-        <>
-          <SignIn />
-          <SignUp />
-        </>
-      )}
     </Container>
   );
 }
