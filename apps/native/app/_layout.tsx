@@ -68,7 +68,7 @@ export default function Layout() {
           <AppThemeProvider>
             <HeroUINativeProvider>
               <StackLayout isSignedIn={!!session} />
-              {!isReady && <Splash fontsLoaded={fontsLoaded} />}
+              <Splash fontsLoaded={fontsLoaded} hidden={isReady} />
             </HeroUINativeProvider>
           </AppThemeProvider>
         </KeyboardProvider>
