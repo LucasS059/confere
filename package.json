@@ -18,6 +18,9 @@
       "@better-auth/expo": "1.6.23"
     }
   },
+  "overrides": {
+    "react-native-screens": "~4.26.0"
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
