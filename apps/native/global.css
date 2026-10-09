@@ -3,3 +3,86 @@
 @import "heroui-native/styles";
 
 @source "./node_modules/heroui-native/lib";
+
+@theme {
+  --font-instrument: "InstrumentSans_400Regular";
+  --font-instrument-medium: "InstrumentSans_500Medium";
+  --font-instrument-semibold: "InstrumentSans_600SemiBold";
+
+  --color-brand: #2f6bff;
+}
+
+@layer theme {
+  :root {
+    @variant light {
+      --bg: #f3f4f8;
+      --card: #ffffff;
+      --ink: #141821;
+      --ink2: #5b6270;
+      --ink3: #8a91a0;
+      --hair: rgba(20, 24, 33, 0.08);
+      --glass: rgba(255, 255, 255, 0.55);
+      --glass-hi: rgba(255, 255, 255, 0.75);
+      --glass-sh: rgba(20, 30, 60, 0.08);
+      --glass-bd: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  :root {
+    @variant dark {
+      --bg: #0d0f15;
+      --card: #171a22;
+      --ink: #f2f4f8;
+      --ink2: #a3aab8;
+      --ink3: #6b7384;
+      --hair: rgba(255, 255, 255, 0.09);
+      --glass: rgba(30, 33, 42, 0.55);
+      --glass-hi: rgba(255, 255, 255, 0.14);
+      --glass-sh: rgba(0, 0, 0, 0.45);
+      --glass-bd: rgba(255, 255, 255, 0.12);
+    }
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--bg);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-ink3: var(--ink3);
+  --color-hair: var(--hair);
+  --color-glass: var(--glass);
+  --color-glass-bd: var(--glass-bd);
+}
+
+@utility bg-brand-gradient {
+  background-image: linear-gradient(145deg, #5b8cff, #2f6bff 58%, #1f4fd6);
+}
+
+@utility bg-splash-gradient {
+  background-image: linear-gradient(160deg, #5b8cff, #2f6bff 55%, #1f4fd6);
+}
+
+@utility shadow-glass {
+  box-shadow:
+    inset 1px 1px 0 var(--glass-hi),
+    0 8px 24px var(--glass-sh);
+}
+
+@utility shadow-brand-tile {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.45),
+    0 8px 18px rgba(47, 107, 255, 0.32);
+}
+
+@utility shadow-brand-button {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.35),
+    0 10px 24px rgba(47, 107, 255, 0.3);
+}
+
+@utility shadow-splash-tile {
+  box-shadow:
+    inset 1.5px 1.5px 0 rgba(255, 255, 255, 0.5),
+    0 20px 50px rgba(0, 0, 0, 0.2);
+}
