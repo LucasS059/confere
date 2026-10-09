@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from "../index";
+import { protectedProcedure, publicProcedure, router } from "./index";
 import { authModule } from "./modules/auth";
 import { healthModule } from "./modules/health";
 
