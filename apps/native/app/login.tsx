@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { cn, useToast } from "heroui-native";
+import { useToast } from "heroui-native";
 import { useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -9,9 +9,9 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import Svg, { Circle, Defs, RadialGradient, Stop } from "react-native-svg";
 import { useCSSVariable } from "uniwind";
 import z from "zod";
+import { Blob } from "@/components/blob";
 import { CheckMark } from "@/components/check-mark";
 import { authClient } from "@/lib/auth-client";
 
@@ -21,25 +21,6 @@ const loginSchema = z.object({
 });
 
 const GOOGLE_COLORS = ["#EA4335", "#4285F4", "#FBBC05", "#34A853"];
-
-// Design's `radial-gradient(circle, color, transparent 70%)` backdrop glow; SVG
-// because uniwind drops radial gradients on native. Opacity comes from className.
-function Blob({ color, className }: { color: string; className: string }) {
-  const id = `blob-${color.slice(1)}`;
-  return (
-    <View pointerEvents="none" className={cn("absolute", className)}>
-      <Svg width="100%" height="100%">
-        <Defs>
-          <RadialGradient id={id} cx="50%" cy="50%" r="70.71%">
-            <Stop offset="0" stopColor={color} stopOpacity={1} />
-            <Stop offset="0.7" stopColor={color} stopOpacity={0} />
-          </RadialGradient>
-        </Defs>
-        <Circle cx="50%" cy="50%" r="50%" fill={`url(#${id})`} />
-      </Svg>
-    </View>
-  );
-}
 
 export default function Login() {
   const router = useRouter();
@@ -62,7 +43,6 @@ export default function Login() {
     }
     setIsSubmitting(true);
     try {
-      // On success the session updates and the root layout swaps this screen out.
       const { error } = await authClient.signIn.email(parsed.data);
       if (error) {
         showError(
@@ -101,9 +81,12 @@ export default function Login() {
         }}
       >
         <View className="items-start gap-3.5">
-          <View className="size-14 items-center justify-center rounded-[17px] bg-brand-gradient shadow-brand-tile">
+          <Pressable
+            onPress={() => router.push("/onboarding")}
+            className="size-14 items-center justify-center rounded-[17px] bg-brand-gradient shadow-brand-tile"
+          >
             <CheckMark size={30} />
-          </View>
+          </Pressable>
           <Text className="font-instrument-semibold text-[28px] text-ink leading-[32.2px] tracking-[-0.7px]">
             Entrar no Confere
           </Text>
@@ -123,7 +106,7 @@ export default function Login() {
               accessibilityLabel="E-mail"
               value={email}
               onChangeText={setEmail}
-              placeholder="voce@email.com"
+              placeholder="seu@email.com"
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -155,7 +138,7 @@ export default function Login() {
             <Text
               className="font-instrument-medium text-[13px] text-brand"
               accessibilityRole="button"
-              onPress={comingSoon}
+              onPress={() => router.push("/forgot-password")}
             >
               Esqueci
             </Text>
@@ -182,7 +165,6 @@ export default function Login() {
           <View className="h-px flex-1 bg-hair" />
         </View>
 
-        {/* ponytail: social providers are not configured on the server; wire signIn.social when they are. */}
         <View className="gap-2.5">
           <Pressable
             className="h-[52px] flex-row items-center justify-center gap-2.5 rounded-[26px] border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-80"
