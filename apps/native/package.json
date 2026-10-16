@@ -4,17 +4,18 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
-    "dev": "expo start --clear",
+    "start": "expo start --offline",
+    "dev": "expo start --offline --clear",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "prebuild": "expo prebuild",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@better-auth/expo": "catalog:",
-    "@confere/api": "workspace:*",
-    "@confere/env": "workspace:*",
+    "@confere/server": "workspace:*",
+    "@expo-google-fonts/dm-mono": "^0.4.2",
     "@expo-google-fonts/instrument-sans": "^0.4.2",
     "@expo/metro-runtime": "~57.0.16",
     "@expo/vector-icons": "^15.1.1",
@@ -25,7 +26,6 @@
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "^11.18.0",
     "better-auth": "catalog:",
-    "dotenv": "catalog:",
     "expo": "~57.0.27",
     "expo-constants": "~57.0.21",
     "expo-font": "~57.0.0",

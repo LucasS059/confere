@@ -1,10 +1,10 @@
-import type { AppRouter } from "@confere/api/routers/index";
-import { env } from "@confere/env/native";
+import type { AppRouter } from "@confere/server/router";
 import { QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { Platform } from "react-native";
 import { authClient } from "@/lib/auth-client";
+import { env } from "@/lib/env";
 
 export const queryClient = new QueryClient();
 

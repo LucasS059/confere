@@ -1,13 +1,16 @@
 import "@/global.css";
 
 import {
+  DMMono_400Regular,
+  DMMono_500Medium,
+} from "@expo-google-fonts/dm-mono";
+import {
   InstrumentSans_400Regular,
   InstrumentSans_500Medium,
   InstrumentSans_600SemiBold,
   useFonts,
 } from "@expo-google-fonts/instrument-sans";
 import { QueryClientProvider } from "@tanstack/react-query";
-
 import { Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { useEffect, useState } from "react";
@@ -16,29 +19,27 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Splash } from "@/components/splash";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
-
 import { queryClient } from "@/utils/trpc";
 
 // Keeps the branded splash readable instead of flashing by on fast starts.
 const SPLASH_MIN_MS = 1200;
 
 export const unstable_settings = {
-  initialRouteName: "(drawer)",
+  initialRouteName: "(tabs)",
 };
 
 function StackLayout({ isSignedIn }: { isSignedIn: boolean }) {
   return (
-    <Stack screenOptions={{}}>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={isSignedIn}>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{ title: "Modal", presentation: "modal" }}
-        />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="projects/new" />
       </Stack.Protected>
       <Stack.Protected guard={!isSignedIn}>
-        <Stack.Screen name="login" options={{ headerShown: false }} />
-        <Stack.Screen name="sign-up" options={{ title: "Criar conta" }} />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="sign-up" />
+        <Stack.Screen name="forgot-password" />
       </Stack.Protected>
     </Stack>
   );
@@ -49,6 +50,8 @@ export default function Layout() {
     InstrumentSans_400Regular,
     InstrumentSans_500Medium,
     InstrumentSans_600SemiBold,
+    DMMono_400Regular,
+    DMMono_500Medium,
   });
   const { data: session, isPending } = authClient.useSession();
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);

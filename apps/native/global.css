@@ -8,8 +8,17 @@
   --font-instrument: "InstrumentSans_400Regular";
   --font-instrument-medium: "InstrumentSans_500Medium";
   --font-instrument-semibold: "InstrumentSans_600SemiBold";
+  --font-mono: "DMMono_400Regular";
+  --font-mono-medium: "DMMono_500Medium";
 
   --color-brand: #2f6bff;
+  --color-brand-soft: rgba(47, 107, 255, 0.12);
+  --color-ok: #1e9e62;
+  --color-ok-soft: rgba(30, 158, 98, 0.12);
+  --color-warn: #d9822b;
+  --color-warn-soft: rgba(217, 130, 43, 0.14);
+  --color-err: #e04848;
+  --color-err-soft: rgba(224, 72, 72, 0.12);
 }
 
 @layer theme {
