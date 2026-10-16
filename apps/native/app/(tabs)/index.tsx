@@ -69,8 +69,6 @@ export default function HomeProjectsScreen() {
   const { data: session } = authClient.useSession();
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
   const [search, setSearch] = useState("");
-
-  // Ready for backend query: currently empty array instead of fake mocked data
   const [projects] = useState<Project[]>([]);
 
   const firstName = session?.user?.name

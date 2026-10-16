@@ -18,29 +18,31 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Splash } from "@/components/splash";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
-import { authClient } from "@/lib/auth-client";
 import { queryClient } from "@/utils/trpc";
 
-// Keeps the branded splash readable instead of flashing by on fast starts.
-const SPLASH_MIN_MS = 1200;
+const SPLASH_MIN_MS = 1000;
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-function StackLayout({ isSignedIn }: { isSignedIn: boolean }) {
+function StackLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isSignedIn}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="projects/new" />
-      </Stack.Protected>
-      <Stack.Protected guard={!isSignedIn}>
-        <Stack.Screen name="onboarding" />
-        <Stack.Screen name="login" />
-        <Stack.Screen name="sign-up" />
-        <Stack.Screen name="forgot-password" />
-      </Stack.Protected>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="projects/new" />
+      <Stack.Screen name="projects/review-requirements" />
+      <Stack.Screen name="projects/details" />
+      <Stack.Screen name="submissions/new" />
+      <Stack.Screen name="conferences/review" />
+      <Stack.Screen name="conferences/progress" />
+      <Stack.Screen name="conferences/result" />
+      <Stack.Screen name="requirements/detail" />
+      <Stack.Screen name="settings" />
+      <Stack.Screen name="onboarding" />
+      <Stack.Screen name="login" />
+      <Stack.Screen name="sign-up" />
+      <Stack.Screen name="forgot-password" />
     </Stack>
   );
 }
@@ -53,7 +55,6 @@ export default function Layout() {
     DMMono_400Regular,
     DMMono_500Medium,
   });
-  const { data: session, isPending } = authClient.useSession();
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
   useEffect(() => {
@@ -61,8 +62,7 @@ export default function Layout() {
     return () => clearTimeout(timer);
   }, []);
 
-  // A font failure must not trap the user on the splash.
-  const isReady = (fontsLoaded || !!fontsError) && !isPending && minTimeElapsed;
+  const isReady = (fontsLoaded || !!fontsError) && minTimeElapsed;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -70,7 +70,7 @@ export default function Layout() {
         <KeyboardProvider>
           <AppThemeProvider>
             <HeroUINativeProvider>
-              <StackLayout isSignedIn={!!session} />
+              <StackLayout />
               <Splash fontsLoaded={fontsLoaded} hidden={isReady} />
             </HeroUINativeProvider>
           </AppThemeProvider>

@@ -37,13 +37,12 @@ export default function NewProjectScreen() {
       return;
     }
     setIsExtracting(true);
-    // Ready for backend AI extraction
     toast.show({
       label: "Extraindo requisitos...",
     });
     setTimeout(() => {
       setIsExtracting(false);
-      router.back();
+      router.push("/projects/review-requirements");
     }, 600);
   }
 

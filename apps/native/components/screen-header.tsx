@@ -9,6 +9,7 @@ type ScreenHeaderProps = {
   subtitle?: string;
   onBack?: () => void;
   rightSlot?: ReactNode;
+  rightElement?: ReactNode;
 };
 
 export function ScreenHeader({
@@ -16,6 +17,7 @@ export function ScreenHeader({
   subtitle,
   onBack,
   rightSlot,
+  rightElement,
 }: ScreenHeaderProps) {
   const router = useRouter();
   const inkColor = (useCSSVariable("--ink") as string) || "#141821";
@@ -54,7 +56,7 @@ export function ScreenHeader({
         ) : null}
       </View>
 
-      {rightSlot ? rightSlot : <View className="size-10" />}
+      {rightSlot || rightElement ? rightSlot || rightElement : <View className="size-10" />}
     </View>
   );
 }

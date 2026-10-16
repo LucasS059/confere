@@ -1,106 +1,163 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useCSSVariable } from "uniwind";
+import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
 import { authClient } from "@/lib/auth-client";
-import { queryClient } from "@/utils/trpc";
 
 export default function PerfilTabScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { data: session } = authClient.useSession();
-  const chevronColor = (useCSSVariable("--ink3") as string) || "#8A91A0";
 
-  const userName = session?.user?.name || "Estudante";
-  const userEmail = session?.user?.email || "";
-  const initials = session?.user?.name
-    ? session.user.name
-        .trim()
-        .split(" ")
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((p) => p[0]?.toUpperCase())
-        .join("")
-    : "CF";
+  const displayName = session?.user?.name || "Estudante";
+  const displayEmail = session?.user?.email || "";
+  const initials = displayName
+    .split(" ")
+    .map((n) => n[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  async function handleSignOut() {
+    try {
+      await authClient.signOut();
+    } catch {}
+    router.replace("/login");
+  }
 
   return (
     <View className="flex-1 overflow-hidden bg-canvas">
       <Blob
         color="#2F6BFF"
-        className="-top-[120px] -left-[80px] size-[360px] opacity-[0.18] dark:opacity-[0.30]"
+        className="-top-[120px] -left-[80px] size-[360px] opacity-[0.16] dark:opacity-[0.28]"
+      />
+      <Blob
+        color="#10B981"
+        className="top-[320px] -right-[120px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
       />
 
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          gap: 20,
-          paddingTop: Math.max(insets.top + 20, 64),
           paddingHorizontal: 20,
-          paddingBottom: Math.max(insets.bottom + 100, 120),
+          paddingTop: Math.max(insets.top + 20, 50),
+          paddingBottom: insets.bottom + 100,
         }}
       >
-        <View className="flex-row items-center gap-4">
-          <View className="size-16 items-center justify-center rounded-full bg-brand shadow-brand-tile">
-            <Text className="font-instrument-semibold text-white text-xl">
+        <View className="items-center mb-6">
+          <View className="size-20 items-center justify-center rounded-full bg-brand shadow-lg shadow-brand/30 mb-3">
+            <Text className="text-[24px] font-bold text-white tracking-wide">
               {initials}
             </Text>
           </View>
-          <View className="flex-1 gap-0.5">
-            <Text className="font-instrument-semibold text-[22px] text-ink tracking-[-0.5px]">
-              {userName}
+
+          <Text className="text-[20px] font-bold text-ink">
+            {displayName}
+          </Text>
+          {displayEmail ? (
+            <Text className="text-[13px] text-ink2 mt-0.5">
+              {displayEmail}
             </Text>
-            {userEmail ? (
-              <Text className="font-instrument text-ink2 text-xs">
-                {userEmail}
-              </Text>
-            ) : null}
-          </View>
+          ) : null}
         </View>
 
-        <View className="flex-row gap-2.5">
-          <View className="flex-1 gap-0.5 rounded-2xl border border-hair bg-card p-3.5 shadow-xs">
-            <Text className="font-instrument-semibold text-[22px] text-ink">
-              0
-            </Text>
-            <Text className="font-instrument text-ink3 text-xs">projetos</Text>
+        <View className="mb-6 flex-row gap-3">
+          <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
+            <Text className="text-[20px] font-bold text-ink">0</Text>
+            <Text className="text-[12px] text-ink3">projetos</Text>
           </View>
-          <View className="flex-1 gap-0.5 rounded-2xl border border-hair bg-card p-3.5 shadow-xs">
-            <Text className="font-instrument-semibold text-[22px] text-ink">
-              0
-            </Text>
-            <Text className="font-instrument text-ink3 text-xs">
-              conferências
-            </Text>
+          <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
+            <Text className="text-[20px] font-bold text-ink">0</Text>
+            <Text className="text-[12px] text-ink3">conferências</Text>
           </View>
-          <View className="flex-1 gap-0.5 rounded-2xl border border-hair bg-card p-3.5 shadow-xs">
-            <Text className="font-instrument-semibold text-[22px] text-ink">
-              0
-            </Text>
-            <Text className="font-instrument text-ink3 text-xs">
+          <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
+            <Text className="text-[20px] font-bold text-ink">0</Text>
+            <Text className="text-center text-[11px] text-ink3">
               requisitos
             </Text>
           </View>
         </View>
 
-        <View className="gap-2.5">
-          <Pressable className="flex-row items-center justify-between rounded-2xl border border-hair bg-card px-4 py-4 active:opacity-80">
-            <Text className="font-instrument-medium text-[14px] text-ink">
-              Ajuda e feedback
-            </Text>
-            <Ionicons name="chevron-forward" size={16} color={chevronColor} />
+        <View className="mb-6 rounded-3xl border border-line-glass bg-glass p-2 shadow-sm">
+          <Pressable
+            onPress={() => router.push("/settings")}
+            className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50"
+          >
+            <View className="flex-row items-center gap-3">
+              <View className="size-9 items-center justify-center rounded-xl bg-brand/10">
+                <Ionicons name="settings-outline" size={18} color="#2F6BFF" />
+              </View>
+              <Text className="text-[15px] font-medium text-ink">
+                Configurações
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+          </Pressable>
+
+          <View className="h-[1px] bg-line-glass mx-3.5" />
+
+          <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
+            <View className="flex-row items-center gap-3">
+              <View className="size-9 items-center justify-center rounded-xl bg-ok/10">
+                <Ionicons name="download-outline" size={18} color="#10B981" />
+              </View>
+              <Text className="text-[15px] font-medium text-ink">
+                Relatórios exportados
+              </Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              <View className="rounded-full bg-line px-2 py-0.5">
+                <Text className="font-mono text-[11px] font-bold text-ink2">
+                  0
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+            </View>
+          </Pressable>
+
+          <View className="h-[1px] bg-line-glass mx-3.5" />
+
+          <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
+            <View className="flex-row items-center gap-3">
+              <View className="size-9 items-center justify-center rounded-xl bg-warn/10">
+                <Ionicons name="people-outline" size={18} color="#F59E0B" />
+              </View>
+              <Text className="text-[15px] font-medium text-ink">
+                Orientadores conectados
+              </Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              <View className="rounded-full bg-line px-2 py-0.5">
+                <Text className="font-mono text-[11px] font-bold text-ink2">
+                  0
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+            </View>
+          </Pressable>
+
+          <View className="h-[1px] bg-line-glass mx-3.5" />
+
+          <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
+            <View className="flex-row items-center gap-3">
+              <View className="size-9 items-center justify-center rounded-xl bg-ink/5">
+                <Ionicons name="help-circle-outline" size={18} color="#64748B" />
+              </View>
+              <Text className="text-[15px] font-medium text-ink">
+                Ajuda e feedback
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
           </Pressable>
         </View>
 
         <Pressable
-          accessibilityRole="button"
-          onPress={() => {
-            authClient.signOut();
-            queryClient.invalidateQueries();
-          }}
-          className="mt-2 items-center py-3 active:opacity-70"
+          onPress={handleSignOut}
+          className="h-12 items-center justify-center rounded-2xl border border-err/20 bg-err/5 active:bg-err/10"
         >
-          <Text className="font-instrument-semibold text-[14px] text-err">
+          <Text className="text-[15px] font-semibold text-err">
             Sair da conta
           </Text>
         </Pressable>
