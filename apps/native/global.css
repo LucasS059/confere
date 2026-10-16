@@ -5,12 +5,18 @@
 @source "./node_modules/heroui-native/lib";
 
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-instrument: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-instrument-medium: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-instrument-semibold: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: -apple-system-monospaced, "SF Mono", "DMMono_400Regular", monospace;
-  --font-mono-medium: -apple-system-monospaced, "SF Mono", "DMMono_500Medium", monospace;
+  --font-sans: "Inter_400Regular", sans-serif;
+  --font-inter: "Inter_400Regular";
+  --font-inter-medium: "Inter_500Medium";
+  --font-inter-semibold: "Inter_600SemiBold";
+  --font-inter-bold: "Inter_700Bold";
+
+  --font-instrument: "Inter_400Regular";
+  --font-instrument-medium: "Inter_500Medium";
+  --font-instrument-semibold: "Inter_600SemiBold";
+
+  --font-mono: "DMMono_400Regular", monospace;
+  --font-mono-medium: "DMMono_500Medium", monospace;
 
   --color-brand: #2f6bff;
   --color-brand-soft: rgba(47, 107, 255, 0.12);
