@@ -62,7 +62,6 @@ export class S3Bucket extends Bucket<GetObjectCommandOutput> {
       region: config.region,
       endpoint: config.endpoint,
       forcePathStyle: config.forcePathStyle ?? Boolean(config.endpoint),
-      // Custom endpoints (R2/MinIO/Backblaze) reject AWS SDK default CRC32 checksums.
       ...(config.endpoint
         ? {
             requestChecksumCalculation: "WHEN_REQUIRED" as const,
@@ -81,7 +80,10 @@ export class S3Bucket extends Bucket<GetObjectCommandOutput> {
       new PutObjectCommand({
         Bucket: this.bucket,
         Key: input.key,
-        Body: input.body,
+        Body:
+          input.body instanceof ArrayBuffer
+            ? new Uint8Array(input.body)
+            : input.body,
         ContentType: input.contentType,
         Metadata: input.metadata,
       }),

@@ -1,5 +1,5 @@
-import { auth } from "@confere/auth";
 import type { Context as ElysiaContext } from "elysia";
+import { auth } from "../auth";
 
 export type CreateContextOptions = {
   context: ElysiaContext;
@@ -10,7 +10,6 @@ export async function createContext({ context }: CreateContextOptions) {
     headers: context.request.headers,
   });
   return {
-    auth: null,
     session,
   };
 }
