@@ -1,0 +1,25 @@
+{
+  "name": "@confere/auth",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "type": "module",
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^6",
+    "@confere/config": "workspace:*"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "zod": "catalog:",
+    "@confere/env": "workspace:*",
+    "@confere/db": "workspace:*",
+    "better-auth": "catalog:",
+    "@better-auth/expo": "catalog:"
+  }
+}

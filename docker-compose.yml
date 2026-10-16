@@ -1,37 +1,18 @@
 name: confere
 
 services:
-  postgres:
-    image: postgres:17
-    container_name: confere-postgres
-    environment:
-      POSTGRES_DB: confere
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5433:5432"
-    volumes:
-      - confere_postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d confere"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
   server:
     build:
       context: .
       dockerfile: apps/server/Dockerfile
-    container_name: confere-server
     init: true
     ports:
       - "3000:3000"
     env_file:
       - path: apps/server/.env
-        required: true
+        required: false
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/confere
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/confere
     healthcheck:
       test:
         [
@@ -47,6 +28,24 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:18
+    container_name: confere-postgres
+    environment:
+      POSTGRES_DB: confere
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - confere_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
 
 volumes:
