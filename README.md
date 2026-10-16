@@ -48,7 +48,7 @@ O projeto utiliza a arquitetura de **monorepo** com Turborepo e Bun, garantindo 
                                       │
                    ┌──────────────────┴──────────────────┐
                    ▼                                     ▼
-        PostgreSQL 17 (Drizzle ORM)             Armazenamento S3 (AWS SDK)
+        PostgreSQL 18 (Drizzle ORM)             Armazenamento S3 (AWS SDK)
 ```
 
 ### Tecnologias
@@ -62,12 +62,13 @@ O projeto utiliza a arquitetura de **monorepo** com Turborepo e Bun, garantindo 
   - Comunicacao via tRPC Client com cache gerenciado por TanStack React Query.
   - Sessao e autenticacao persistidas no Expo SecureStore.
 
-- **Backend (`apps/server`):**
-  - Runtime Bun com servidor HTTP ElysiaJS.
-  - Procedimentos e rotas tRPC validadas com schemas Zod.
-  - Persistencia relacional com PostgreSQL e Drizzle ORM.
-  - Autenticacao com Better Auth.
-  - Gerenciamento de arquivos e presigned URLs via AWS S3 SDK.
+- **Backend (`apps/server` + `apps/api` + `packages/*`):**
+  - Runtime Bun com servidor HTTP ElysiaJS (`apps/server`).
+  - Procedimentos e rotas tRPC validadas com schemas Zod (`apps/api`).
+  - Persistencia relacional com PostgreSQL e Drizzle ORM (`packages/db`).
+  - Autenticacao com Better Auth (`packages/auth`).
+  - Variaveis de ambiente tipadas (`packages/env`).
+  - Gerenciamento de arquivos e presigned URLs via AWS S3 SDK (`packages/storage`).
 
 - **Infraestrutura e Padronizacao:**
   - Docker Compose orquestrando banco de dados e servidor.
@@ -86,19 +87,18 @@ confere/
 │   │   ├── components/          # Componentes visuais e icones
 │   │   └── utils/               # Conexao tRPC e clientes de servico
 │   │
-│   └── server/                  # Backend da aplicacao
-│       ├── src/
-│       │   ├── auth/            # Regras e plugins do Better Auth
-│       │   ├── db/              # Conexao e schemas Drizzle (PostgreSQL)
-│       │   ├── storage/         # Adaptador para AWS S3
-│       │   ├── trpc/            # Procedures e routers da API
-│       │   └── index.ts         # Ponto de entrada do ElysiaJS
-│       └── Dockerfile           # Imagem de producao do backend
+│   ├── api/                     # Procedures e routers tRPC
+│   └── server/                  # Servidor ElysiaJS (ponto de entrada e Dockerfile)
 │
 ├── packages/
-│   └── config/                  # Configuracoes compartilhadas de TypeScript
+│   ├── auth/                    # Configuracao do Better Auth
+│   ├── config/                  # Configuracoes compartilhadas de TypeScript
+│   ├── db/                      # Conexao e schemas Drizzle (PostgreSQL)
+│   ├── env/                     # Validacao de variaveis de ambiente (server/native)
+│   └── storage/                 # Adaptador para S3 (AWS, R2, MinIO, Backblaze)
 │
 ├── docker-compose.yml           # Orquestracao do PostgreSQL e Backend
+├── turbo.json                   # Pipeline de tarefas do Turborepo
 ├── biome.json                   # Regras de formatacao e linter
 └── package.json                 # Scripts do monorepo e dependencias raiz
 ```
@@ -117,7 +117,7 @@ confere/
 
 ### Opcao 1: Rodando com Docker (Recomendado)
 
-O Docker Compose do projeto sobe tanto o banco PostgreSQL quanto o servidor backend (que aplica as migracoes do banco automaticamente ao inicializar).
+O Docker Compose do projeto sobe tanto o banco PostgreSQL quanto o servidor backend.
 
 1. **Instale as dependencias na raiz:**
    ```bash
@@ -128,9 +128,14 @@ O Docker Compose do projeto sobe tanto o banco PostgreSQL quanto o servidor back
    ```bash
    bun run docker:up
    ```
-   *O PostgreSQL subira na porta `5433` e o servidor na porta `3000`.*
+   *O PostgreSQL subira na porta `5432` e o servidor na porta `3000`.*
 
-3. **Inicie o aplicativo mobile:**
+3. **Sincronize o schema com o banco:**
+   ```bash
+   bun run db:push
+   ```
+
+4. **Inicie o aplicativo mobile:**
    ```bash
    bun run dev:native
    ```
@@ -150,7 +155,7 @@ Se desejar rodar o backend localmente com hot-reload ativo durante o desenvolvim
 
 1. **Inicie apenas o PostgreSQL via Docker:**
    ```bash
-   docker compose up -d postgres
+   bun run db:start
    ```
 
 2. **Sincronize o schema com o banco:**
@@ -178,5 +183,6 @@ Se desejar rodar o backend localmente com hot-reload ativo durante o desenvolvim
 | `bun run check` | Analise estatica e formatacao automatica com o Biome |
 | `bun run db:push` | Sincroniza alteracoes do schema Drizzle com o PostgreSQL |
 | `bun run db:studio` | Interface visual no navegador para inspecionar tabelas do banco |
+| `bun run db:start` / `db:stop` | Sobe / para apenas o PostgreSQL via Docker |
 | `bun run docker:up` | Constroi e inicia os containers Docker em segundo plano |
 | `bun run docker:down` | Encerra os containers Docker |
