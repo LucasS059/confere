@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
 
 type FilterTab = "todos" | "pendentes" | "atendidos";
@@ -56,7 +56,7 @@ export default function ConferenceResultScreen() {
             hitSlop={8}
             className="flex-row items-center gap-1 rounded-xl border border-line-glass bg-glass px-2.5 py-1.5"
           >
-            <Ionicons name="document-text" size={14} color="#2F6BFF" />
+            <Icon name="doc.text" fallback="document-text" size={14} color="#2F6BFF" />
             <Text className="font-mono text-[12px] font-bold text-brand">
               PDF
             </Text>
@@ -171,7 +171,12 @@ export default function ConferenceResultScreen() {
         {results.length === 0 ? (
           <View className="items-center rounded-3xl border border-line-glass bg-glass p-8 text-center shadow-sm">
             <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
-              <Ionicons name="checkmark-done-circle-outline" size={24} color="#2F6BFF" />
+              <Icon
+                name="checkmark.circle"
+                fallback="checkmark-done-circle-outline"
+                size={24}
+                color="#2F6BFF"
+              />
             </View>
             <Text className="text-[16px] font-semibold text-ink">
               Nenhuma conferência processada
@@ -190,7 +195,7 @@ export default function ConferenceResultScreen() {
               return (
                 <Pressable
                   key={item.id}
-                  onPress={() => router.push("/requirements/detail")}
+                  onPress={() => router.push("/projects/requirement-detail")}
                   className="rounded-2xl border border-line-glass bg-glass p-4 shadow-sm active:opacity-85"
                 >
                   <View className="flex-row items-start justify-between gap-2">

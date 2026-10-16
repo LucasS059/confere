@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 
 export default function ConferenceProgressScreen() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function ConferenceProgressScreen() {
     const timer = setTimeout(() => {
       setProgress(100);
       setTimeout(() => {
-        router.replace("/conferences/result");
+        router.replace("/projects/result");
       }, 800);
     }, 2500);
 
@@ -63,7 +63,7 @@ export default function ConferenceProgressScreen() {
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-3">
             <View className="size-6 items-center justify-center rounded-full bg-ok">
-              <Ionicons name="checkmark" size={14} color="#FFFFFF" />
+              <Icon name="checkmark" fallback="checkmark" size={13} color="#FFFFFF" />
             </View>
             <Text className="text-[14px] font-medium text-ink">Lendo o PDF</Text>
           </View>
@@ -73,7 +73,12 @@ export default function ConferenceProgressScreen() {
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-3">
             <View className="size-6 items-center justify-center rounded-full bg-brand/20">
-              <Ionicons name="sync" size={14} color="#2F6BFF" />
+              <Icon
+                name="arrow.triangle.2.circlepath"
+                fallback="sync"
+                size={13}
+                color="#2F6BFF"
+              />
             </View>
             <Text className="text-[14px] font-medium text-ink">
               Mapeando requisitos

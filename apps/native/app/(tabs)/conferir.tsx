@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 
 export default function ConferirTabScreen() {
   const router = useRouter();
@@ -39,12 +39,17 @@ export default function ConferirTabScreen() {
 
         <View className="gap-3">
           <Pressable
-            onPress={() => router.push("/submissions/new")}
+            onPress={() => router.push("/projects/submission")}
             className="rounded-3xl border border-line-glass bg-glass p-5 shadow-sm active:opacity-85"
           >
             <View className="flex-row items-center gap-3.5 mb-2">
               <View className="size-11 items-center justify-center rounded-2xl bg-brand/10">
-                <Ionicons name="scan-outline" size={22} color="#2F6BFF" />
+                <Icon
+                  name="doc.viewfinder"
+                  fallback="scan-outline"
+                  size={22}
+                  color="#2F6BFF"
+                />
               </View>
               <View className="flex-1">
                 <Text className="text-[16px] font-bold text-ink">
@@ -67,7 +72,12 @@ export default function ConferirTabScreen() {
           >
             <View className="flex-row items-center gap-3.5 mb-2">
               <View className="size-11 items-center justify-center rounded-2xl bg-ok/10">
-                <Ionicons name="add-circle-outline" size={22} color="#10B981" />
+                <Icon
+                  name="plus.circle"
+                  fallback="add-circle-outline"
+                  size={22}
+                  color="#10B981"
+                />
               </View>
               <View className="flex-1">
                 <Text className="text-[16px] font-bold text-ink">

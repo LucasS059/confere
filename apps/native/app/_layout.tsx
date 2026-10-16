@@ -30,19 +30,19 @@ function StackLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(auth)/onboarding" />
+      <Stack.Screen name="(auth)/login" />
+      <Stack.Screen name="(auth)/sign-up" />
+      <Stack.Screen name="(auth)/forgot-password" />
       <Stack.Screen name="projects/new" />
-      <Stack.Screen name="projects/review-requirements" />
+      <Stack.Screen name="projects/review" />
       <Stack.Screen name="projects/details" />
-      <Stack.Screen name="submissions/new" />
-      <Stack.Screen name="conferences/review" />
-      <Stack.Screen name="conferences/progress" />
-      <Stack.Screen name="conferences/result" />
-      <Stack.Screen name="requirements/detail" />
+      <Stack.Screen name="projects/submission" />
+      <Stack.Screen name="projects/check-review" />
+      <Stack.Screen name="projects/checking" />
+      <Stack.Screen name="projects/result" />
+      <Stack.Screen name="projects/requirement-detail" />
       <Stack.Screen name="settings" />
-      <Stack.Screen name="onboarding" />
-      <Stack.Screen name="login" />
-      <Stack.Screen name="sign-up" />
-      <Stack.Screen name="forgot-password" />
     </Stack>
   );
 }

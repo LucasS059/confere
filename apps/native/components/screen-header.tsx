@@ -1,8 +1,8 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import type { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useCSSVariable } from "uniwind";
+import { Icon } from "@/components/icon";
 
 type ScreenHeaderProps = {
   title: string;
@@ -42,7 +42,7 @@ export function ScreenHeader({
         onPress={handleBack}
         className="size-10 items-center justify-center rounded-full border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-75"
       >
-        <Ionicons name="chevron-back" size={18} color={inkColor} />
+        <Icon name="chevron.backward" fallback="chevron-back" size={18} color={inkColor} />
       </Pressable>
 
       <View className="min-w-[148px] items-center justify-center rounded-full border-[0.5px] border-glass-bd bg-glass px-6 py-2.5 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%]">

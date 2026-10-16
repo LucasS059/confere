@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { authClient } from "@/lib/auth-client";
 
 export default function PerfilTabScreen() {
@@ -24,7 +24,7 @@ export default function PerfilTabScreen() {
     try {
       await authClient.signOut();
     } catch {}
-    router.replace("/login");
+    router.replace("/(auth)/login");
   }
 
   return (
@@ -87,13 +87,23 @@ export default function PerfilTabScreen() {
           >
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-brand/10">
-                <Ionicons name="settings-outline" size={18} color="#2F6BFF" />
+                <Icon
+                  name="gearshape"
+                  fallback="settings-outline"
+                  size={18}
+                  color="#2F6BFF"
+                />
               </View>
               <Text className="text-[15px] font-medium text-ink">
                 Configurações
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+            <Icon
+              name="chevron.forward"
+              fallback="chevron-forward"
+              size={16}
+              color="#94A3B8"
+            />
           </Pressable>
 
           <View className="h-[1px] bg-line-glass mx-3.5" />
@@ -101,7 +111,12 @@ export default function PerfilTabScreen() {
           <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-ok/10">
-                <Ionicons name="download-outline" size={18} color="#10B981" />
+                <Icon
+                  name="arrow.down.to.line"
+                  fallback="download-outline"
+                  size={18}
+                  color="#10B981"
+                />
               </View>
               <Text className="text-[15px] font-medium text-ink">
                 Relatórios exportados
@@ -113,7 +128,12 @@ export default function PerfilTabScreen() {
                   0
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+              <Icon
+                name="chevron.forward"
+                fallback="chevron-forward"
+                size={16}
+                color="#94A3B8"
+              />
             </View>
           </Pressable>
 
@@ -122,7 +142,12 @@ export default function PerfilTabScreen() {
           <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-warn/10">
-                <Ionicons name="people-outline" size={18} color="#F59E0B" />
+                <Icon
+                  name="person.2"
+                  fallback="people-outline"
+                  size={18}
+                  color="#F59E0B"
+                />
               </View>
               <Text className="text-[15px] font-medium text-ink">
                 Orientadores conectados
@@ -134,7 +159,12 @@ export default function PerfilTabScreen() {
                   0
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+              <Icon
+                name="chevron.forward"
+                fallback="chevron-forward"
+                size={16}
+                color="#94A3B8"
+              />
             </View>
           </Pressable>
 
@@ -143,13 +173,23 @@ export default function PerfilTabScreen() {
           <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-ink/5">
-                <Ionicons name="help-circle-outline" size={18} color="#64748B" />
+                <Icon
+                  name="questionmark.circle"
+                  fallback="help-circle-outline"
+                  size={18}
+                  color="#64748B"
+                />
               </View>
               <Text className="text-[15px] font-medium text-ink">
                 Ajuda e feedback
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
+            <Icon
+              name="chevron.forward"
+              fallback="chevron-forward"
+              size={16}
+              color="#94A3B8"
+            />
           </Pressable>
         </View>
 

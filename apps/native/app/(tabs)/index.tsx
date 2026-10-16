@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
@@ -6,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
 import { useCSSVariable } from "uniwind";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { authClient } from "@/lib/auth-client";
 
 export type Project = {
@@ -130,8 +130,9 @@ export default function HomeProjectsScreen() {
         </View>
 
         <View className="h-[44px] flex-row items-center gap-2.5 rounded-full border-[0.5px] border-glass-bd bg-glass px-4 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%]">
-          <Ionicons
-            name="search-outline"
+          <Icon
+            name="magnifyingglass"
+            fallback="search-outline"
             size={16}
             color={placeholderColor || "#8A91A0"}
           />
@@ -201,7 +202,7 @@ export default function HomeProjectsScreen() {
           {filteredProjects.length === 0 ? (
             <View className="items-center gap-3 rounded-[22px] border border-hair bg-card p-6 shadow-xs">
               <View className="size-12 items-center justify-center rounded-2xl bg-brand-soft">
-                <Ionicons name="folder-open-outline" size={24} color="#2F6BFF" />
+                <Icon name="folder" fallback="folder-open-outline" size={24} color="#2F6BFF" />
               </View>
               <View className="items-center gap-1">
                 <Text className="font-instrument-semibold text-[16px] text-ink">

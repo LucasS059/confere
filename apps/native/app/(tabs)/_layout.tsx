@@ -1,9 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import type React from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
+import type { SFSymbol } from "expo-symbols";
+import { Icon } from "@/components/icon";
+import { Ionicons } from "@expo/vector-icons";
 
 type BottomTabBarProps = Parameters<
   NonNullable<React.ComponentProps<typeof Tabs>["tabBar"]>
@@ -12,12 +14,38 @@ type BottomTabBarProps = Parameters<
 const TAB_ITEMS: Array<{
   name: string;
   label: string;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: SFSymbol;
+  activeIcon: SFSymbol;
+  fallback: keyof typeof Ionicons.glyphMap;
 }> = [
-  { name: "index", label: "Início", icon: "home-outline" },
-  { name: "conferir", label: "Conferir", icon: "checkmark-circle-outline" },
-  { name: "historico", label: "Histórico", icon: "time-outline" },
-  { name: "perfil", label: "Perfil", icon: "person-outline" },
+  {
+    name: "index",
+    label: "Início",
+    icon: "house",
+    activeIcon: "house.fill",
+    fallback: "home-outline",
+  },
+  {
+    name: "conferir",
+    label: "Conferir",
+    icon: "checkmark.seal",
+    activeIcon: "checkmark.seal.fill",
+    fallback: "checkmark-circle-outline",
+  },
+  {
+    name: "historico",
+    label: "Histórico",
+    icon: "clock",
+    activeIcon: "clock.fill",
+    fallback: "time-outline",
+  },
+  {
+    name: "perfil",
+    label: "Perfil",
+    icon: "person",
+    activeIcon: "person.fill",
+    fallback: "person-outline",
+  },
 ];
 
 function LiquidGlassTabBar({
@@ -67,7 +95,12 @@ function LiquidGlassTabBar({
               onPress={onPress}
               className="flex-1 items-center justify-center gap-1 py-1.5 active:opacity-75"
             >
-              <Ionicons name={item.icon} size={19} color={tintColor} />
+              <Icon
+                name={isFocused ? item.activeIcon : item.icon}
+                fallback={item.fallback}
+                size={19}
+                color={tintColor}
+              />
               <Text
                 className={
                   isFocused

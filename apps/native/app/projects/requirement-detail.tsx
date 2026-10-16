@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
 
 interface EvidenceItem {
@@ -43,7 +43,7 @@ export default function RequirementDetailScreen() {
             hitSlop={8}
             className="flex-row items-center gap-1 rounded-xl border border-line-glass bg-glass px-2.5 py-1.5"
           >
-            <Ionicons name="document-text" size={14} color="#2F6BFF" />
+            <Icon name="doc.text" fallback="document-text" size={14} color="#2F6BFF" />
             <Text className="font-mono text-[12px] font-bold text-brand">
               PDF
             </Text>

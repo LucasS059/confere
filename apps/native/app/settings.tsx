@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
 
 export default function SettingsScreen() {
@@ -107,7 +107,12 @@ export default function SettingsScreen() {
                 <Text className="text-[13px] font-medium text-ink2">
                   Padrão
                 </Text>
-                <Ionicons name="chevron-forward" size={14} color="#94A3B8" />
+                <Icon
+                  name="chevron.forward"
+                  fallback="chevron-forward"
+                  size={14}
+                  color="#94A3B8"
+                />
               </View>
             </Pressable>
 
@@ -166,7 +171,12 @@ export default function SettingsScreen() {
               </View>
               <View className="flex-row items-center gap-1">
                 <Text className="font-mono text-[13px] text-ink2">30 dias</Text>
-                <Ionicons name="chevron-forward" size={14} color="#94A3B8" />
+                <Icon
+                  name="chevron.forward"
+                  fallback="chevron-forward"
+                  size={14}
+                  color="#94A3B8"
+                />
               </View>
             </Pressable>
 

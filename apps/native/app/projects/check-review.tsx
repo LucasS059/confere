@@ -49,7 +49,7 @@ export default function ConferenceReviewScreen() {
               <Text className="text-[14px] font-semibold text-ink">
                 {requirementsCount > 0 ? `${requirementsCount} ativos` : "Nenhum cadastrado"}
               </Text>
-              <Pressable onPress={() => router.push("/projects/review-requirements")}>
+              <Pressable onPress={() => router.push("/projects/review")}>
                 <Text className="text-[13px] font-medium text-brand">
                   Revisar
                 </Text>
@@ -150,7 +150,7 @@ export default function ConferenceReviewScreen() {
         className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-canvas/90 px-5 pt-3"
       >
         <Pressable
-          onPress={() => router.push("/conferences/progress")}
+          onPress={() => router.push("/projects/checking")}
           className="h-13 items-center justify-center rounded-2xl bg-brand shadow-lg shadow-brand/25 active:opacity-90"
         >
           <Text className="text-[16px] font-semibold text-white">

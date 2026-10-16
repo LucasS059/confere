@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
 
 interface SelectedDocument {
@@ -55,7 +55,12 @@ export default function NewSubmissionScreen() {
         {document ? (
           <View className="mb-6 items-center rounded-3xl border border-line-glass bg-glass p-6 text-center shadow-sm">
             <View className="mb-3 size-14 items-center justify-center rounded-2xl bg-err/10">
-              <Ionicons name="document-text" size={28} color="#EF4444" />
+              <Icon
+                name="doc.text.fill"
+                fallback="document-text"
+                size={26}
+                color="#EF4444"
+              />
             </View>
 
             <Text className="text-[17px] font-bold text-ink">
@@ -81,7 +86,12 @@ export default function NewSubmissionScreen() {
             className="mb-6 items-center rounded-3xl border-2 border-dashed border-line-glass bg-glass/60 p-8 text-center active:bg-glass"
           >
             <View className="mb-3 size-14 items-center justify-center rounded-2xl bg-brand/10">
-              <Ionicons name="cloud-upload-outline" size={28} color="#2F6BFF" />
+              <Icon
+                name="arrow.up.doc"
+                fallback="cloud-upload-outline"
+                size={26}
+                color="#2F6BFF"
+              />
             </View>
             <Text className="text-[16px] font-bold text-ink">
               Selecionar documento
@@ -161,7 +171,7 @@ export default function NewSubmissionScreen() {
         className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-canvas/90 px-5 pt-3"
       >
         <Pressable
-          onPress={() => router.push("/conferences/review")}
+          onPress={() => router.push("/projects/check-review")}
           className="h-13 items-center justify-center rounded-2xl bg-brand shadow-lg shadow-brand/25 active:opacity-90"
         >
           <Text className="text-[16px] font-semibold text-white">Continuar</Text>

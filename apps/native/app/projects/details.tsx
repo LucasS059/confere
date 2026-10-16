@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
 
 interface SubmissionItem {
@@ -41,7 +41,12 @@ export default function ProjectDetailsScreen() {
             hitSlop={8}
             className="size-9 items-center justify-center rounded-full border border-line-glass bg-glass"
           >
-            <Ionicons name="ellipsis-horizontal" size={18} color="#64748B" />
+            <Icon
+              name="ellipsis"
+              fallback="ellipsis-horizontal"
+              size={18}
+              color="#64748B"
+            />
           </Pressable>
         }
       />
@@ -97,7 +102,12 @@ export default function ProjectDetailsScreen() {
         {submissions.length === 0 ? (
           <View className="items-center rounded-3xl border border-line-glass bg-glass p-8 text-center shadow-sm">
             <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
-              <Ionicons name="document-text-outline" size={24} color="#2F6BFF" />
+              <Icon
+                name="doc.text"
+                fallback="document-text-outline"
+                size={22}
+                color="#2F6BFF"
+              />
             </View>
             <Text className="text-[16px] font-semibold text-ink">
               Nenhuma entrega realizada
@@ -113,7 +123,7 @@ export default function ProjectDetailsScreen() {
               return (
                 <Pressable
                   key={sub.id}
-                  onPress={() => router.push("/conferences/result")}
+                  onPress={() => router.push("/projects/result")}
                   className="flex-row items-center justify-between rounded-2xl border border-line-glass bg-glass p-4 shadow-sm active:opacity-85"
                 >
                   <View className="flex-row items-center gap-3.5">
@@ -124,8 +134,9 @@ export default function ProjectDetailsScreen() {
                           : "border-err/50 bg-err/10"
                       }`}
                     >
-                      <Ionicons
-                        name="document-text"
+                      <Icon
+                        name="doc.text.fill"
+                        fallback="document-text"
                         size={18}
                         color={sub.score >= 70 ? "#F59E0B" : "#EF4444"}
                       />
@@ -167,7 +178,7 @@ export default function ProjectDetailsScreen() {
         className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-canvas/90 px-5 pt-3"
       >
         <Pressable
-          onPress={() => router.push("/submissions/new")}
+          onPress={() => router.push("/projects/submission")}
           className="h-13 items-center justify-center rounded-2xl bg-brand shadow-lg shadow-brand/25 active:opacity-90"
         >
           <Text className="text-[16px] font-semibold text-white">

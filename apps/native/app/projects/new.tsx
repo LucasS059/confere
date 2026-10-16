@@ -42,7 +42,7 @@ export default function NewProjectScreen() {
     });
     setTimeout(() => {
       setIsExtracting(false);
-      router.push("/projects/review-requirements");
+      router.push("/projects/review");
     }, 600);
   }
 

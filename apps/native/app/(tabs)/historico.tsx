@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 
 interface HistoryCard {
   id: string;
@@ -54,14 +54,24 @@ export default function HistoricoTabScreen() {
             <Text className="text-[13px] font-medium text-ink">
               Todos os projetos
             </Text>
-            <Ionicons name="chevron-down" size={14} color="#64748B" />
+            <Icon
+              name="chevron.down"
+              fallback="chevron-down"
+              size={14}
+              color="#64748B"
+            />
           </Pressable>
         </View>
 
         {historyGroups.length === 0 ? (
           <View className="items-center rounded-3xl border border-line-glass bg-glass p-8 text-center shadow-sm">
             <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
-              <Ionicons name="time-outline" size={24} color="#2F6BFF" />
+              <Icon
+                name="clock"
+                fallback="time-outline"
+                size={24}
+                color="#2F6BFF"
+              />
             </View>
             <Text className="text-[16px] font-semibold text-ink">
               Nenhuma conferência no histórico
@@ -86,7 +96,7 @@ export default function HistoricoTabScreen() {
                     return (
                       <Pressable
                         key={item.id}
-                        onPress={() => router.push("/conferences/result")}
+                        onPress={() => router.push("/projects/result")}
                         className="flex-row items-center justify-between rounded-2xl border border-line-glass bg-glass p-4 shadow-sm active:opacity-85"
                       >
                         <View className="flex-row items-center gap-3.5">
@@ -102,10 +112,10 @@ export default function HistoricoTabScreen() {
                             <Text
                               className={`font-mono text-[13px] font-bold ${
                                 isSuccess
-                                ? "text-ok"
-                                : isWarn
-                                ? "text-warn"
-                                : "text-err"
+                                  ? "text-ok"
+                                  : isWarn
+                                  ? "text-warn"
+                                  : "text-err"
                               }`}
                             >
                               {item.score}%
@@ -123,8 +133,9 @@ export default function HistoricoTabScreen() {
                           </View>
                         </View>
 
-                        <Ionicons
-                          name="chevron-forward"
+                        <Icon
+                          name="chevron.forward"
+                          fallback="chevron-forward"
                           size={16}
                           color="#94A3B8"
                         />

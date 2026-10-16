@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { Blob } from "@/components/blob";
+import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
 
 interface RequirementItem {
@@ -64,9 +64,10 @@ export default function ReviewRequirementsScreen() {
             hitSlop={8}
             className="size-9 items-center justify-center rounded-full border border-line-glass bg-glass"
           >
-            <Ionicons
-              name={isAdding ? "close" : "add"}
-              size={20}
+            <Icon
+              name={isAdding ? "xmark" : "plus"}
+              fallback={isAdding ? "close" : "add"}
+              size={18}
               color="#2F6BFF"
             />
           </Pressable>
@@ -107,7 +108,12 @@ export default function ReviewRequirementsScreen() {
         )}
 
         <View className="mb-4 flex-row items-center gap-2.5 rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-          <Ionicons name="information-circle-outline" size={20} color="#2F6BFF" />
+          <Icon
+            name="info.circle"
+            fallback="information-circle-outline"
+            size={18}
+            color="#2F6BFF"
+          />
           <Text className="flex-1 text-[13px] leading-snug text-ink2">
             <Text className="font-semibold text-ink">
               {items.length} requisitos encontrados.
@@ -119,7 +125,12 @@ export default function ReviewRequirementsScreen() {
         {items.length === 0 ? (
           <View className="items-center rounded-3xl border border-line-glass bg-glass p-8 text-center shadow-sm">
             <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
-              <Ionicons name="list-outline" size={24} color="#2F6BFF" />
+              <Icon
+                name="list.bullet"
+                fallback="list-outline"
+                size={22}
+                color="#2F6BFF"
+              />
             </View>
             <Text className="text-[16px] font-semibold text-ink">
               Nenhum requisito cadastrado
@@ -151,7 +162,12 @@ export default function ReviewRequirementsScreen() {
                       }`}
                     >
                       {item.checked && (
-                        <Ionicons name="checkmark" size={14} color="#FFFFFF" />
+                        <Icon
+                          name="checkmark"
+                          fallback="checkmark"
+                          size={13}
+                          color="#FFFFFF"
+                        />
                       )}
                     </View>
 
