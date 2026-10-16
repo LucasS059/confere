@@ -55,3 +55,8 @@ temp
 # from apps/server and packages/db; also covers package-local turso db files)
 local.db
 local.db-*
+
+# AI and tooling
+.agents
+.claude
+skills-lock.json
