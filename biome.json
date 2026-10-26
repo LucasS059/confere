@@ -24,6 +24,11 @@
       "!**/.wrangler",
       "!**/.alchemy",
       "!**/.svelte-kit",
+      "!**/.venv",
+      "!ai/data/private",
+      "!ai/data/extracted",
+      "!ai/checkpoints",
+      "!ai/runs",
       "!**/wrangler.jsonc",
       "!**/.source",
       "!**/convex/_generated"
