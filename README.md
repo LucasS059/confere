@@ -2,6 +2,10 @@
 
 Sistema mobile para conferencia, validacao e auditoria de projetos e documentos tecnicos contra requisitos normativos e listas de conformidade.
 
+O GPT local está em [ai/README.md](ai/README.md): dados, extração de PDF/DOCX,
+OCR manual, tokenizer BPE e Transformer com treino experimental do zero.
+Ainda não há análise por IA integrada ao aplicativo.
+
 ---
 
 ## Sobre o Projeto
