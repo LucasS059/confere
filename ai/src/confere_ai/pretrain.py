@@ -24,6 +24,8 @@ def run(args):
         raise ValueError("Limites, passos e learning rate devem ser positivos e finitos.")
     if args.run_dir.exists():
         raise ValueError("A pasta de execução já existe.")
+    init_from=getattr(args,"init_from",None)
+    if args.resume and init_from: raise ValueError("Use resume ou init-from, não ambos.")
     preparation_started = time.perf_counter()
     torch.set_num_threads(4)
     torch.manual_seed(args.seed)
@@ -31,10 +33,13 @@ def run(args):
     rows, fingerprint = load_corpus(args.data)
     settings = {key: getattr(args, key) for key in ("seed", "batch_size", "learning_rate", "block_size", "vocab_size", "tokenizer_chars", "eval_blocks")}
     settings["objective"] = "causal_lm"
-    checkpoint = torch.load(args.resume, map_location="cpu", weights_only=True) if args.resume else None
+    source_path=args.resume or init_from
+    checkpoint = torch.load(source_path, map_location="cpu", weights_only=True) if source_path else None
     previous_fingerprint = None
     if checkpoint:
-        if checkpoint["settings"] != settings:
+        if checkpoint["settings"].get("objective")!="causal_lm":
+            raise ValueError("A base deve vir do nosso pré-treino de linguagem.")
+        if not init_from and checkpoint["settings"] != settings:
             raise ValueError("Retomada exige as mesmas configurações.")
         if checkpoint["dataset_fingerprint"] != fingerprint:
             previous_data = getattr(args, "previous_data", None)
@@ -45,6 +50,7 @@ def run(args):
                 raise ValueError("Corpus anterior não corresponde ao checkpoint.")
             validate_expansion(previous, rows)
         tokenizer = ByteBPE(checkpoint["merges"])
+        if init_from and args.vocab_size!=tokenizer.vocab_size: raise ValueError("Inicialização preserva o vocabulário do checkpoint.")
     else:
         print("Treinando BPE somente na amostra de artigos de treino...", flush=True)
         tokenizer = fit_language_tokenizer(rows, args.vocab_size, args.tokenizer_chars, args.seed)
@@ -64,15 +70,18 @@ def run(args):
     generator = torch.Generator().manual_seed(args.seed)
     start_step = 0
     if checkpoint:
-        model.load_state_dict(checkpoint["model"])
-        optimizer.load_state_dict(checkpoint["optimizer"])
-        generator.set_state(checkpoint["generator_state"])
-        torch.set_rng_state(checkpoint["torch_rng_state"])
-        start_step = checkpoint["step"]
-        if args.steps <= start_step:
-            raise ValueError("Total de passos deve superar o checkpoint.")
+        model.load_local_checkpoint(checkpoint,extend_context=bool(init_from))
+        if not init_from:
+            optimizer.load_state_dict(checkpoint["optimizer"])
+            generator.set_state(checkpoint["generator_state"])
+            torch.set_rng_state(checkpoint["torch_rng_state"])
+            start_step = checkpoint["step"]
+            if args.steps <= start_step:
+                raise ValueError("Total de passos deve superar o checkpoint.")
     args.run_dir.mkdir(parents=True)
-    info = {"objective": "causal_lm", "initialization": "local_checkpoint" if checkpoint else "random_from_scratch", "resume_from": str(args.resume) if args.resume else None,
+    info = {"objective": "causal_lm", "initialization": "local_checkpoint_new_optimizer" if init_from else "local_checkpoint" if checkpoint else "random_from_scratch", "resume_from": str(source_path) if source_path else None,
+            "source_step":checkpoint["step"] if checkpoint else None,"source_context":checkpoint["config"]["block_size"] if checkpoint else None,
+            "context_note":"Posições antigas preservadas; novas posições aleatórias, aprendidas nesta rodada. Otimizador reiniciado." if init_from else None,
             "config": asdict(config), "parameters": sum(p.numel() for p in model.parameters()),
             "data": str(args.data), "dataset_fingerprint": fingerprint, "settings": settings,
             "previous_dataset_fingerprint": previous_fingerprint,
@@ -139,7 +148,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data", type=Path, required=True)
     parser.add_argument("--run-dir", type=Path, required=True)
-    parser.add_argument("--resume", type=Path)
+    initialization=parser.add_mutually_exclusive_group()
+    initialization.add_argument("--resume", type=Path)
+    initialization.add_argument("--init-from",type=Path,help="Inicializar pesos locais e novo otimizador; permite ampliar contexto.")
     parser.add_argument("--previous-data", type=Path, help="Corpus original exigido para expandir dados ao retomar.")
     parser.add_argument("--steps", type=int, default=2000)
     parser.add_argument("--max-seconds", type=float, default=180)

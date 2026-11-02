@@ -63,6 +63,20 @@ class GPT(nn.Module):
         x = self.token_embedding(ids) + self.position_embedding(positions)
         return self.head(self.norm(self.blocks(x)))
 
+    def load_local_checkpoint(self, checkpoint, extend_context=False):
+        source=GPTConfig(**checkpoint["config"])
+        for name in ("vocab_size","width","layers","heads"):
+            if getattr(source,name)!=getattr(self.config,name):
+                raise ValueError("Arquitetura/tokenizer incompatíveis com o checkpoint.")
+        weights=dict(checkpoint["model"])
+        if source.block_size!=self.config.block_size:
+            if not extend_context or source.block_size>self.config.block_size:
+                raise ValueError("Mudança de contexto exige expansão explícita.")
+            positions=self.position_embedding.weight.detach().clone()
+            positions[:source.block_size]=weights["position_embedding.weight"].to(positions.device)
+            weights["position_embedding.weight"]=positions
+        self.load_state_dict(weights)
+
     @torch.no_grad()
     def generate(self, prompt, max_new_tokens, eos, on_token=None, should_stop=None):
         if prompt.shape[1] + max_new_tokens > self.config.block_size:
