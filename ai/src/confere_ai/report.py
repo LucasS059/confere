@@ -115,7 +115,8 @@ def create_report(run_dir, output=None):
         if instruction.get("selection_policy"):
             p("Seleção do checkpoint: " + instruction["selection_policy"])
         if info.get("baseline_checkpoint"):
-            p("Referência comparativa: " + info["baseline_checkpoint"] + ". Loss de treino nos primeiros " + str(info.get("train_evaluation_examples")) + " exemplos; validação em todo o split. A amostra de treino não representa necessariamente a mistura completa.")
+            sampling=info.get("train_evaluation_policy","primeiros exemplos, não necessariamente representativos da mistura")
+            p("Referência comparativa: " + info["baseline_checkpoint"] + ". Loss de treino em " + str(info.get("train_evaluation_examples")) + " exemplos (" + sampling + "); validação em todo o split.")
             counts = {}
             for sample in instruction["selected"]["samples"]:
                 pair = counts.setdefault(sample["task"], [0, 0])

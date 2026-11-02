@@ -120,7 +120,8 @@ def run(args):
     model.load_state_dict(source["model"]); model.eval()
     encoded_train = [encode_sample(row, tokenizer, model.config.block_size) for row in train]
     encoded_val = [encode_sample(row, tokenizer, model.config.block_size) for row in validation]
-    train_eval = encoded_train[:128] if len(encoded_train) > 128 else encoded_train
+    evaluation_indices=torch.randperm(len(encoded_train),generator=torch.Generator().manual_seed(43)).tolist()[:128]
+    train_eval=[encoded_train[index] for index in evaluation_indices]
     comparison = getattr(args, "compare_with", None)
     if comparison:
         previous = torch.load(comparison, map_location="cpu", weights_only=True)
@@ -135,6 +136,7 @@ def run(args):
     info = {"objective": objective, "initialization": "local_checkpoint_new_optimizer", "resume_from": str(args.init_from),
             "base_step": source["step"], "source_objective": source["settings"]["objective"], "config": asdict(model.config), "parameters": sum(p.numel() for p in model.parameters()),
             "baseline_checkpoint": str(comparison or args.init_from), "train_evaluation_examples": len(train_eval),
+            "train_evaluation_policy":"amostra fixa sem reposição, seed 43",
             "data": str(args.data), "dataset_fingerprint": fingerprint, "settings": settings,
             "document_splits": dict(Counter(row["split"] for row in rows)), "train_ids": [r["id"] for r in train],
             "validation_ids": [r["id"] for r in validation], "test_examples_used": 0,
