@@ -26,9 +26,12 @@ def load_instructions(path):
     projects, prompts, ids, contexts, conversations = {}, set(), set(), {}, {}
     for row in rows:
         human=row["provenance"]["kind"]=="human_openassistant"
+        public=row["provenance"]["kind"]=="public_model_generated"
+        if public and (row["provenance"].get("source")!="https://huggingface.co/datasets/nicholasKluge/instruct-aira-dataset-v3" or row["provenance"].get("license")!="Apache-2.0" or not row["provenance"].get("revision")):
+            raise ValueError("Proveniência pública não rastreável.")
         if human and (row["provenance"].get("source") not in {"https://huggingface.co/datasets/OpenAssistant/oasst1","https://huggingface.co/datasets/OpenAssistant/oasst2"} or row["provenance"].get("license")!="Apache-2.0" or not row["provenance"].get("revision")):
             raise ValueError("Proveniência humana não rastreável.")
-        if row["split"] not in {"train", "validation", "test"} or row["provenance"]["kind"] not in {"synthetic_authored","human_openassistant"}:
+        if row["split"] not in {"train", "validation", "test"} or row["provenance"]["kind"] not in {"synthetic_authored","human_openassistant","public_model_generated"}:
             raise ValueError("Split ou proveniência inválida.")
         conversational = "history" in row
         if conversational:
@@ -38,9 +41,9 @@ def load_instructions(path):
             value=(row["split"],row["target"])
             if contexts.setdefault(key,value)!=value: raise ValueError("Contexto duplicado entre splits ou alvos conflitantes.")
             previous=conversations.get(row["project_id"])
-            if not human and ((previous is None and row["turn_index"]!=0) or (previous is not None and (row["turn_index"]!=previous["turn_index"]+1 or row["history"]!=previous["history"]+[[previous["prompt"],previous["target"]]]))):
+            if not (human or public) and ((previous is None and row["turn_index"]!=0) or (previous is not None and (row["turn_index"]!=previous["turn_index"]+1 or row["history"]!=previous["history"]+[[previous["prompt"],previous["target"]]]))):
                 raise ValueError("Sequência de conversa inconsistente.")
-            if not human: conversations[row["project_id"]]=row
+            if not (human or public): conversations[row["project_id"]]=row
         if not row["prompt"].strip() or not row["target"].strip() or (not conversational and row["prompt"].strip().casefold() in prompts) or row["id"] in ids:
             raise ValueError("Texto vazio ou exemplos duplicados.")
         prompts.add(row["prompt"].strip().casefold()); ids.add(row["id"])
@@ -57,7 +60,7 @@ def load_instructions(path):
     return rows, hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def score(model, tokenizer, rows, device, context_limit=None):
+def score(model, tokenizer, rows, device, context_limit=None, response_tokens=64):
     from .chat import prepare_prompt
     outputs, histories = [], {}
     for row in rows:
@@ -65,16 +68,16 @@ def score(model, tokenizer, rows, device, context_limit=None):
         if "history" in row:
             if row["turn_index"]==0: histories[row["project_id"]]=[tuple(p) for p in row["history"]]
             history=histories[row["project_id"]]
-            ids,dropped=prepare_prompt(history,row["prompt"],tokenizer,context_limit or model.config.block_size,64,"conversation")
+            ids,dropped=prepare_prompt(history,row["prompt"],tokenizer,context_limit or model.config.block_size,response_tokens,"conversation")
             trace={"history_used":[list(p) for p in history[dropped:]],"dropped_turns":dropped,"project_id":row["project_id"],"turn_index":row["turn_index"]}
         else:
             ids = [tokenizer.BOS] + tokenizer.encode(row["prompt"]) + [tokenizer.SEP]
-        generated = model.generate(torch.tensor([ids], device=device), min(64, model.config.block_size-len(ids)), tokenizer.EOS)
+        generated = model.generate(torch.tensor([ids], device=device), min(response_tokens, model.config.block_size-len(ids)), tokenizer.EOS)
         answer = tokenizer.decode(generated[0, len(ids):].tolist())
         if "history" in row: history.append((row["prompt"],answer))
         judged = judge(answer, row) if row["task"].startswith("grounded_") else {"exact_match": answer.strip() == row["target"].strip()}
         outputs.append({"id": row["id"], "task": row["task"], "prompt": row["prompt"], "expected": row["target"], "actual": answer, **trace, **judged})
-    criterion = ("Conversas com histórico gerado pelo modelo após o contexto inicial: igualdade exata após strip, greedy, 64 tokens. Não é qualidade geral."
+    criterion = (f"Conversas com histórico gerado pelo modelo após o contexto inicial: igualdade exata após strip, greedy, {response_tokens} tokens. Não é qualidade geral."
                  if any("history" in r for r in rows) else "Casos documentais: JSON estrito e status/unidade corretos; replay: igualdade exata após strip. Greedy, até 64 tokens. Templates, não documentos reais."
                  if any(r["task"].startswith("grounded_") for r in rows) else
                  "Igualdade exata após strip; greedy, até 64 tokens. Validação de templates, não conversa geral.")
@@ -104,10 +107,11 @@ def acceptance(result):
             "scope": "Critério exploratório para o piloto; não comprova confiabilidade geral."}
 
 
-def training_indices(train_count,humans,synthetic,batch_size,human_fraction,generator):
-    if not human_fraction:
+def training_indices(train_count,humans,synthetic,batch_size,human_fraction,generator,public=None,public_fraction=0):
+    if not human_fraction and not public_fraction:
         return torch.randint(train_count,(batch_size,),generator=generator).tolist()
-    pool=humans if torch.rand((),generator=generator).item()<human_fraction else synthetic
+    draw=torch.rand((),generator=generator).item()
+    pool=humans if draw<human_fraction else public if draw<human_fraction+public_fraction else synthetic
     return [pool[i] for i in torch.randint(len(pool),(batch_size,),generator=generator).tolist()]
 
 
@@ -123,10 +127,13 @@ def run(args):
     validation = [row for row in rows if row["split"] == "validation"]
     generation_budget=getattr(args,"response_tokens",64)
     human_fraction=getattr(args,"human_fraction",0.)
-    if not 0<=human_fraction<1: raise ValueError("Fração humana deve estar entre zero e um.")
+    public_fraction=getattr(args,"public_fraction",0.)
+    if not (0<=human_fraction<1 and 0<=public_fraction<1 and human_fraction+public_fraction<1): raise ValueError("Frações de diálogo inválidas.")
     if any(r.get("response_tokens",64)!=generation_budget for r in rows if "history" in r): raise ValueError("Orçamento do corpus deve corresponder ao treino.")
-    controlled_validation=[r for r in validation if r["task"]!="human_dialogue"] if generation_budget>64 else validation
+    controlled_validation=[r for r in validation if r["task"] not in {"human_dialogue","public_dialogue"}] if generation_budget>64 else validation
     source = torch.load(args.init_from, map_location="cpu", weights_only=True)
+    evaluation_context=getattr(args,"evaluation_context",None) or (256 if generation_budget>64 else source["config"]["block_size"])
+    if not 66<=evaluation_context<=source["config"]["block_size"]: raise ValueError("Contexto de avaliação inválido.")
     if source["settings"].get("objective") not in {"causal_lm", "instruction", "document_grounding", "conversation"}:
         raise ValueError("Inicialização exige checkpoint local de linguagem ou instruções.")
     tokenizer = ByteBPE(source["merges"])
@@ -140,20 +147,22 @@ def run(args):
     comparison = getattr(args, "compare_with", None)
     if comparison:
         previous = torch.load(comparison, map_location="cpu", weights_only=True)
+        if evaluation_context>previous["config"]["block_size"]: raise ValueError("Contexto de avaliação não cabe na referência.")
         if any(previous["config"][k]!=source["config"][k] for k in ("vocab_size","width","layers","heads")) or previous["merges"] != source["merges"]:
             raise ValueError("Comparação exige arquitetura e tokenizer iguais.")
         reference=GPT(GPTConfig(**previous["config"])).to(device);reference.load_state_dict(previous["model"]);reference.eval()
-        baseline=score(reference,tokenizer,controlled_validation,device,context_limit=256 if generation_budget>64 else None)
+        baseline=score(reference,tokenizer,controlled_validation,device,context_limit=evaluation_context)
         del reference
-    else: baseline=score(model,tokenizer,controlled_validation,device,context_limit=256 if generation_budget>64 else None)
+    else: baseline=score(model,tokenizer,controlled_validation,device,context_limit=evaluation_context)
     args.run_dir.mkdir(parents=True)
     objective = "conversation" if any("history" in r for r in rows) else "document_grounding" if any(r["task"].startswith("grounded_") for r in rows) else "instruction"
     settings = {"objective": objective, "seed": 42, "batch_size": args.batch_size, "learning_rate": args.learning_rate,"generation_budget":generation_budget,"human_fraction":human_fraction}
     settings["human_sampling_policy"]="homogeneous_batches"
+    settings["public_fraction"]=public_fraction
     info = {"objective": objective, "initialization": "local_checkpoint_new_optimizer", "resume_from": str(args.init_from),
             "base_step": source["step"], "source_objective": source["settings"]["objective"], "config": asdict(model.config), "parameters": sum(p.numel() for p in model.parameters()),
             "baseline_checkpoint": str(comparison or args.init_from), "train_evaluation_examples": len(train_eval),
-            "paired_evaluation_context":256 if generation_budget>64 else model.config.block_size,"paired_evaluation_response_tokens":64,
+            "paired_evaluation_context":evaluation_context,"paired_evaluation_response_tokens":64,
             "human_validation_loss_examples":sum(r["task"]=="human_dialogue" for r in validation),
             "train_evaluation_policy":"amostra fixa sem reposição, seed 43",
             "data": str(args.data), "dataset_fingerprint": fingerprint, "settings": settings,
@@ -164,12 +173,17 @@ def run(args):
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=.01)
     generator = torch.Generator().manual_seed(42)
     humans=[i for i,r in enumerate(train) if r["task"]=="human_dialogue"]
-    synthetic=[i for i,r in enumerate(train) if r["task"]!="human_dialogue"]
+    public=[i for i,r in enumerate(train) if r["task"]=="public_dialogue"]
+    synthetic=[i for i,r in enumerate(train) if r["task"] not in {"human_dialogue","public_dialogue"}]
     if human_fraction and (not humans or not synthetic): raise ValueError("Mistura exige humanos e sintéticos.")
+    if public_fraction and (not public or not synthetic): raise ValueError("Mistura pública exige fonte pública e sintéticos.")
+    if public and not public_fraction: raise ValueError("Defina --public-fraction explicitamente para a fonte pública.")
     started, best, processed, memory = time.perf_counter(), float("inf"), 0, 0
     metrics = []
     human_examples_processed=0
     human_tokens_processed=0
+    public_examples_processed=0
+    public_tokens_processed=0
     def record(step):
         nonlocal best
         item = {"step": step, "train_loss": evaluate(model, train_eval, device), "validation_loss": evaluate(model, encoded_val, device), "elapsed_seconds": time.perf_counter()-started}
@@ -184,7 +198,7 @@ def run(args):
     record(0)
     for step in range(1, args.steps+1):
         model.train()
-        indices=training_indices(len(train),humans,synthetic,args.batch_size,human_fraction,generator)
+        indices=training_indices(len(train),humans,synthetic,args.batch_size,human_fraction,generator,public,public_fraction)
         x,y = batch(encoded_train,indices,device)
         optimizer.zero_grad(set_to_none=True)
         loss = F.cross_entropy(model(x).flatten(0,1), y.flatten(), ignore_index=-100)
@@ -194,6 +208,8 @@ def run(args):
         human_examples_processed+=sum(train[i]["task"]=="human_dialogue" for i in indices)
         for j,i in enumerate(indices):
             if train[i]["task"]=="human_dialogue":human_tokens_processed+=(y[j]!=-100).sum().item()
+            if train[i]["task"]=="public_dialogue":
+                public_examples_processed+=1;public_tokens_processed+=(y[j]!=-100).sum().item()
         if device == "mps": memory = max(memory, torch.mps.current_allocated_memory())
         timed_out=max_seconds is not None and time.perf_counter()-started>=max_seconds
         if step % args.eval_every == 0 or step == args.steps or timed_out: record(step)
@@ -201,11 +217,12 @@ def run(args):
     summary = {"start_step": 0, "final_step": step,"stop_reason":"time_limit" if timed_out else "steps", "elapsed_seconds": time.perf_counter()-started,
                "tokens_processed": processed, "initial": metrics[0], "final": metrics[-1],
                "human_examples_processed":human_examples_processed,"human_tokens_processed":human_tokens_processed,
+               "public_examples_processed":public_examples_processed,"public_tokens_processed":public_tokens_processed,
                "mps_allocated_bytes_max_observed": memory, "process_peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*(1 if platform.system()=="Darwin" else 1024)}
     (args.run_dir/"summary.json").write_text(json.dumps(summary, indent=2))
     selected = torch.load(args.run_dir/"best.pt", map_location="cpu", weights_only=True)
     model.load_state_dict(selected["model"]); model.eval()
-    result = {"baseline": baseline, "selected": score(model, tokenizer, controlled_validation, device,context_limit=256 if generation_budget>64 else None), "selected_step": selected["step"], "test_examples_used": 0}
+    result = {"baseline": baseline, "selected": score(model, tokenizer, controlled_validation, device,context_limit=evaluation_context), "selected_step": selected["step"], "test_examples_used": 0}
     result["acceptance"] = acceptance(result["selected"])
     (args.run_dir/"instruction-evaluation.json").write_text(json.dumps(result, ensure_ascii=False, indent=2))
     if objective=="conversation":
@@ -230,7 +247,9 @@ def main():
     parser.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
     parser.add_argument("--response-tokens",type=int,default=64)
     parser.add_argument("--human-fraction",type=float,default=0.)
+    parser.add_argument("--public-fraction",type=float,default=0.)
     parser.add_argument("--max-seconds",type=float)
+    parser.add_argument("--evaluation-context",type=int,help="Janela comum explícita para avaliação de conversas completas.")
     args = parser.parse_args()
     try: run(args)
     except (ValueError, OSError) as error: parser.exit(1, f"Erro: {error}\n")
