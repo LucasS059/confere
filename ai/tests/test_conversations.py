@@ -17,6 +17,22 @@ except ImportError:
 
 @unittest.skipIf(torch is None,"Dependências de treino ausentes")
 class ConversationTests(unittest.TestCase):
+    def test_native_evaluation_keeps_long_history_and_explicit_response_budget(self):
+        tokenizer=ByteBPE();calls=[]
+        class Fake:
+            config=SimpleNamespace(block_size=1024)
+            def generate(self,ids,budget,eos):
+                calls.append((ids[0].tolist(),budget))
+                return torch.cat([ids,torch.tensor([tokenizer.encode("ok")+[eos]])],dim=1)
+        history=[["pergunta "*25,"resposta "*25]]
+        row=dict(id="native",project_id="native",turn_index=0,history=history,prompt="lembra?",target="ok",task="conversation_test")
+        result=score(Fake(),tokenizer,[row],"cpu",context_limit=1024,response_tokens=256)
+        expected,dropped=prepare_prompt(history,"lembra?",tokenizer,1024,256,"conversation")
+        self.assertEqual(calls,[(expected,256)])
+        self.assertEqual(dropped,0)
+        self.assertEqual(result["samples"][0]["history_used"],history)
+        self.assertEqual(result["correct"],1)
+
     def test_training_matches_runtime_history_and_masks_all_prior_answers(self):
         tokenizer=ByteBPE()
         row={"id":"case","prompt":"meu nome?","target":"Ana", "history":[["sou Ana","Olá Ana"]]}

@@ -17,7 +17,7 @@ from .model import GPT, GPTConfig
 from .tokenizer import ByteBPE
 from .training_data import encode_sample
 from .train import batch, choose_device, evaluate, save_checkpoint
-from .report import create_report, save_samples
+from .report import create_report, record_failure, save_samples
 from .grounding import judge, prompt_for
 
 
@@ -251,8 +251,15 @@ def main():
     parser.add_argument("--max-seconds",type=float)
     parser.add_argument("--evaluation-context",type=int,help="Janela comum explícita para avaliação de conversas completas.")
     args = parser.parse_args()
+    existed=args.run_dir.exists()
     try: run(args)
-    except (ValueError, OSError) as error: parser.exit(1, f"Erro: {error}\n")
+    except (ValueError, OSError, RuntimeError) as error:
+        failure_report=None
+        if not existed:
+            try:failure_report=record_failure(args.run_dir,error)
+            except (ValueError,OSError,RuntimeError) as report_error:
+                print(f"Falha ao gerar relatório da interrupção: {report_error}",flush=True)
+        parser.exit(1, f"Erro: {error}\n"+(f"Relatório da interrupção: {failure_report}\n" if failure_report else ""))
 
 
 if __name__ == "__main__": main()

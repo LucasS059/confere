@@ -20,6 +20,32 @@ def read_json(path):
     return json.loads(path.read_text()) if path.exists() else None
 
 
+def record_failure(run_dir, error):
+    """Preserva checkpoints e distingue métricas registradas de passos perdidos."""
+    import torch
+    run_dir=Path(run_dir)
+    metrics_path=run_dir/"metrics.jsonl"
+    checkpoint_path=run_dir/"last.pt"
+    if not (run_dir/"run.json").exists() or not metrics_path.exists() or not checkpoint_path.exists():
+        return None
+    failure_path=run_dir/"failure.json"
+    if failure_path.exists():raise ValueError("Falha já registrada; evidência preservada.")
+    checkpoint=torch.load(checkpoint_path,map_location="cpu",weights_only=True)
+    step=checkpoint["step"]
+    metrics=[json.loads(line) for line in metrics_path.read_text().splitlines() if line.strip()]
+    recorded=[row for row in metrics if row["step"]<=step]
+    if not recorded:return None
+    failure=dict(error=str(error),recorded_at=datetime.now(timezone.utc).isoformat(),last_checkpoint_step=step,
+                 scope="O total de passos executados após o último checkpoint não foi registrado. Tempos e loss abaixo cobrem somente os registros preservados.")
+    failure_path.write_text(json.dumps(failure,ensure_ascii=False,indent=2)+"\n")
+    summary_path=run_dir/"summary.json"
+    if not summary_path.exists():
+        summary_path.write_text(json.dumps(dict(start_step=recorded[0]["step"],final_step=step,
+             elapsed_seconds=recorded[-1]["elapsed_seconds"],initial=recorded[0],final=recorded[-1],
+             stop_reason="failure",measurement_scope="until_last_checkpoint_only"),indent=2)+"\n")
+    return create_report(run_dir)
+
+
 def save_samples(run_dir, model, tokenizer, device, prompts):
     import torch
     model.eval()
@@ -61,6 +87,10 @@ def create_report(run_dir, output=None):
     p("CONFERE | Treinamento local", "Title")
     p(run_dir.name, "Heading2")
     p("Relatório gerado em " + datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC") + ". Fonte: artefatos da execução, sem inferência de resultados ausentes.")
+    failure=read_json(run_dir/"failure.json")
+    if failure:
+        p("EXECUÇÃO INTERROMPIDA. " + failure["scope"])
+        p("Erro registrado: " + failure["error"].split("Use PYTORCH")[0][:500])
     heading("1. Execução e dados")
     splits = info.get("document_splits") or {"train": len(info.get("train_ids", [])), "validation": len(info.get("validation_ids", []))}
     table([
@@ -111,6 +141,13 @@ def create_report(run_dir, output=None):
         manifest=read_json(Path(info["data"]).parent/"manifest.json")
         if manifest:
             p("Fonte humana: " + manifest["source"] + ", Apache-2.0, revisão " + manifest["revision"] + ". Mensagens pt-BR na fonte: " + str(manifest["source_pt_messages"]) + "; respostas aproveitadas: treino " + str(manifest["filters"].get("human_train",0)) + ", validação " + str(manifest["filters"].get("human_validation",0)) + ", teste " + str(manifest["filters"].get("human_test",0)) + ". A mistura é majoritariamente sintética.")
+            if manifest.get("additional_source"):
+                public_source=manifest["additional_source"]
+                p("Fonte pública adicional: " + public_source["source"] + ", " + public_source["license"] + ", revisão " + public_source["revision"] + ". Respostas geradas por modelos, sem anotação humana; " + str(public_source["counts"].get("public_train_added",0)) + " caminhos de treino incluídos. Validação e teste públicos permanecem em arquivo reservado separado, fora desta execução.")
+                if "public_examples_processed" in summary:
+                    p(f'Lotes públicos esperados: {info["settings"].get("public_fraction",0)}; processados {summary["public_examples_processed"]} exemplos e {summary["public_tokens_processed"]} tokens-alvo, com repetição. Os dados públicos não são respostas programadas na inferência nem pesos pré-treinados importados.')
+                else:
+                    p(f'Lotes públicos esperados: {info["settings"].get("public_fraction",0)}. Contadores de exemplos e tokens processados não foram preservados na execução interrompida.')
         if info.get("paired_evaluation_context"):
             p(f'Comparação gerativa: janela comum {info["paired_evaluation_context"]}, saída {info["paired_evaluation_response_tokens"]} tokens. O candidato usa contexto nativo {config["block_size"]}; orçamento da TUI {info["settings"].get("generation_budget",64)}. Casos humanos longos não entram no acerto exato pareado.')
         if summary.get("human_examples_processed"):
@@ -236,6 +273,38 @@ def create_report(run_dir, output=None):
                     p("Trecho selecionado: " + evidence["quote"])
                 if len(seen) >= 3: break
             p("Uma citação pode ser literalmente fiel ao arquivo e, ainda assim, irrelevante para o requisito. Esta camada de referência não elimina erros de interpretação.")
+    flow = read_json(run_dir / "flow-evaluation.json")
+    if flow:
+        if regressions:
+            story.append(PageBreak())
+        heading(("6" if regressions else "5") + ". Diálogos completos com histórico nativo")
+        p(flow["policy"])
+        p("Janela 1024 e saída até 256 tokens; cada resposta gerada entra no próximo turno. Os cenários são autorais, sem revisão humana independente. O acerto exato não mede conversa aberta. As mesmas situações e respostas podem aparecer com outras palavras no treino.")
+        def describe_flow(label, result):
+            groups = {}
+            for sample in result["samples"]:
+                groups.setdefault(sample["project_id"], []).append(sample)
+            complete = sum(all(s["exact_match"] for s in group) for group in groups.values())
+            p(f'{label}: turnos {result["correct"]}/{result["total"]}; conversas inteiras {complete}/{len(groups)}; turnos descartados {sum(s["dropped_turns"] for s in result["samples"])}.')
+        describe_flow("Referência", flow["baseline_flow"])
+        if flow.get("baseline_public_loss") is not None:
+            p(f'Validação pública separada: {len(flow["public_validation_ids"])} caminhos, um por conversa, sem contexto exato repetido no treino público. Loss da referência {flow["baseline_public_loss"]:.4f}; histórico de referência. Essa loss não participa da decisão de adoção e não é avaliação humana de qualidade.')
+        for candidate in flow["candidates"]:
+            describe_flow("Candidato passo " + str(candidate["step"]), candidate["flow"])
+            p(f'Retenção legada na janela comum 256: {candidate["legacy"]["correct"]}/{candidate["legacy"]["total"]}; regressões conhecidas {sum(r["exact_match"] for r in candidate["known"])}/6; critério de validação ' + ("atingido." if candidate["passed"] else "não atingido."))
+            if candidate.get("public_validation_loss") is not None:
+                p(f'Loss nos mesmos caminhos públicos reservados de validação: {candidate["public_validation_loss"]:.4f}.')
+        if flow["test"]:
+            describe_flow("Teste reservado, consultado após a seleção", flow["test"])
+        else:
+            p("Teste reservado não consultado: nenhum candidato passou na validação ampliada.")
+        p("Adoção: " + ("aprovada no conjunto autoral ampliado." if flow["adopted"] else "reprovada; TUI preservada."))
+        failures=[s for s in flow["candidates"][-1]["flow"]["samples"] if not s["exact_match"] and len(s["actual"])<=250]
+        for sample in failures[:3]:
+            p("Você: " + sample["prompt"], "Heading3")
+            p("Modelo: " + (sample["actual"] or "[sem texto]"))
+            p("Alvo autoral: " + sample["expected"])
+        p("Os históricos completos, respostas, famílias e falhas de cada candidato estão em flow-evaluation.json. Teste consultado não deve virar fonte de ajuste numa repetição desta avaliação.")
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))
