@@ -33,9 +33,11 @@ def encode_sample(sample, tokenizer, block_size):
     target = tokenizer.encode(sample["target"])
     if "history" in sample:
         from .chat import prepare_prompt
-        if len(target)+1 > 64:
-            raise ValueError(f"{sample['id']}: resposta excede o limite conversacional de 64 tokens.")
-        prefix, dropped = prepare_prompt(sample["history"], sample["prompt"], tokenizer, block_size, 64, "conversation")
+        budget=sample.get("response_tokens",64)
+        if not isinstance(budget,int) or not 0<budget<block_size-2: raise ValueError("Orçamento de resposta inválido.")
+        if len(target)+1 > budget:
+            raise ValueError(f"{sample['id']}: resposta excede o limite conversacional de {budget} tokens.")
+        prefix, dropped = prepare_prompt(sample["history"], sample["prompt"], tokenizer, block_size, budget, "conversation")
         if dropped:
             raise ValueError(f"{sample['id']}: histórico de treino não cabe; nenhuma mensagem será removida silenciosamente.")
     else:

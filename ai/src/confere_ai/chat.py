@@ -102,7 +102,7 @@ def main():
         model.eval()
         objective = checkpoint.get("settings", {}).get("objective", "supervised")
         if args.max_new_tokens is None:
-            args.max_new_tokens = 64 if objective == "conversation" else min(256, model.config.block_size // 2)
+            args.max_new_tokens = checkpoint.get("settings",{}).get("generation_budget",64) if objective == "conversation" else min(256, model.config.block_size // 2)
         if args.max_new_tokens + 2 >= model.config.block_size:
             raise ValueError("Reserve menos tokens de resposta que o tamanho do contexto.")
     except ImportError:
