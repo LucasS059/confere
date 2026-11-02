@@ -1,5 +1,32 @@
 # Pré-treinamento de português
 
+## Expansão de base e contexto em 02/11
+
+`foundation-1024-2026-11-02` inicializou dos pesos próprios do passo 10.000,
+com otimizador novo. O contexto passou de 256 para 1.024: embeddings posicionais
+existentes foram preservados e as novas posições inicializadas aleatoriamente.
+A rede tem 11.827.200 parâmetros. Nenhum peso externo foi importado.
+
+`wikipedia-pt-10k` contém 8.792 artigos, separados em 7.896 de treino, 422 de
+validação e 474 de teste (39.431.532 caracteres). SHA-256 do corpus:
+`8482048a8285d4c7355323521a31c781df7fc691b105fd5f65ea5972db84d0d1`.
+A ampliação preservou os 4.468 artigos anteriores e seus splits. O preparo
+continua rastreando revisão, fonte e licença; não há deduplicação semântica.
+
+Foram 2.748 passos em 421,1s, interrompidos pelo orçamento de 420s com avaliação
+e salvamento no limite, batch 4 e taxa 0,0001. A comparação pareada usou 3.230
+janelas comuns de 256 tokens, 773.505 alvos da mesma validação: base anterior
+loss 2,7613, nova base 2,6369. O teste não foi usado. Amostras continuam repetitivas
+e incoerentes; a melhora de previsão permite experimentar ajuste de conversa,
+mas não comprova fluência. O PDF inclui métricas e saídas sem edição.
+
+`--init-from` inicia uma etapa nova; `--resume` mantém as regras estritas de
+retomada. Para comparar contextos distintos, `evaluate_language.py` exige
+`--common-block-size 256`, mesma arquitetura/tokenizer e corpus de validação
+verificado. Não compare perdas de janelas diferentes diretamente.
+
+As seções seguintes registram a base anterior.
+
 Esta etapa usa o mesmo Transformer implementado no projeto, com pesos iniciados
 aleatoriamente, para prever o próximo token de textos em português. Não importa
 pesos externos, não usa os TCCs candidatos e não ensina diálogo por si só.

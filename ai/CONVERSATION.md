@@ -1,5 +1,58 @@
 # Conversas com histórico
 
+## Estado atual: currículo de contexto 1.024
+
+O experimento seguiu a [ordem do projeto](ROADMAP.md): expansão da base própria,
+depois ajuste de conversa. O candidato foi **reprovado para adoção**. A TUI
+continua no `conversation-social-context-2026-11-02/best.pt`, passo 600.
+
+`conversation-curriculum-1024-2026-11-02` inicializou de
+`foundation-1024-2026-11-02/best.pt`, com otimizador novo. Treinou 3.000 passos
+em 214,9s, batch 8, taxa 0,0001, contexto 1.024 e orçamento de saída 256.
+O melhor por loss foi o passo 1.200. A comparação gerativa manteve janela
+comum 256 e saída 64; a reprodução das capturas usou os limites nativos do
+candidato. Ambas usam as próprias respostas geradas no histórico.
+
+O corpus tem 13.881 exemplos de treino, 537 de validação e 405 de teste.
+Inclui 73/2/7 respostas humanas aproveitadas do
+[OpenAssistant 2](https://huggingface.co/datasets/OpenAssistant/oasst2), Apache-2.0,
+revisão `179dd21fc55192153d94adb0e0ce8f69e222bf75`, além dos templates autorais.
+O snapshot tem SHA-256
+`a9f240c4c77aa1378364f70d37e753c07ba284e247b019d700e1947a0e5da751`;
+o corpus preparado, `4fea3d455afa171a19b9e38d31f0af808743170b0a1d8543e1092360f6a841fc`.
+Filtros e separação por árvore seguem o procedimento abaixo. A amostra humana
+continua pequena. Lotes homogêneos humanos foram sorteados com probabilidade
+0,125; os 2.968 exemplos humanos processados são repetições dos mesmos 73.
+
+Nos 535 casos sintéticos pareados: referência 371, candidato 402 acertos.
+Nos 415 anteriores: 325 para 335; nos 120 novos: 46 para 67. Teste não foi usado.
+As famílias novas ficaram abaixo de 80%. Os seis casos conhecidos das capturas
+tiveram quatro acertos no melhor checkpoint e quatro no final. Bem-estar,
+repetir o nome três vezes e repetir a resposta funcionaram nessa sequência;
+recuperação após “bugou?” e encerramento com “nada ue” falharam. Essas frases
+orientaram o treino e não são avaliação independente.
+
+A loss dos dois exemplos humanos de validação piorou de 4,2954 para 5,7191
+no final. A amostra é insuficiente para qualidade geral. Checkpoints, regressões
+sem edição e PDF foram preservados. O critério amplo de 80% em todas as famílias
+permanece não atingido; não houve mudança do padrão da TUI.
+
+```sh
+ai/.venv/bin/python ai/scripts/prepare_conversations.py \
+  ai/data/private/um-curriculo-novo --variant curriculum \
+  --source ai/data/private/oasst2-pt --source-release oasst2 \
+  --context-size 1024 --response-tokens 256 \
+  --tokenizer-from ai/runs/foundation-1024-2026-11-02/best.pt
+```
+
+Para inspecionar o candidato por caminho explícito:
+
+```sh
+bun run ai:chat ai/runs/conversation-curriculum-1024-2026-11-02/best.pt
+```
+
+As seções seguintes registram as etapas anteriores e seus limites.
+
 As capturas do usuário mostravam o piloto inicial de instruções, passo 200.
 Ele foi treinado com respostas isoladas; a inferência incluía respostas anteriores
 que o treino não usava. Esta etapa compartilha o formato de `chat.prepare_prompt`
