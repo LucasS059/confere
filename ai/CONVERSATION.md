@@ -1,6 +1,19 @@
 # Conversas com histórico
 
-## Estado atual: currículo de contexto 1.024
+As novas tentativas após o currículo de 1.024 tokens estão em
+[iterações e critérios de adoção](CONVERSATION_ITERATIONS.md). Os resultados
+históricos abaixo permanecem registrados por execução.
+
+## Padrão atual após quatro ajustes
+
+`bun run ai:chat` carrega `conversation-identity-2026-11-02/last.pt`, passo 1.000,
+contexto 1.024 e geração máxima 256. Feche a sessão antiga com Ctrl+Q e reabra
+para carregar os novos pesos. O candidato passou no currículo controlado:
+514/535 acertos, pelo menos 80% em cada família, retenção legada 394/415 e seis
+regressões conhecidas corretas. O teste não foi usado, e as frases das capturas
+orientaram o treino. Isso não valida conversa aberta ou documentos completos.
+
+## Histórico: primeiro currículo de contexto 1.024
 
 O experimento seguiu a [ordem do projeto](ROADMAP.md): expansão da base própria,
 depois ajuste de conversa. O candidato foi **reprovado para adoção**. A TUI
@@ -210,7 +223,7 @@ dados, portanto não demonstram generalização independente. As respostas sem
 edição estão em `interactive-regressions.json` e no PDF. O ganho social veio com
 regressão em parte das instruções antigas; não é aprovação de conversa geral.
 
-O padrão experimental agora é `conversation-social-context-2026-11-02/best.pt`,
+O padrão experimental nessa etapa foi `conversation-social-context-2026-11-02/best.pt`,
 passo 600. Reinicie a TUI para carregá-lo. O modelo misto anterior permanece
 disponível por caminho explícito. Cada tentativa tem PDF próprio, incluindo a
 malsucedida. A loss de treino dessas novas rodadas usa uma amostra fixa aleatória

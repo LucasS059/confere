@@ -10,7 +10,10 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    não comprova fluência nem conhecimento confiável.
 2. **Conversa e instruções.** Ajustar a base, testar histórico gerado pela rede,
    mudanças de assunto, repetição, pedidos compostos e recuperação de erros.
-   O currículo de 02/11 foi reprovado para adoção. Antes de substituir a TUI:
+   O primeiro currículo de 02/11 foi reprovado. Após quatro ajustes, o final de
+   `conversation-identity-2026-11-02` passou no currículo controlado e foi adotado
+   como padrão experimental: 514/535, 6/6 regressões conhecidas e pelo menos
+   80% nas 15 famílias. A conversa aberta permanece não validada. Para adoção:
    acertar os seis casos conhecidos, preservar o acerto agregado nos 415 casos
    anteriores e alcançar 80% em cada família nova. O critério amplo continua
    sendo 80% em todas as famílias; ganhos locais não comprovam conversa aberta.
