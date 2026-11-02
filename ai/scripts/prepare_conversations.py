@@ -16,7 +16,7 @@ def main():
     parser.add_argument("output",type=Path)
     parser.add_argument("--source",type=Path,default=Path("ai/data/private/oasst1-pt"))
     parser.add_argument("--tokenizer-from",type=Path,default=Path("ai/runs/instruction-v2-refine-2026-11-02/best.pt"))
-    parser.add_argument("--variant",choices=["initial","mixed","social","curriculum","robust","contrasts","uncertainty"],default="initial")
+    parser.add_argument("--variant",choices=["initial","mixed","social","curriculum","robust","contrasts","uncertainty","identity"],default="initial")
     parser.add_argument("--source-release",choices=["oasst1","oasst2"],default="oasst1")
     parser.add_argument("--context-size",type=int,default=256)
     parser.add_argument("--response-tokens",type=int,default=64)
@@ -36,7 +36,10 @@ def main():
         return (row.get("review_result") is True and not row.get("deleted") and not row.get("synthetic")
                 and (row["role"]!="assistant" or (row.get("rank")==0 and labels.get("quality",{}).get("value",0)>=.6
                      and labels.get("fails_task",{}).get("value",0)==0)))
-    if args.variant=="uncertainty":
+    if args.variant=="identity":
+        from build_conversation_identity import build as identity
+        rows=identity()
+    elif args.variant=="uncertainty":
         from build_conversation_uncertainty import build as uncertainty
         rows=uncertainty()
     elif args.variant=="contrasts":

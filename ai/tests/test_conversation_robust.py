@@ -9,6 +9,7 @@ from build_conversation_curriculum import build as original
 from build_conversation_robust import build
 from build_conversation_contrasts import build as contrasts
 from build_conversation_uncertainty import build as uncertainty
+from build_conversation_identity import build as identity
 from confere_ai.instruct import load_instructions
 from evaluate_conversation_adoption import passes
 
@@ -27,7 +28,7 @@ class RobustCurriculumTests(unittest.TestCase):
         self.assertFalse(passes(result(400), result(325), regressions))
 
     def test_preserves_evaluation_and_prevents_conflicting_contexts(self):
-        for builder in (build, contrasts, uncertainty):
+        for builder in (build, contrasts, uncertainty, identity):
             rows = builder()
             self.assertEqual([r for r in original() if r["split"] != "train"],
                              [r for r in rows if r["split"] != "train"])
