@@ -8,7 +8,7 @@ from pathlib import Path
 from .tokenizer import ByteBPE
 
 
-DEFAULT_CHECKPOINT = Path("ai/runs/conversation-social-context-2026-11-02/best.pt")
+DEFAULT_CHECKPOINT = Path("ai/runs/conversation-identity-2026-11-02/last.pt")
 
 
 def prepare_prompt(history, message, tokenizer, context_size, max_new_tokens, objective="supervised"):
