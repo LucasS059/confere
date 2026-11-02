@@ -107,7 +107,7 @@ def create_report(run_dir, output=None):
     table([("Perda", "Inicial / final"), ("Treino", f'{metrics[0]["train_loss"]:.4f} / {metrics[-1]["train_loss"]:.4f}'), ("Validação", f'{metrics[0]["validation_loss"]:.4f} / {metrics[-1]["validation_loss"]:.4f}')])
     p("Avaliação durante treino: " + (f'{info.get("evaluation_windows_per_split")} janelas fixas por split.' if objective == "causal_lm" else "exemplos autorais de treino e validação; projetos separados."))
     if objective=="conversation":
-        p("Loss usa histórico de referência. Na avaliação gerativa, a resposta do modelo entra nos próximos turnos da conversa. Casos de reparo começam com histórico artificialmente incorreto, fornecido como contexto; o modelo não é treinado a produzir o erro inicial.")
+        p("Loss usa histórico de referência. Na avaliação gerativa, a resposta do modelo entra nos próximos turnos da conversa. Alguns casos de reparo recebem histórico artificialmente incorreto como contexto; esse erro anterior não é alvo da loss. As expansões também variam o contexto de treino.")
         manifest=read_json(Path(info["data"]).parent/"manifest.json")
         if manifest:
             p("Fonte humana: " + manifest["source"] + ", Apache-2.0, revisão " + manifest["revision"] + ". Mensagens pt-BR na fonte: " + str(manifest["source_pt_messages"]) + "; respostas aproveitadas: treino " + str(manifest["filters"].get("human_train",0)) + ", validação " + str(manifest["filters"].get("human_validation",0)) + ", teste " + str(manifest["filters"].get("human_test",0)) + ". A mistura é majoritariamente sintética.")
@@ -134,7 +134,7 @@ def create_report(run_dir, output=None):
             for phase,label in (("baseline","Referência"),("selected","Candidato")):
                 cohort=gate[phase]
                 p(f'{label}: retenção dos casos anteriores {cohort["old_correct"]}/{cohort["old_total"]}; currículo novo {cohort["new_correct"]}/{cohort["new_total"]}.')
-            p(f'Regressões conhecidas com contexto nativo e histórico gerado: melhor por loss {gate["known_regressions_correct"]}/6; checkpoint final {gate["final_regressions_correct"]}/6. Exigência: 6/6, sem queda agregada nos casos anteriores e pelo menos 80% em cada família nova. Resultado: ' + ("atingido." if gate["passed"] else "não atingido."))
+            p(f'Regressões conhecidas com contexto nativo e histórico gerado: checkpoint selecionado {gate["known_regressions_correct"]}/6; checkpoint final {gate["final_regressions_correct"]}/6. Exigência: 6/6, sem queda agregada nos casos anteriores e pelo menos 80% em cada família de conversa. Resultado: ' + ("atingido." if gate["passed"] else "não atingido."))
         if info.get("baseline_checkpoint"):
             sampling=info.get("train_evaluation_policy","primeiros exemplos, não necessariamente representativos da mistura")
             p("Referência comparativa: " + info["baseline_checkpoint"] + ". Loss de treino em " + str(info.get("train_evaluation_examples")) + " exemplos (" + sampling + "); validação em todo o split.")
