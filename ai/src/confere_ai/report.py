@@ -110,10 +110,17 @@ def create_report(run_dir, output=None):
         if manifest:
             p("Fonte humana: https://huggingface.co/datasets/OpenAssistant/oasst1, Apache-2.0, revisão " + manifest["revision"] + ". Mensagens pt-BR na fonte: " + str(manifest["source_pt_messages"]) + "; respostas aproveitadas: treino " + str(manifest["filters"].get("human_train",0)) + ", validação " + str(manifest["filters"].get("human_validation",0)) + ", teste " + str(manifest["filters"].get("human_test",0)) + ". A mistura é majoritariamente sintética.")
     instruction = read_json(run_dir / "instruction-evaluation.json")
+    social_report=bool(instruction and instruction.get("cohort_comparison"))
     if instruction:
         p(f'Validação sintética, acerto exato: referência {instruction["baseline"]["correct"]}/{instruction["baseline"]["total"]}; checkpoint SFT selecionado no passo {instruction["selected_step"]}: {instruction["selected"]["correct"]}/{instruction["selected"]["total"]}. Critério: {instruction["selected"]["criterion"]}')
         if instruction.get("selection_policy"):
             p("Seleção do checkpoint: " + instruction["selection_policy"])
+        if instruction.get("cohort_comparison"):
+            for phase,label in (("baseline","Referência"),("selected","Candidato")):
+                cohort=instruction["cohort_comparison"][phase]
+                p(f'{label}: conjunto anterior {cohort["shared_correct"]}/{cohort["shared_total"]}; casos novos {cohort["new_correct"]}/{cohort["new_total"]}; resposta ao elogio {cohort["praise_correct"]}/{cohort["praise_total"]}.')
+        if instruction.get("adoption_decision"):
+            p("Decisão experimental: " + instruction["adoption_decision"])
         if info.get("baseline_checkpoint"):
             sampling=info.get("train_evaluation_policy","primeiros exemplos, não necessariamente representativos da mistura")
             p("Referência comparativa: " + info["baseline_checkpoint"] + ". Loss de treino em " + str(info.get("train_evaluation_examples")) + " exemplos (" + sampling + "); validação em todo o split.")
@@ -144,7 +151,7 @@ def create_report(run_dir, output=None):
         current = next((item for item in comparison["results"] if Path(item["checkpoint"]).parent == run_dir), None)
         if current:
             samples = current["samples"]
-    for sample in samples[:3]:
+    for sample in ([] if social_report else samples[:3]):
         label = sample.get("prompt", sample.get("prefix", "Não registrada"))
         if objective == "document_grounding":
             label = next((line for line in label.splitlines() if line.startswith("Requisito:")), label)
@@ -160,6 +167,9 @@ def create_report(run_dir, output=None):
                     p("Citação recuperada (" + evidence["unit"] + "): " + evidence["quote"])
     if not samples:
         p("Não há amostras de geração registradas para esta execução. Nenhuma foi reconstruída retroativamente.")
+    if social_report:
+        p("A sequência gerada na interface está na seção 5. As respostas completas da validação estão no JSON de avaliação da execução.")
+        story.append(PageBreak())
     heading("4. Interpretação e limites")
     if objective == "causal_lm":
         p("Corpus enciclopédico limitado, com atribuição/licenças em manifesto local. BPE próprio e pesos originados do zero. Sem treino de diálogo nesta etapa. Saídas experimentais podem repetir, inventar fatos e não seguir instruções. Teste não usado nas métricas; validação consultada repetidamente, sem caráter de teste final cego.")
@@ -175,7 +185,7 @@ def create_report(run_dir, output=None):
     p("Rastreabilidade: run.json, summary.json, metrics.jsonl e amostras/comparison.json quando presentes, na pasta " + str(run_dir) + ".")
     regressions=read_json(run_dir/"interactive-regressions.json")
     if objective=="conversation" and regressions:
-        story.append(PageBreak())
+        if not social_report: story.append(PageBreak())
         heading("5. Regressões de conversa observadas na interface")
         p("Prompts derivados das falhas relatadas pelo usuário; não são um benchmark cego. Respostas geradas sem edição, mantendo histórico da própria rede até a limpeza da sessão.")
         for item in regressions:

@@ -92,7 +92,7 @@ A validação usa todos os exemplos do split correspondente.
 
 ## Uso e limitações
 
-`bun run ai:chat` agora abre `conversation-mixed-2026-11-02/best.pt`, como prévia
+Na etapa mista, `bun run ai:chat` foi apontado para `conversation-mixed-2026-11-02/best.pt`, como prévia
 experimental para conversas. Feche uma TUI antiga com Ctrl+Q e reabra: os pesos
 são carregados uma vez e não mudam numa sessão já aberta. O cabeçalho mostra
 caminho e passo 1.800. Para preservar mais histórico, o limite padrão é 64 tokens.
@@ -109,3 +109,67 @@ Uma expansão séria de diálogo real exigirá rever contexto/orçamento de resp
 e uma base linguística muito maior, com avaliação qualitativa independente.
 Os padrões experimentais da TUI não são aprovação de confiabilidade. O fluxo
 documental `ai:review` e seu checkpoint permanecem separados.
+
+## Respostas sociais e incerteza
+
+O feedback seguinte mostrou agradecimentos recebendo uma pergunta genérica e
+incerteza recebendo repetição da função do modelo. `build_social_conversations.py`
+acrescenta agradecimentos, oferta de assuntos e uma pergunta sobre o tema do
+projeto quando a incerteza persiste. Os dados são sintéticos, sem revisão humana.
+O corpus tem 11.017 exemplos de treino, 415 de validação e 319 de teste; a parte
+humana continua em apenas 9 exemplos de treino e 1 de teste, sem validação humana.
+
+```sh
+ai/.venv/bin/python ai/scripts/prepare_conversations.py \
+  ai/data/private/uma-conversa-social-nova --variant social
+ai/.venv/bin/python -m confere_ai.instruct \
+  --data ai/data/private/uma-conversa-social-nova/examples.jsonl \
+  --init-from ai/runs/conversation-mixed-2026-11-02/best.pt \
+  --compare-with ai/runs/conversation-mixed-2026-11-02/best.pt \
+  --run-dir ai/runs/um-social-novo --device mps \
+  --steps 3000 --batch-size 16 --learning-rate 0.00003 --eval-every 300
+```
+
+Foram duas tentativas, com snapshots e relatórios separados:
+
+- `conversation-social-2026-11-02`: dados gerados pela versão `bad1429`, treino
+  com código `8a84226`. O melhor por loss foi o passo 300; acerto agregado passou
+  de 264/415 para 282/415. Porém o conjunto antigo caiu de 248/295 para 225/295,
+  elogios ficaram em 9/24 e a sequência da interface ainda repetiu a função.
+  O final também fez 282/415 e não foi adotado. O snapshot original permanece em
+  `ai/data/private/conversation-corpus-social/`, hash registrado no manifesto.
+- `conversation-social-context-2026-11-02`: gerador `a25adf8`, com elogios após
+  diferentes tipos de resposta, histórico inicial variável e mais paráfrases.
+  O melhor foi o passo 600: referência 272/415, candidato 325/415. No conjunto
+  antigo, 248/295 para 228/295; nos casos novos, 24/120 para 97/120. Elogios:
+  0/24 para 19/24. O final fez 315/415 e foi preservado, sem substituí-lo.
+
+As duas validações têm os mesmos 295 casos antigos, mas os 120 novos contextos
+mudaram entre tentativas: não compare diretamente 282/415 com 325/415 como se
+fosse o mesmo benchmark. Dentro de cada tentativa, referência e candidato
+recebem os mesmos pedidos. A validação é consultada na seleção; o teste não foi
+usado. Ambas ficaram abaixo do critério de 80% em cada família.
+
+A segunda tentativa passou pela sequência relatada na interface: saudou,
+informou identidade e função, agradeceu, ofereceu assuntos diante de incerteza
+e perguntou o tema diante da insistência. Esses casos conhecidos orientaram os
+dados, portanto não demonstram generalização independente. As respostas sem
+edição estão em `interactive-regressions.json` e no PDF. O ganho social veio com
+regressão em parte das instruções antigas; não é aprovação de conversa geral.
+
+O padrão experimental agora é `conversation-social-context-2026-11-02/best.pt`,
+passo 600. Reinicie a TUI para carregá-lo. O modelo misto anterior permanece
+disponível por caminho explícito. Cada tentativa tem PDF próprio, incluindo a
+malsucedida. A loss de treino dessas novas rodadas usa uma amostra fixa aleatória
+de 128 exemplos, sem reposição e seed 43, para não olhar somente os exemplos
+legados no início do arquivo; a validação de loss continua completa.
+
+## Organização do histórico Git
+
+O trabalho anterior foi organizado em 21 commits por responsabilidade, com
+datas de autor e committer atribuídas entre 26/10 e 02/11 a pedido do usuário.
+Essa organização não representa as datas efetivas de execução dos treinamentos:
+os JSONs e relatórios mantêm seus timestamps e identificadores reais. As novas
+etapas foram commitadas com as datas atuais, sem trailers de coautoria. Os pesos
+e corpora privados permanecem ignorados; geradores, fixtures autorais e PDFs
+de resultados são versionados.

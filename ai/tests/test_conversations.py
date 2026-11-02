@@ -86,3 +86,5 @@ class ConversationTests(unittest.TestCase):
             self.assertTrue(any("Fico feliz" in r["target"] for r in cases))
             self.assertTrue(any("Qual é o tema?" in r["target"] for r in cases))
             self.assertEqual(sum(r["split"]=="validation" for r in cases),120)
+            self.assertTrue(any(r["turn_index"]==0 and r["history"] for r in cases))
+            self.assertTrue(any(r["turn_index"]==0 and "conferência de projetos" in r["target"] for r in cases))
