@@ -1,5 +1,9 @@
 # Conversas com histórico
 
+A etapa foi reaberta após as capturas de 15h30: o currículo curto não representa
+conversa normal. Veja [diálogos completos e critérios ampliados](CONVERSATION_FLOW.md).
+Os checkpoints novos só substituem o padrão após essa avaliação ampliada.
+
 As novas tentativas após o currículo de 1.024 tokens estão em
 [iterações e critérios de adoção](CONVERSATION_ITERATIONS.md). Os resultados
 históricos abaixo permanecem registrados por execução.

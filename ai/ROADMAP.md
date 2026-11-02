@@ -10,6 +10,9 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    não comprova fluência nem conhecimento confiável.
 2. **Conversa e instruções.** Ajustar a base, testar histórico gerado pela rede,
    mudanças de assunto, repetição, pedidos compostos e recuperação de erros.
+   Etapa reaberta pelo feedback de 15h30: [avaliação ampliada](CONVERSATION_FLOW.md)
+   exige diálogos completos, correção de informação e teste reservado. O sucesso
+   no currículo curto abaixo não encerra a etapa de conversa normal.
    O primeiro currículo de 02/11 foi reprovado. Após quatro ajustes, o final de
    `conversation-identity-2026-11-02` passou no currículo controlado e foi adotado
    como padrão experimental: 514/535, 6/6 regressões conhecidas e pelo menos
