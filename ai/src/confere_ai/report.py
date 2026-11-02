@@ -129,6 +129,15 @@ def create_report(run_dir, output=None):
                 p(f'{label}: conjunto anterior {cohort["shared_correct"]}/{cohort["shared_total"]}; casos novos {cohort["new_correct"]}/{cohort["new_total"]}; resposta ao elogio {cohort["praise_correct"]}/{cohort["praise_total"]}.')
         if instruction.get("adoption_decision"):
             p("Decisão experimental: " + instruction["adoption_decision"])
+        candidates = read_json(run_dir / "adoption-candidates.json")
+        if candidates:
+            final_candidate = candidates[-1]
+            counts = {}
+            for sample in final_candidate["result"]["samples"]:
+                pair = counts.setdefault(sample["task"], [0, 0])
+                pair[0] += sample["exact_match"]; pair[1] += 1
+            failed = "; ".join(f"{task}: {correct}/{total}" for task, (correct, total) in counts.items() if correct/total < .8)
+            p(f'Candidato final, passo {final_candidate["step"]}: {final_candidate["result"]["correct"]}/{final_candidate["result"]["total"]}. Famílias abaixo de 80%: ' + (failed or "nenhuma") + ".")
         if instruction.get("curriculum_gate"):
             gate=instruction["curriculum_gate"]
             for phase,label in (("baseline","Referência"),("selected","Candidato")):
@@ -197,6 +206,9 @@ def create_report(run_dir, output=None):
         p("Corpus mínimo autoral. Este experimento verifica a infraestrutura e pode memorizar respostas. JSON válido não comprova evidência correta. Não há validação de conversa geral ou análise confiável de anexos completos.")
     p("Não foram usados TCCs candidatos nesta execução. Não há avaliação de notas de apresentação, uso com simulador aberto ou confiabilidade de documentos completos. Tempos referem-se ao laço e incluem avaliação; preparação é separada. Métricas de memória não representam toda a memória do Mac.")
     p("Rastreabilidade: run.json, summary.json, metrics.jsonl e amostras/comparison.json quando presentes, na pasta " + str(run_dir) + ".")
+    tui = read_json(run_dir / "tui-smoke.json")
+    if tui:
+        p(f'Verificação integrada: piloto headless do Textual com modelo real em {tui["device"]}, passo {tui["step"]}; {len(tui["messages"])} envios conferidos. Contexto {tui["context"]}, geração {tui["generation_budget"]}.')
     regressions=read_json(run_dir/"interactive-regressions.json")
     if objective=="conversation" and regressions:
         if not social_report: story.append(PageBreak())
