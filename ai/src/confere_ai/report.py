@@ -76,6 +76,8 @@ def create_report(run_dir, output=None):
         ("RSS máximo do processo", f'{summary["process_peak_rss_bytes"] / 1e6:.1f} MB' if summary.get("process_peak_rss_bytes") else "Não registrado"),
     ])
     p("SHA-256 dos dados: " + info.get("dataset_fingerprint", "Não registrado"))
+    if info.get("context_note"):
+        p("Adaptação de contexto: " + str(info.get("source_context")) + " para " + str(config.get("block_size")) + " tokens; passo de origem " + str(info.get("source_step")) + ". " + info["context_note"])
     if info.get("previous_dataset_fingerprint"):
         p("Corpus ampliado a partir de: " + info["previous_dataset_fingerprint"])
     heading("2. Evolução da perda")
@@ -108,9 +110,15 @@ def create_report(run_dir, output=None):
         p("Loss usa histórico de referência. Na avaliação gerativa, a resposta do modelo entra nos próximos turnos da conversa. Casos de reparo começam com histórico artificialmente incorreto, fornecido como contexto; o modelo não é treinado a produzir o erro inicial.")
         manifest=read_json(Path(info["data"]).parent/"manifest.json")
         if manifest:
-            p("Fonte humana: https://huggingface.co/datasets/OpenAssistant/oasst1, Apache-2.0, revisão " + manifest["revision"] + ". Mensagens pt-BR na fonte: " + str(manifest["source_pt_messages"]) + "; respostas aproveitadas: treino " + str(manifest["filters"].get("human_train",0)) + ", validação " + str(manifest["filters"].get("human_validation",0)) + ", teste " + str(manifest["filters"].get("human_test",0)) + ". A mistura é majoritariamente sintética.")
+            p("Fonte humana: " + manifest["source"] + ", Apache-2.0, revisão " + manifest["revision"] + ". Mensagens pt-BR na fonte: " + str(manifest["source_pt_messages"]) + "; respostas aproveitadas: treino " + str(manifest["filters"].get("human_train",0)) + ", validação " + str(manifest["filters"].get("human_validation",0)) + ", teste " + str(manifest["filters"].get("human_test",0)) + ". A mistura é majoritariamente sintética.")
+        if info.get("paired_evaluation_context"):
+            p(f'Comparação gerativa: janela comum {info["paired_evaluation_context"]}, saída {info["paired_evaluation_response_tokens"]} tokens. O candidato usa contexto nativo {config["block_size"]}; orçamento da TUI {info["settings"].get("generation_budget",64)}. Casos humanos longos não entram no acerto exato pareado.')
+        if summary.get("human_examples_processed"):
+            p(f'Amostragem humana em lotes homogêneos: fração esperada {info["settings"].get("human_fraction")}; {summary["human_examples_processed"]} exemplos processados com repetição, {summary["human_tokens_processed"]} tokens-alvo humanos. Validação humana de loss: {info.get("human_validation_loss_examples",0)} exemplos, insuficiente para qualidade geral.')
+        if "human_validation_loss" in summary.get("initial", {}):
+            p(f'Loss humana de referência: inicial {summary["initial"]["human_validation_loss"]:.4f}; final {summary["final"]["human_validation_loss"]:.4f}. A loss agregada dominada por templates não comprova melhora no diálogo humano.')
     instruction = read_json(run_dir / "instruction-evaluation.json")
-    social_report=bool(instruction and instruction.get("cohort_comparison"))
+    social_report=bool(instruction and (instruction.get("cohort_comparison") or instruction.get("curriculum_gate")))
     if instruction:
         p(f'Validação sintética, acerto exato: referência {instruction["baseline"]["correct"]}/{instruction["baseline"]["total"]}; checkpoint SFT selecionado no passo {instruction["selected_step"]}: {instruction["selected"]["correct"]}/{instruction["selected"]["total"]}. Critério: {instruction["selected"]["criterion"]}')
         if instruction.get("selection_policy"):
@@ -121,6 +129,12 @@ def create_report(run_dir, output=None):
                 p(f'{label}: conjunto anterior {cohort["shared_correct"]}/{cohort["shared_total"]}; casos novos {cohort["new_correct"]}/{cohort["new_total"]}; resposta ao elogio {cohort["praise_correct"]}/{cohort["praise_total"]}.')
         if instruction.get("adoption_decision"):
             p("Decisão experimental: " + instruction["adoption_decision"])
+        if instruction.get("curriculum_gate"):
+            gate=instruction["curriculum_gate"]
+            for phase,label in (("baseline","Referência"),("selected","Candidato")):
+                cohort=gate[phase]
+                p(f'{label}: retenção dos casos anteriores {cohort["old_correct"]}/{cohort["old_total"]}; currículo novo {cohort["new_correct"]}/{cohort["new_total"]}.')
+            p(f'Regressões conhecidas com contexto nativo e histórico gerado: melhor por loss {gate["known_regressions_correct"]}/6; checkpoint final {gate["final_regressions_correct"]}/6. Exigência: 6/6, sem queda agregada nos casos anteriores e pelo menos 80% em cada família nova. Resultado: ' + ("atingido." if gate["passed"] else "não atingido."))
         if info.get("baseline_checkpoint"):
             sampling=info.get("train_evaluation_policy","primeiros exemplos, não necessariamente representativos da mistura")
             p("Referência comparativa: " + info["baseline_checkpoint"] + ". Loss de treino em " + str(info.get("train_evaluation_examples")) + " exemplos (" + sampling + "); validação em todo o split.")
@@ -174,7 +188,7 @@ def create_report(run_dir, output=None):
     if objective == "causal_lm":
         p("Corpus enciclopédico limitado, com atribuição/licenças em manifesto local. BPE próprio e pesos originados do zero. Sem treino de diálogo nesta etapa. Saídas experimentais podem repetir, inventar fatos e não seguir instruções. Teste não usado nas métricas; validação consultada repetidamente, sem caráter de teste final cego.")
     elif objective=="conversation":
-        p("Piloto de conversas curtas e respostas humanas limitadas pelo contexto. Templates foram construídos pelo assistente, sem revisão humana local. Repetições de prefixos dentro do treino são intencionais; conversas e árvores humanas não atravessam splits. Acerto exato penaliza paráfrases válidas e não mede inteligência geral. A validação seleciona pesos; não é teste cego. A janela continua em 256 tokens, com geração limitada a 64. O modelo pode esquecer, inventar ou responder fora do pedido.")
+        p(f'Piloto de conversas e respostas humanas limitadas pelo contexto. Templates do assistente, sem revisão humana local. Repetições de prefixos no treino são intencionais; conversas e árvores humanas não atravessam splits. Acerto exato penaliza paráfrases válidas e não mede inteligência geral. Validação seleciona pesos; não é teste cego. Janela nativa {config["block_size"]}, orçamento de geração {info["settings"].get("generation_budget",64)} tokens. O modelo pode esquecer, inventar ou responder fora do pedido.')
     elif objective in {"instruction", "document_grounding"}:
         p("Piloto de instruções sintéticas construídas por templates do assistente, sem revisão humana. Inicializa dos pesos locais pré-treinados, com novo otimizador. Projetos/IDs de validação não são usados no gradiente; tarefas e respostas constantes podem se repetir entre splits. Acerto exato neste conjunto pequeno não demonstra compreensão geral nem eliminação de alucinações. A validação também seleciona o checkpoint; não é teste cego.")
         if objective == "document_grounding":
