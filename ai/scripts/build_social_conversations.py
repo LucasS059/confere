@@ -12,8 +12,8 @@ def build():
     utterances={
         "train": {
             "greet":["oi","olá","bom dia","oiii"],
-            "praise":["que legal","muito legal","obrigado","valeu","boa","gostei","ótimo","legal confere","que massa","que legal, Confere!","obrigado confere!","show","bacana","obrigada"],
-            "uncertain":["não sei ainda","nao sei ainda","ainda não sei","não sei por onde começar","estou indeciso","não tenho ideia","não sei o que pedir","não sei como você pode me ajudar","ainda não pensei nisso","não tenho certeza","não sei o que fazer agora","não escolhi nada ainda"],
+            "praise":["que legal","muito legal","obrigado","valeu","boa","gostei","ótimo","legal confere","que massa","que legal, Confere!","obrigado confere!","show","bacana","obrigada","que legal confere!","curti isso","adorei essa ideia","parece interessante","que bom que você ajuda","conto com você","obrigado pelo apoio"],
+            "uncertain":["não sei ainda","nao sei ainda","ainda não sei","não sei por onde começar","estou indeciso","não tenho ideia","não sei o que pedir","não sei como você pode me ajudar","ainda não pensei nisso","não tenho certeza","não sei o que fazer agora","não escolhi nada ainda","não tenho clareza do que fazer","estou sem direção","nenhum pedido vem à mente","ainda não decidi um caminho"],
             "again":["continuo sem saber","ainda não sei o que quero","não faço ideia do que pedir","mesmo assim não sei","não sei o que quero que você faça","estou sem ideia ainda"]},
         "validation": {
             "greet":["opa, bom dia!","e aí, Confere!","oi, como vai?"],
@@ -25,8 +25,8 @@ def build():
             "praise":["achei sua proposta ótima","parece uma ajuda bacana"],
             "uncertain":["estou indeciso sobre o que pedir a você","não descobri do que preciso ainda"],
             "again":["ainda não consegui decidir nem depois disso","continuo indeciso entre essas opções"]}}
-    def add(split, turns):
-        group=f"social-{split}-{len(rows)}";history=[]
+    def add(split, turns, seed=None):
+        group=f"social-{split}-{len(rows)}";history=list(seed or [])
         for index,(task,prompt,target) in enumerate(turns):
             rows.append({"id":f"{group}-{index}","project_id":group,"split":split,"task":"conversation_"+task,
                          "history":[list(pair) for pair in history],"turn_index":index,"prompt":prompt,"target":target,
@@ -35,8 +35,13 @@ def build():
     for split,count in (("train",600),("validation",24),("test",16)):
         bank=utterances[split]
         for _ in range(count):
-            add(split,[("social",rng.choice(bank["greet"]),hello),("social",rng.choice(bank["praise"]),thanks),
-                       ("guidance",rng.choice(bank["uncertain"]),proposal),("guidance",rng.choice(bank["again"]),focus)])
+            roots={"train":[("qual seu nome?","Sou o Confere."),("o que vc faz?","Sou um experimento para apoiar a conferência de projetos.")],
+                   "validation":[("como devo te chamar?","Sou o Confere."),("o que consigo fazer com você?","Sou um experimento para apoiar a conferência de projetos.")],
+                   "test":[("me diga como você é chamado","Sou o Confere."),("em que você pode me ajudar?","Sou um experimento para apoiar a conferência de projetos.")]}[split]
+            root=rng.choice([(rng.choice(bank["greet"]),hello)]+roots)
+            seed=[rng.choice(roots)] if rng.random()<.5 else []
+            add(split,[("social_context",root[0],root[1]),("social",rng.choice(bank["praise"]),thanks),
+                       ("guidance",rng.choice(bank["uncertain"]),proposal),("guidance",rng.choice(bank["again"]),focus)],seed)
     for split,count in (("train",200),("validation",12),("test",8)):
         bank=utterances[split]
         for _ in range(count):
