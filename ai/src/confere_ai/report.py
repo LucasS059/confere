@@ -300,10 +300,15 @@ def create_report(run_dir, output=None):
             p("Teste reservado não consultado: nenhum candidato passou na validação ampliada.")
         p("Adoção: " + ("aprovada no conjunto autoral ampliado." if flow["adopted"] else "reprovada; TUI preservada."))
         failures=[s for s in flow["candidates"][-1]["flow"]["samples"] if not s["exact_match"] and len(s["actual"])<=250]
-        for sample in failures[:3]:
+        shown=set()
+        for sample in failures:
+            key=(sample["prompt"],sample["actual"])
+            if key in shown:continue
+            shown.add(key)
             p("Você: " + sample["prompt"], "Heading3")
             p("Modelo: " + (sample["actual"] or "[sem texto]"))
             p("Alvo autoral: " + sample["expected"])
+            if len(shown)==2:break
         p("Os históricos completos, respostas, famílias e falhas de cada candidato estão em flow-evaluation.json. Teste consultado não deve virar fonte de ajuste numa repetição desta avaliação.")
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
