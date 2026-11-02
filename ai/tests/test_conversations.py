@@ -69,3 +69,20 @@ class ConversationTests(unittest.TestCase):
             p=Path(folder)/"rows.jsonl";p.write_text("\n".join(json.dumps(r) for r in rows))
             loaded,_=load_instructions(p)
             self.assertEqual(len(loaded),8741)
+
+    def test_social_conversations_offer_a_next_step_after_uncertainty(self):
+        import sys
+        scripts=str(Path(__file__).resolve().parents[1]/"scripts")
+        sys.path.insert(0,scripts)
+        try:
+            from build_social_conversations import build
+            rows=build()
+        finally: sys.path.remove(scripts)
+        with tempfile.TemporaryDirectory() as folder:
+            p=Path(folder)/"rows.jsonl";p.write_text("\n".join(json.dumps(r) for r in rows))
+            loaded,_=load_instructions(p)
+            self.assertEqual(len(loaded),11741)
+            cases=[r for r in loaded if r["id"].startswith("social-")]
+            self.assertTrue(any("Fico feliz" in r["target"] for r in cases))
+            self.assertTrue(any("Qual é o tema?" in r["target"] for r in cases))
+            self.assertEqual(sum(r["split"]=="validation" for r in cases),120)

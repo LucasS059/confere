@@ -16,7 +16,7 @@ def main():
     parser.add_argument("output",type=Path)
     parser.add_argument("--source",type=Path,default=Path("ai/data/private/oasst1-pt"))
     parser.add_argument("--tokenizer-from",type=Path,default=Path("ai/runs/instruction-v2-refine-2026-11-02/best.pt"))
-    parser.add_argument("--variant",choices=["initial","mixed"],default="initial")
+    parser.add_argument("--variant",choices=["initial","mixed","social"],default="initial")
     args=parser.parse_args()
     if args.output.exists(): parser.error("Saída deve ser nova.")
     source=args.source/"2023-04-12_oasst_ready.messages.jsonl.gz"
@@ -30,7 +30,10 @@ def main():
         return (row.get("review_result") is True and not row.get("deleted") and not row.get("synthetic")
                 and (row["role"]!="assistant" or (row.get("rank")==0 and labels.get("quality",{}).get("value",0)>=.6
                      and labels.get("fails_task",{}).get("value",0)==0)))
-    if args.variant=="mixed":
+    if args.variant=="social":
+        from build_social_conversations import build as social
+        rows=social()
+    elif args.variant=="mixed":
         from build_conversation_mix import build as mixed
         rows=mixed()
     else: rows=build()
