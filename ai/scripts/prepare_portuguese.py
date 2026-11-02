@@ -55,8 +55,8 @@ def main():
     parser.add_argument("--max-chars", type=int, default=8000)
     parser.add_argument("--resume-download", action="store_true", help="Reusar páginas locais de um download incompleto.")
     args = parser.parse_args()
-    if not 100 <= args.rows <= 5000 or not 1000 <= args.max_chars <= 50000:
-        parser.error("Use 100–5000 linhas e 1000–50000 caracteres por artigo.")
+    if not 100 <= args.rows <= 10000 or not 1000 <= args.max_chars <= 50000:
+        parser.error("Use 100–10000 linhas e 1000–50000 caracteres por artigo.")
     if args.output.exists() and (not args.resume_download or (args.output / "manifest.json").exists()):
         parser.error("A saída já existe; escolha outra para preservar snapshots.")
     args.output.mkdir(parents=True, exist_ok=True)
