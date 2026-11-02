@@ -11,9 +11,21 @@ from build_conversation_identity import build as legacy
 from build_conversation_flow_expanded import build as expanded
 from confere_ai.instruct import load_instructions
 from evaluate_conversation_flow import conversation_metrics, flow_passes
+from prepare_dialogue_restarts import restart_rows
 
 
 class ConversationFlowTests(unittest.TestCase):
+    def test_restart_contrasts_include_post_farewell_context_without_changing_base(self):
+        row=dict(id="flow-train-fixture",project_id="fixture",split="train",prompt="olá",target="Olá! Sou o Confere.",history=[])
+        original=json.dumps(row,sort_keys=True)
+        extra=restart_rows([row],count=20)
+        self.assertEqual(json.dumps(row,sort_keys=True),original)
+        self.assertTrue(all(r["split"]=="train" for r in extra))
+        self.assertTrue(any("Podemos conversar quando você quiser" in str(r["history"]) and r["target"]=="Olá! Sou o Confere." for r in extra))
+        by_context={}
+        for r in extra:by_context.setdefault(json.dumps(r["history"]),set()).add(r["target"])
+        self.assertTrue(any({"Olá! Sou o Confere.","Tudo bem. Podemos conversar quando você quiser."}<=targets for targets in by_context.values()))
+
     def test_capture_replay_preserves_existing_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
             output=Path(directory)/"evidence.json"
