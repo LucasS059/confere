@@ -340,6 +340,22 @@ def create_report(run_dir, output=None):
                 p("Você: " + item["prompt"], "Heading3")
                 p("Modelo: " + (item["answer"] or "[sem texto]"))
         p("Resultados por família, respostas e históricos completos: informal-evaluation.json. A CLI não foi alterada. Não houve avaliação de anexos completos nesta etapa.")
+    transfer = read_json(run_dir / "document-transfer.json")
+    if transfer:
+        story.append(PageBreak())
+        heading("Transferência da conversa para conferência documental")
+        p(transfer["scope"])
+        for split in ("validation", "test"):
+            value = transfer[split]
+            if value:
+                p(f'{split}: {value["correct"]}/{value["total"]} status e unidades corretos em conjunto; formato válido {sum(s["valid_format"] for s in value["samples"])}/{value["total"]}; referência válida {sum(s["reference_valid"] for s in value["samples"])}/{value["total"]}.')
+            else:
+                p("Teste reservado não consultado: validação documental insuficiente.")
+        p("Diagnóstico de conversa após a especialização, sem editar as respostas. Os mesmos prompts foram executados na referência e estão no JSON. Não é avaliação completa de retenção.")
+        for item in transfer["conversation_after"][:6]:
+            p("Você: " + item["prompt"], "Heading3")
+            p("Modelo: " + (item["answer"] or "[sem texto]"))
+        p("Checkpoint documental separado; padrão da TUI preservado. Não houve integração ao aplicativo nem validação de arquivos completos. Resultados detalhados: document-transfer.json.")
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))
