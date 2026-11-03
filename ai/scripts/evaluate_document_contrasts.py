@@ -19,6 +19,11 @@ def metrics(result, prefix):
                 references=sum(r.get("reference_valid",False) for r in rows))
 
 
+def document_passes(docs, minimum):
+    return (docs["total"]>0 and docs["valid"]==docs["references"]==docs["total"]
+            and bool(docs["families"]) and all(c/t>=minimum for c,t in docs["families"].values()))
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument("run_dir",type=Path)
     parser.add_argument("--perfect-documents",action="store_true",help="Exigir 100% por status antes de consultar o teste.")
@@ -28,8 +33,7 @@ def main():
     before=metrics(evaluation["baseline"],"conversation_")
     after=metrics(evaluation["selected"],"conversation_")
     docs=metrics(evaluation["selected"],"grounded_")
-    doc_pass=(docs["total"]>0 and docs["valid"]==docs["references"]==docs["total"]
-              and all(c/t>=(1 if args.perfect_documents else .9) for c,t in docs["families"].values()))
+    doc_pass=document_passes(docs,1 if args.perfect_documents else .9)
     conversation_pass=(after["correct"]>=before["correct"] and all(c/t>=.8 and c>=before["families"][name][0]
                            for name,(c,t) in after["families"].items()))
     result=dict(policy="Comparação pareada 1024/64. Documentos: >=90% em cada status, 100% formato/referências. Conversa: >=80% por família, sem queda por família ou no total ante o modelo informal. Teste somente se ambos passarem. Diagnóstico nativo 1024/256 não é teste independente.",

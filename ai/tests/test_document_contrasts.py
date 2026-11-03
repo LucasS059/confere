@@ -7,9 +7,19 @@ from prepare_document_contrasts import documents, FORMS
 from confere_ai.instruct import acceptance
 from confere_ai.grounding import judge
 from prepare_document_lexical import LEXICAL, balanced_replay
+from evaluate_document_contrasts import document_passes
 
 
 class DocumentContrastTests(unittest.TestCase):
+    def test_perfection_rejects_one_wrong_answer_or_reference(self):
+        result=dict(total=100,valid=100,references=100,families=dict(grounded_atendido=[99,100]))
+        self.assertTrue(document_passes(result,.9))
+        self.assertFalse(document_passes(result,1))
+        result["families"]["grounded_atendido"][0]=100
+        self.assertTrue(document_passes(result,1))
+        result["references"]=99
+        self.assertFalse(document_passes(result,1))
+
     def test_lexical_expansion_freezes_reserved_rows(self):
         self.assertEqual([r for r in documents() if r["split"]!="train"],
                          [r for r in documents(LEXICAL) if r["split"]!="train"])
