@@ -86,6 +86,13 @@ def score(model, tokenizer, rows, device, context_limit=None, response_tokens=64
 
 def acceptance(result):
     conversational=[r for r in result["samples"] if r["task"].startswith("conversation_")]
+    grounded=[r for r in result["samples"] if r["task"].startswith("grounded_")]
+    if conversational and grounded:
+        parts={name: acceptance({"samples":samples}) for name,samples in
+               (("conversation",conversational),("documents",grounded))}
+        return {"passed":all(p["passed"] for p in parts.values()),"objectives":parts,
+                "description":"Objetivos separados: cada critério deve passar; nenhuma média entre conversa e documentos.",
+                "scope":"Templates controlados; não valida conversa aberta ou projetos reais."}
     if conversational:
         tasks={}
         for row in conversational:
