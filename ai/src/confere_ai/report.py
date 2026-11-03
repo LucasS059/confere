@@ -155,6 +155,8 @@ def create_report(run_dir, output=None):
         if "human_validation_loss" in summary.get("initial", {}):
             p(f'Loss humana de referência: inicial {summary["initial"]["human_validation_loss"]:.4f}; final {summary["final"]["human_validation_loss"]:.4f}. A loss agregada dominada por templates não comprova melhora no diálogo humano.')
     instruction = read_json(run_dir / "instruction-evaluation.json")
+    if info.get("settings",{}).get("document_fraction"):
+        p(f'Lotes documentais explícitos: fração esperada {info["settings"]["document_fraction"]}; processados {summary.get("document_examples_processed","não registrado")} exemplos e {summary.get("document_tokens_processed","não registrado")} tokens-alvo, incluindo repetição. A fração de lotes não é proporção de tokens nem de casos únicos.')
     social_report=bool(instruction and (instruction.get("cohort_comparison") or instruction.get("curriculum_gate")))
     if instruction:
         p(f'Validação sintética, acerto exato: referência {instruction["baseline"]["correct"]}/{instruction["baseline"]["total"]}; checkpoint SFT selecionado no passo {instruction["selected_step"]}: {instruction["selected"]["correct"]}/{instruction["selected"]["total"]}. Critério: {instruction["selected"]["criterion"]}')

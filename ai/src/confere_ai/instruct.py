@@ -114,11 +114,12 @@ def acceptance(result):
             "scope": "Critério exploratório para o piloto; não comprova confiabilidade geral."}
 
 
-def training_indices(train_count,humans,synthetic,batch_size,human_fraction,generator,public=None,public_fraction=0):
-    if not human_fraction and not public_fraction:
+def training_indices(train_count,humans,synthetic,batch_size,human_fraction,generator,public=None,public_fraction=0,documents=None,document_fraction=0):
+    if not human_fraction and not public_fraction and not document_fraction:
         return torch.randint(train_count,(batch_size,),generator=generator).tolist()
     draw=torch.rand((),generator=generator).item()
-    pool=humans if draw<human_fraction else public if draw<human_fraction+public_fraction else synthetic
+    pool=(humans if draw<human_fraction else public if draw<human_fraction+public_fraction
+          else documents if draw<human_fraction+public_fraction+document_fraction else synthetic)
     return [pool[i] for i in torch.randint(len(pool),(batch_size,),generator=generator).tolist()]
 
 
@@ -135,7 +136,9 @@ def run(args):
     generation_budget=getattr(args,"response_tokens",64)
     human_fraction=getattr(args,"human_fraction",0.)
     public_fraction=getattr(args,"public_fraction",0.)
-    if not (0<=human_fraction<1 and 0<=public_fraction<1 and human_fraction+public_fraction<1): raise ValueError("Frações de diálogo inválidas.")
+    document_fraction=getattr(args,"document_fraction",0.)
+    if not (0<=human_fraction<1 and 0<=public_fraction<1 and 0<=document_fraction<1
+            and human_fraction+public_fraction+document_fraction<1): raise ValueError("Frações de mistura inválidas.")
     if any(r.get("response_tokens",64)!=generation_budget for r in rows if "history" in r): raise ValueError("Orçamento do corpus deve corresponder ao treino.")
     controlled_validation=[r for r in validation if r["task"] not in {"human_dialogue","public_dialogue"}] if generation_budget>64 else validation
     source = torch.load(args.init_from, map_location="cpu", weights_only=True)
@@ -166,6 +169,7 @@ def run(args):
     settings = {"objective": objective, "seed": 42, "batch_size": args.batch_size, "learning_rate": args.learning_rate,"generation_budget":generation_budget,"human_fraction":human_fraction}
     settings["human_sampling_policy"]="homogeneous_batches"
     settings["public_fraction"]=public_fraction
+    settings["document_fraction"]=document_fraction
     info = {"objective": objective, "initialization": "local_checkpoint_new_optimizer", "resume_from": str(args.init_from),
             "base_step": source["step"], "source_objective": source["settings"]["objective"], "config": asdict(model.config), "parameters": sum(p.numel() for p in model.parameters()),
             "baseline_checkpoint": str(comparison or args.init_from), "train_evaluation_examples": len(train_eval),
@@ -181,16 +185,21 @@ def run(args):
     generator = torch.Generator().manual_seed(42)
     humans=[i for i,r in enumerate(train) if r["task"]=="human_dialogue"]
     public=[i for i,r in enumerate(train) if r["task"]=="public_dialogue"]
-    synthetic=[i for i,r in enumerate(train) if r["task"] not in {"human_dialogue","public_dialogue"}]
+    documents=[i for i,r in enumerate(train) if r["task"].startswith("grounded_")]
+    synthetic=[i for i,r in enumerate(train) if r["task"] not in {"human_dialogue","public_dialogue"}
+               and not (document_fraction and r["task"].startswith("grounded_"))]
     if human_fraction and (not humans or not synthetic): raise ValueError("Mistura exige humanos e sintéticos.")
     if public_fraction and (not public or not synthetic): raise ValueError("Mistura pública exige fonte pública e sintéticos.")
     if public and not public_fraction: raise ValueError("Defina --public-fraction explicitamente para a fonte pública.")
+    if document_fraction and (not documents or not synthetic):raise ValueError("Mistura documental exige documentos e exemplos autorais não documentais.")
     started, best, processed, memory = time.perf_counter(), float("inf"), 0, 0
     metrics = []
     human_examples_processed=0
     human_tokens_processed=0
     public_examples_processed=0
     public_tokens_processed=0
+    document_examples_processed=0
+    document_tokens_processed=0
     def record(step):
         nonlocal best
         item = {"step": step, "train_loss": evaluate(model, train_eval, device), "validation_loss": evaluate(model, encoded_val, device), "elapsed_seconds": time.perf_counter()-started}
@@ -205,7 +214,7 @@ def run(args):
     record(0)
     for step in range(1, args.steps+1):
         model.train()
-        indices=training_indices(len(train),humans,synthetic,args.batch_size,human_fraction,generator,public,public_fraction)
+        indices=training_indices(len(train),humans,synthetic,args.batch_size,human_fraction,generator,public,public_fraction,documents,document_fraction)
         x,y = batch(encoded_train,indices,device)
         optimizer.zero_grad(set_to_none=True)
         loss = F.cross_entropy(model(x).flatten(0,1), y.flatten(), ignore_index=-100)
@@ -217,6 +226,8 @@ def run(args):
             if train[i]["task"]=="human_dialogue":human_tokens_processed+=(y[j]!=-100).sum().item()
             if train[i]["task"]=="public_dialogue":
                 public_examples_processed+=1;public_tokens_processed+=(y[j]!=-100).sum().item()
+            if train[i]["task"].startswith("grounded_"):
+                document_examples_processed+=1;document_tokens_processed+=(y[j]!=-100).sum().item()
         if device == "mps": memory = max(memory, torch.mps.current_allocated_memory())
         timed_out=max_seconds is not None and time.perf_counter()-started>=max_seconds
         if step % args.eval_every == 0 or step == args.steps or timed_out: record(step)
@@ -225,6 +236,7 @@ def run(args):
                "tokens_processed": processed, "initial": metrics[0], "final": metrics[-1],
                "human_examples_processed":human_examples_processed,"human_tokens_processed":human_tokens_processed,
                "public_examples_processed":public_examples_processed,"public_tokens_processed":public_tokens_processed,
+               "document_examples_processed":document_examples_processed,"document_tokens_processed":document_tokens_processed,
                "mps_allocated_bytes_max_observed": memory, "process_peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*(1 if platform.system()=="Darwin" else 1024)}
     (args.run_dir/"summary.json").write_text(json.dumps(summary, indent=2))
     selected = torch.load(args.run_dir/"best.pt", map_location="cpu", weights_only=True)
@@ -255,6 +267,7 @@ def main():
     parser.add_argument("--response-tokens",type=int,default=64)
     parser.add_argument("--human-fraction",type=float,default=0.)
     parser.add_argument("--public-fraction",type=float,default=0.)
+    parser.add_argument("--document-fraction",type=float,default=0.,help="Fração de lotes documentais separados dos demais exemplos autorais.")
     parser.add_argument("--max-seconds",type=float)
     parser.add_argument("--evaluation-context",type=int,help="Janela comum explícita para avaliação de conversas completas.")
     args = parser.parse_args()
