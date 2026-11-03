@@ -148,3 +148,10 @@ Para explorar o último candidato explicitamente, sem alterar o padrão:
 ```sh
 bun run ai:chat ai/runs/conversation-flow-restarts-2026-11-02/last.pt
 ```
+
+## Continuidade em 3 de novembro
+
+Treino de abreviações e perguntas de continuidade documentado em
+[INFORMAL.md](INFORMAL.md), com avaliação separada das três coortes, PDF e
+verificação integrada na TUI. O candidato permanece experimental; a etapa de
+conversa continua aberta.
