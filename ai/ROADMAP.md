@@ -28,6 +28,10 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    curtos, status e referência a unidade real; ainda pode escolher evidência
    irrelevante. Validar requisitos e evidências anotadas de documentos reais,
    sem tratar nota de apresentação como rótulo de correção documental.
+   Em 03/11, o usuário autorizou avançar; foi aberto um experimento isolado
+   apesar das limitações de conversa ainda presentes, sem declarar a etapa 2
+   concluída. [Transferência documental](DOCUMENT_TRANSFER.md): 72/90 casos,
+   reprovada por erros semânticos; checkpoint separado e teste não consultado.
 4. **Projetos completos e aplicativo.** Extração PDF/DOCX, divisão em unidades,
    recuperação, análise por requisito e consolidação rastreável antes da API e
    integração ao simulador. Extração existente não significa que a rede consiga
