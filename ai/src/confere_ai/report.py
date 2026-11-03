@@ -376,6 +376,10 @@ def create_report(run_dir, output=None):
             p("Você: " + item["prompt"], "Heading3")
             p("Modelo: " + (item["answer"] or "[sem texto]"))
         p("Históricos, resultados por família e respostas completas: contrast-evaluation.json. Ainda não valida arquivos completos, tabelas, OCR ou integração ao aplicativo.")
+        final_diagnostic = read_json(run_dir / "last-document-diagnostic.json")
+        if final_diagnostic:
+            value = final_diagnostic["metrics"]
+            p(f'Diagnóstico exploratório do checkpoint final, passo {final_diagnostic["step"]}: {value["correct"]}/{value["total"]} documentos. ' + "; ".join(f'{name}: {c}/{t}' for name,(c,t) in value["families"].items()) + ". Não altera a seleção pelo menor valor de loss; conversa completa desse checkpoint não foi avaliada, e o teste não foi consultado por este diagnóstico.")
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))

@@ -1,16 +1,37 @@
 import json
 import sys
+import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 from prepare_document_contrasts import documents, FORMS
 from confere_ai.instruct import acceptance
 from confere_ai.grounding import judge
-from prepare_document_lexical import LEXICAL, balanced_replay
+from prepare_document_lexical import LEXICAL, balanced_replay, paired_documents
 from evaluate_document_contrasts import document_passes
 
 
 class DocumentContrastTests(unittest.TestCase):
+    def test_minimal_pairs_balance_polarity_at_every_position(self):
+        rows=paired_documents()
+        self.assertEqual([r for r in rows if r["split"]!="train"],[r for r in documents() if r["split"]!="train"])
+        for position in range(4):
+            group=[r for r in rows if r["id"].startswith(f"paired-train-0-{position}-")]
+            self.assertEqual(len(group),3)
+            self.assertEqual(len({r["requirement"] for r in group}),1)
+            self.assertTrue(all(judge(r["target"],r)["exact_match"] for r in group))
+            self.assertEqual({json.loads(r["target"])["unit"] for r in group},{None,f"page:{position+1}"})
+
+    def test_final_diagnostic_preserves_existing_evidence(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/"last-document-diagnostic.json";path.write_text("preservado")
+            script=Path(__file__).resolve().parents[1]/"scripts/diagnose_final_documents.py"
+            result=subprocess.run([sys.executable,str(script),folder],capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0)
+            self.assertIn("Diagnóstico existente",result.stderr)
+            self.assertEqual(path.read_text(),"preservado")
+
     def test_perfection_rejects_one_wrong_answer_or_reference(self):
         result=dict(total=100,valid=100,references=100,families=dict(grounded_atendido=[99,100]))
         self.assertTrue(document_passes(result,.9))
