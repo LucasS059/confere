@@ -32,6 +32,8 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    apesar das limitações de conversa ainda presentes, sem declarar a etapa 2
    concluída. [Transferência documental](DOCUMENT_TRANSFER.md): 72/90 casos,
    reprovada por erros semânticos; checkpoint separado e teste não consultado.
+   [Contrastes com replay](DOCUMENT_CONTRASTS.md) concluíram outro treino:
+   novas negações 0/60, validação conjunta reprovada, teste ainda reservado.
 4. **Projetos completos e aplicativo.** Extração PDF/DOCX, divisão em unidades,
    recuperação, análise por requisito e consolidação rastreável antes da API e
    integração ao simulador. Extração existente não significa que a rede consiga
