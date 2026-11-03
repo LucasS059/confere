@@ -379,7 +379,15 @@ def create_report(run_dir, output=None):
         final_diagnostic = read_json(run_dir / "last-document-diagnostic.json")
         if final_diagnostic:
             value = final_diagnostic["metrics"]
-            p(f'Diagnóstico exploratório do checkpoint final, passo {final_diagnostic["step"]}: {value["correct"]}/{value["total"]} documentos. ' + "; ".join(f'{name}: {c}/{t}' for name,(c,t) in value["families"].items()) + ". Não altera a seleção pelo menor valor de loss; conversa completa desse checkpoint não foi avaliada, e o teste não foi consultado por este diagnóstico.")
+            p(f'Diagnóstico exploratório do checkpoint final, passo {final_diagnostic["step"]}: {value["correct"]}/{value["total"]} documentos. ' + "; ".join(f'{name}: {c}/{t}' for name,(c,t) in value["families"].items()) + ". Não altera a seleção pelo menor valor de loss; o teste não foi consultado por este diagnóstico.")
+        final_conversation = read_json(run_dir / "final-conversation-validation.json")
+        if final_conversation:
+            value = final_conversation["metrics"]
+            p(f'Conversa do checkpoint final, validação exploratória 1024/64: {value["correct"]}/{value["total"]}. Famílias abaixo de 80%: ' + "; ".join(f'{name}: {c}/{t}' for name,(c,t) in value["families"].items() if c/t<.8) + ".")
+            p(final_conversation["note"])
+        final_tui = read_json(run_dir / "tui-smoke-final.json")
+        if final_tui:
+            p(f'TUI do checkpoint final: {len(final_tui["messages"])} mensagens conferidas no piloto headless Textual com modelo real em MPS. Isso valida o transporte, não a correção semântica.')
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))

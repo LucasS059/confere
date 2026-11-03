@@ -24,13 +24,15 @@ class DocumentContrastTests(unittest.TestCase):
             self.assertEqual({json.loads(r["target"])["unit"] for r in group},{None,f"page:{position+1}"})
 
     def test_final_diagnostic_preserves_existing_evidence(self):
-        with tempfile.TemporaryDirectory() as folder:
-            path=Path(folder)/"last-document-diagnostic.json";path.write_text("preservado")
-            script=Path(__file__).resolve().parents[1]/"scripts/diagnose_final_documents.py"
-            result=subprocess.run([sys.executable,str(script),folder],capture_output=True,text=True)
-            self.assertNotEqual(result.returncode,0)
-            self.assertIn("Diagnóstico existente",result.stderr)
-            self.assertEqual(path.read_text(),"preservado")
+        for name,filename,message in (("diagnose_final_documents.py","last-document-diagnostic.json","Diagnóstico existente"),
+                                      ("validate_final_conversation.py","final-conversation-validation.json","Validação existente")):
+            with self.subTest(script=name), tempfile.TemporaryDirectory() as folder:
+                path=Path(folder)/filename;path.write_text("preservado")
+                script=Path(__file__).resolve().parents[1]/"scripts"/name
+                result=subprocess.run([sys.executable,str(script),folder],capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+                self.assertIn(message,result.stderr)
+                self.assertEqual(path.read_text(),"preservado")
 
     def test_perfection_rejects_one_wrong_answer_or_reference(self):
         result=dict(total=100,valid=100,references=100,families=dict(grounded_atendido=[99,100]))
