@@ -9,6 +9,17 @@ from confere_ai.report import create_report
 
 
 class ReportTests(unittest.TestCase):
+    def test_authored_conversation_manifest_is_not_reported_as_human_source(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            (root/"manifest.json").write_text(json.dumps(dict(source_sha256="authored")))
+            (root/"run.json").write_text(json.dumps(dict(objective="conversation",data=str(root/"examples.jsonl"),parameters=100,device="cpu",dataset_fingerprint="abc",config=dict(block_size=1024),settings=dict(generation_budget=256))))
+            (root/"summary.json").write_text(json.dumps(dict(start_step=0,final_step=1,elapsed_seconds=1)))
+            (root/"metrics.jsonl").write_text(json.dumps(dict(step=1,train_loss=1.,validation_loss=1.)))
+            pdf=create_report(root,root/"report.pdf")
+            text="\n".join(p.extract_text() for p in PdfReader(pdf).pages)
+            self.assertNotIn("Fonte humana:",text)
+
     def test_report_preserves_metrics_and_marks_missing_samples(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

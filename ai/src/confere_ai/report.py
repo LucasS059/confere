@@ -139,7 +139,7 @@ def create_report(run_dir, output=None):
     if objective=="conversation":
         p("Loss usa histórico de referência. Na avaliação gerativa, a resposta do modelo entra nos próximos turnos da conversa. Alguns casos de reparo recebem histórico artificialmente incorreto como contexto; esse erro anterior não é alvo da loss. As expansões também variam o contexto de treino.")
         manifest=read_json(Path(info["data"]).parent/"manifest.json")
-        if manifest:
+        if manifest and manifest.get("source") in {"https://huggingface.co/datasets/OpenAssistant/oasst1", "https://huggingface.co/datasets/OpenAssistant/oasst2"}:
             p("Fonte humana: " + manifest["source"] + ", Apache-2.0, revisão " + manifest["revision"] + ". Mensagens pt-BR na fonte: " + str(manifest["source_pt_messages"]) + "; respostas aproveitadas: treino " + str(manifest["filters"].get("human_train",0)) + ", validação " + str(manifest["filters"].get("human_validation",0)) + ", teste " + str(manifest["filters"].get("human_test",0)) + ". A mistura é majoritariamente sintética.")
             if manifest.get("additional_source"):
                 public_source=manifest["additional_source"]
