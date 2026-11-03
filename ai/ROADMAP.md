@@ -23,6 +23,10 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    A próxima ampliação deve priorizar diálogo humano diverso e avaliação
    qualitativa independente. Acrescentar templates dos erros conhecidos pode
    corrigir exemplos, mas não constitui aumento geral de inteligência.
+   [Recuperação de conversa](CONVERSATION_RECOVERY.md) concluiu três novos
+   treinos: houve ganho pontual em nomes/assuntos e informalidade, mas perda de
+   retenção e falhas em correção/reformulação. Nenhum candidato foi aprovado;
+   o teste reservado e o padrão atual foram preservados.
 3. **Conferência documental com evidências.** Só retomar a especialização após
    a etapa de conversa. Já existe um piloto separado com documentos sintéticos
    curtos, status e referência a unidade real; ainda pode escolher evidência
