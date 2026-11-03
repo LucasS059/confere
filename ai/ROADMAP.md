@@ -34,6 +34,9 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    reprovada por erros semânticos; checkpoint separado e teste não consultado.
    [Contrastes com replay](DOCUMENT_CONTRASTS.md) concluíram outro treino:
    novas negações 0/60, validação conjunta reprovada, teste ainda reservado.
+   [Três iterações lexicais e pareadas](DOCUMENT_LEXICAL.md) chegaram a
+   180/180 documentos no checkpoint final exploratório, mas conversa 775/871
+   com regressões por família. Meta conjunta aberta; teste não consultado.
 4. **Projetos completos e aplicativo.** Extração PDF/DOCX, divisão em unidades,
    recuperação, análise por requisito e consolidação rastreável antes da API e
    integração ao simulador. Extração existente não significa que a rede consiga
