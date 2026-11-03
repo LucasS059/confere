@@ -18,11 +18,13 @@ FRESH_PROMPTS=["olá, tudo tranquilo?","não dormi bem, tô sem disposição","h
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument("run_dir",type=Path)
     p.add_argument("--fresh",action="store_true",help="Diagnóstico adicional com nome, assunto e formulações diferentes.")
-    args=p.parse_args();root=args.run_dir;output=root/("fresh-dialogue.json" if args.fresh else "open-dialogue.json")
+    p.add_argument("--checkpoint",choices=("best","last"),default="best")
+    args=p.parse_args();root=args.run_dir
+    output=root/(("fresh-dialogue" if args.fresh else "open-dialogue")+("-last" if args.checkpoint=="last" else "")+".json")
     if output.exists():p.error("Diagnóstico existente; preserve as respostas.")
     info=json.loads((root/"run.json").read_text());torch.set_num_threads(4)
     result=dict(scope="Sequência diagnóstica; a anterior já informou ajustes. Prompts e intenções individuais podem existir no treino. Leitura qualitativa, sem revisão humana independente. Não é benchmark de conversa aberta.")
-    for key,path in (("before",Path(info["resume_from"])),("after",root/"best.pt")):
+    for key,path in (("before",Path(info["resume_from"])),("after",root/(args.checkpoint+".pt"))):
         model,tokenizer,step=load_model(path)
         result[key]=dict(checkpoint=str(path),step=step,messages=capture(model,tokenizer,FRESH_PROMPTS if args.fresh else PROMPTS))
         del model

@@ -10,7 +10,7 @@ from reportlab.graphics.shapes import Drawing, Line, PolyLine, String
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether
 
 
 REPORTS = Path("output/pdf/training")
@@ -212,6 +212,7 @@ def create_report(run_dir, output=None):
         if current:
             samples = current["samples"]
     for sample in ([] if social_report else samples[:3]):
+        sample_start = len(story)
         label = sample.get("prompt", sample.get("prefix", "Não registrada"))
         if objective == "document_grounding":
             label = next((line for line in label.splitlines() if line.startswith("Requisito:")), label)
@@ -225,6 +226,9 @@ def create_report(run_dir, output=None):
             if item:
                 for evidence in item["result"]["evidence"]:
                     p("Citação recuperada (" + evidence["unit"] + "): " + evidence["quote"])
+        block = story[sample_start:]
+        del story[sample_start:]
+        story.append(KeepTogether(block))
     if not samples:
         p("Não há amostras de geração registradas para esta execução. Nenhuma foi reconstruída retroativamente.")
     if social_report:
@@ -410,6 +414,17 @@ def create_report(run_dir, output=None):
             after = fresh_dialogue["after"]["messages"][index]
             p("Você: " + after["prompt"], "Heading3")
             p("Candidato: " + (after["answer"] or "[sem texto]"))
+    for filename in ("open-dialogue-last.json", "fresh-dialogue-last.json"):
+        diagnostic = read_json(run_dir / filename)
+        if diagnostic:
+            story.append(PageBreak())
+            heading("Conversa do checkpoint final: " + ("outras formulações" if filename.startswith("fresh") else "sequência conhecida"))
+            p(diagnostic["scope"])
+            p("Saídas do último checkpoint em 1024/256, com histórico gerado. Não muda a seleção por loss nem consulta o teste reservado. Sequência completa em " + filename + ".")
+            for index in (1,2,4,6,9,10):
+                item = diagnostic["after"]["messages"][index]
+                p("Você: " + item["prompt"], "Heading3")
+                p("Modelo: " + (item["answer"] or "[sem texto]"))
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))

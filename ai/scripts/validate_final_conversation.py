@@ -20,7 +20,7 @@ def main():
     result=score(model,tokenizer,[r for r in rows if r["split"]=="validation" and r["task"].startswith("conversation_")],"mps",context_limit=1024)
     record=dict(checkpoint=str(root/"last.pt"),step=step,metrics=metrics(result,"conversation_"),result=result,
                 captures=capture(model,tokenizer,PROMPTS),test_used=False,
-                note="Exploratório após detectar 180/180 documentos no final. Não muda seleção por loss nem libera teste reservado.")
+                note="Validação exploratória do checkpoint final. Não muda seleção por loss nem libera teste reservado.")
     output.write_text(json.dumps(record,ensure_ascii=False,indent=2)+"\n")
     print(json.dumps(record["metrics"],ensure_ascii=False),flush=True);print(create_report(root))
 
