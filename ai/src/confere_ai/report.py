@@ -388,6 +388,18 @@ def create_report(run_dir, output=None):
         final_tui = read_json(run_dir / "tui-smoke-final.json")
         if final_tui:
             p(f'TUI do checkpoint final: {len(final_tui["messages"])} mensagens conferidas no piloto headless Textual com modelo real em MPS. Isso valida o transporte, não a correção semântica.')
+    open_dialogue = read_json(run_dir / "open-dialogue.json")
+    if open_dialogue:
+        story.append(PageBreak())
+        heading("Diagnóstico de conversa com contexto gerado")
+        p(open_dialogue["scope"])
+        p("Janela nativa 1024, até 256 tokens por resposta. Histórico independente para cada modelo; as próprias respostas influenciam os turnos seguintes. Casos selecionados abaixo sem edição; sequência completa em open-dialogue.json. Acerto nos templates não prova conversa natural.")
+        for index in (1,2,4,6,9,10):
+            before = open_dialogue["before"]["messages"][index]
+            after = open_dialogue["after"]["messages"][index]
+            p("Você: " + after["prompt"], "Heading3")
+            p("Origem imediata: " + (before["answer"] or "[sem texto]"))
+            p("Candidato: " + (after["answer"] or "[sem texto]"))
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))
