@@ -24,12 +24,28 @@ def document_passes(docs, minimum):
             and bool(docs["families"]) and all(c/t>=minimum for c,t in docs["families"].values()))
 
 
+def matching_cohort(left,right):
+    fields=("id","task","prompt","expected")
+    return [[r[k] for k in fields] for r in left["samples"]]==[[r[k] for k in fields] for r in right["samples"]]
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument("run_dir",type=Path)
     parser.add_argument("--perfect-documents",action="store_true",help="Exigir 100% por status antes de consultar o teste.")
+    parser.add_argument("--baseline-evaluation-run",type=Path,help="Reutilizar referência já medida, somente com coorte e janelas idênticas.")
     args=parser.parse_args();root=args.run_dir;output=root/"contrast-evaluation.json"
     if output.exists():parser.error("Avaliação existente; preserve o teste.")
     evaluation=json.loads((root/"instruction-evaluation.json").read_text())
+    reference_checkpoint=None
+    if args.baseline_evaluation_run:
+        previous=json.loads((args.baseline_evaluation_run/"instruction-evaluation.json").read_text())
+        previous_info=json.loads((args.baseline_evaluation_run/"run.json").read_text())
+        info=json.loads((root/"run.json").read_text())
+        if (not matching_cohort(evaluation["selected"],previous["baseline"])
+            or any(info[k]!=previous_info[k] for k in ("paired_evaluation_context","paired_evaluation_response_tokens"))):
+            raise ValueError("Referência em cache não corresponde à coorte ou janela pareada.")
+        evaluation["baseline"]=previous["baseline"]
+        reference_checkpoint=previous_info["baseline_checkpoint"]
     before=metrics(evaluation["baseline"],"conversation_")
     after=metrics(evaluation["selected"],"conversation_")
     docs=metrics(evaluation["selected"],"grounded_")
@@ -40,6 +56,9 @@ def main():
                 before=before,after=after,documents=docs,document_pass=doc_pass,
                 conversation_pass=conversation_pass,test=None,adopted=False)
     if args.perfect_documents:result["policy"]=result["policy"].replace(">=90% em cada status","100% em cada status")
+    if reference_checkpoint:
+        result["policy"]+=" Referência fixa reutilizada após conferir coorte e janelas: "+reference_checkpoint+". A loss e a comparação geral do treino usam a origem imediata; os critérios suplementares usam esta referência fixa."
+        result["reference_checkpoint"]=reference_checkpoint
     torch.set_num_threads(4)
     model,tokenizer,step=load_model(root/"best.pt")
     result["step"]=step;result["captures"]=capture(model,tokenizer,PROMPTS)
