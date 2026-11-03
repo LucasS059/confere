@@ -310,6 +310,36 @@ def create_report(run_dir, output=None):
             p("Alvo autoral: " + sample["expected"])
             if len(shown)==2:break
         p("Os históricos completos, respostas, famílias e falhas de cada candidato estão em flow-evaluation.json. Teste consultado não deve virar fonte de ajuste numa repetição desta avaliação.")
+    informal = read_json(run_dir / "informal-evaluation.json")
+    if informal:
+        story.append(PageBreak())
+        heading("Português informal e perguntas de continuidade")
+        p(informal["policy"])
+        p("Variações são aplicadas aos dados de treino, sem substituição de texto na CLI. Formulações de validação e teste são separadas; intenções e respostas autorais são compartilhadas. Isso mede adaptação controlada, não domínio geral de gírias. Os históricos usam as respostas da própria rede.")
+        cohort = informal["cohorts"]["informal"]
+        p(f'A validação informal contém {cohort["rows"]} turnos, {cohort["unique_prompts"]} formulações distintas e {cohort["unique_reference_contexts"]} contextos de referência distintos. Há repetição de receitas de diálogo; as contagens não representam situações semanticamente independentes.')
+        def informal_metrics(label, results):
+            for name, value in results.items():
+                groups = {}
+                for sample in value["samples"]:
+                    groups.setdefault(sample["project_id"], []).append(sample)
+                complete = sum(all(s["exact_match"] for s in group) for group in groups.values())
+                p(f'{label}, {name}: {value["correct"]}/{value["total"]} turnos; {complete}/{len(groups)} conversas completas; {sum(s["dropped_turns"] for s in value["samples"])} turnos descartados.')
+        informal_metrics("Referência", informal["baseline"])
+        for candidate in informal["candidates"]:
+            informal_metrics("Passo " + str(candidate["step"]), candidate["results"])
+            p("Critério conjunto: " + ("atingido." if candidate["passed"] else "não atingido."))
+        if informal["test"]:
+            informal_metrics("Teste reservado após seleção", {"informal": informal["test"]})
+        else:
+            p("Teste reservado não consultado: nenhum candidato passou na validação conjunta.")
+        p("Conclusão: " + ("aprovado no protocolo autoral." if informal["approved"] else "experimental; padrão da TUI preservado."))
+        p("Diagnóstico conhecido, candidato final, sem edição de respostas:")
+        for item in informal["candidates"][-1]["captures"]:
+            if item["prompt"] in ("e oq vc faz?", "e o que voce faz?", "que tipo de projetos?", "quer ser meu amigo?"):
+                p("Você: " + item["prompt"], "Heading3")
+                p("Modelo: " + (item["answer"] or "[sem texto]"))
+        p("Resultados por família, respostas e históricos completos: informal-evaluation.json. A CLI não foi alterada. Não houve avaliação de anexos completos nesta etapa.")
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))
