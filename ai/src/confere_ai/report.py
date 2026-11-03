@@ -356,6 +356,26 @@ def create_report(run_dir, output=None):
             p("Você: " + item["prompt"], "Heading3")
             p("Modelo: " + (item["answer"] or "[sem texto]"))
         p("Checkpoint documental separado; padrão da TUI preservado. Não houve integração ao aplicativo nem validação de arquivos completos. Resultados detalhados: document-transfer.json.")
+    contrasts = read_json(run_dir / "contrast-evaluation.json")
+    if contrasts:
+        story.append(PageBreak())
+        heading("Afirmação, negação e retenção de conversa")
+        p(contrasts["policy"])
+        p("Treino misto de documentos fictícios e replay de conversas autorais. Redações de falhas antigas agora são treino conhecido; as novas redações reservadas compartilham receitas e intenções com o treino. Não há avaliação independente de TCC real.")
+        value = contrasts["documents"]
+        p(f'Documentos: {value["correct"]}/{value["total"]} status e unidades corretos; formato {value["valid"]}/{value["total"]}; referência {value["references"]}/{value["total"]}.')
+        for name, (correct, total) in value["families"].items():
+            p(f'{name}: {correct}/{total}.')
+        for label in ("before", "after"):
+            value = contrasts[label]
+            p(f'Conversa {label}: {value["correct"]}/{value["total"]}; respostas com histórico gerado, limite de saída 64 na comparação pareada.')
+        p("Critério documental: " + str(contrasts["document_pass"]) + "; retenção de conversa: " + str(contrasts["conversation_pass"]) + ".")
+        p("Teste reservado consultado após validação conjunta." if contrasts["test"] else "Teste reservado não consultado: validação conjunta insuficiente.")
+        p("Checkpoint experimental separado; padrão da TUI preservado. Diagnóstico nativo, sem edição:")
+        for item in contrasts["captures"][:6]:
+            p("Você: " + item["prompt"], "Heading3")
+            p("Modelo: " + (item["answer"] or "[sem texto]"))
+        p("Históricos, resultados por família e respostas completas: contrast-evaluation.json. Ainda não valida arquivos completos, tabelas, OCR ou integração ao aplicativo.")
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))
