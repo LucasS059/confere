@@ -19,13 +19,13 @@ TOPICS={"train":["testes","backup","cronograma","orçamento","cadastro","login"]
         "test":["auditoria","importação","exportação"]}
 
 
-def documents():
+def documents(train_forms=None):
     rows=[]
     for split,count in (("train",3000),("validation",180),("test",90)):
         rng=random.Random({"train":311,"validation":312,"test":313}[split])
         for i in range(count):
             feature=rng.choice(TOPICS[split]);status=("atendido","nao_atendido","evidencia_insuficiente")[i%3]
-            pos,neg=rng.choice(FORMS[split])
+            pos,neg=rng.choice(train_forms if split=="train" and train_forms else FORMS[split])
             texts=[f"Equipe: {rng.randint(100000,999999)}.","Tema: biblioteca.","O projeto inclui acessibilidade."]
             texts.append(pos.format(feature) if status=="atendido" else neg.format(feature)
                          if status=="nao_atendido" else "A equipe documentou a reunião inicial.")

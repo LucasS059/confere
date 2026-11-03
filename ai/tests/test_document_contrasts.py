@@ -6,9 +6,23 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 from prepare_document_contrasts import documents, FORMS
 from confere_ai.instruct import acceptance
 from confere_ai.grounding import judge
+from prepare_document_lexical import LEXICAL, balanced_replay
 
 
 class DocumentContrastTests(unittest.TestCase):
+    def test_lexical_expansion_freezes_reserved_rows(self):
+        self.assertEqual([r for r in documents() if r["split"]!="train"],
+                         [r for r in documents(LEXICAL) if r["split"]!="train"])
+        self.assertTrue(any("ausência" in r["prompt"] for r in documents(LEXICAL) if r["split"]=="train"))
+
+    def test_balancing_preserves_groups_and_excludes_reserved(self):
+        rows=[dict(project_id=str(i//2),task="conversation_"+str(i//4),split="train",turn_index=i%2) for i in range(8)]
+        rows.append(dict(project_id="reserved",task="conversation_2",split="test",turn_index=0))
+        result=balanced_replay(rows,1)
+        self.assertEqual(len(result),4)
+        self.assertTrue(all(r["split"]=="train" for r in result))
+        self.assertEqual(sorted(r["turn_index"] for r in result),[0,0,1,1])
+
     def test_labels_have_correct_evidence_and_distractors(self):
         for row in documents():
             self.assertTrue(judge(row["target"],row)["exact_match"])
