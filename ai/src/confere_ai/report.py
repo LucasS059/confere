@@ -400,6 +400,16 @@ def create_report(run_dir, output=None):
             p("Você: " + after["prompt"], "Heading3")
             p("Origem imediata: " + (before["answer"] or "[sem texto]"))
             p("Candidato: " + (after["answer"] or "[sem texto]"))
+    fresh_dialogue = read_json(run_dir / "fresh-dialogue.json")
+    if fresh_dialogue:
+        story.append(PageBreak())
+        heading("Diagnóstico adicional: outros nomes e assuntos")
+        p(fresh_dialogue["scope"])
+        p("Nome Carla e assunto cinema, com formulações distintas. A sequência não entra no gradiente; sem classificação automática de qualidade. Respostas completas em fresh-dialogue.json.")
+        for index in (1,2,4,6,9,10):
+            after = fresh_dialogue["after"]["messages"][index]
+            p("Você: " + after["prompt"], "Heading3")
+            p("Candidato: " + (after["answer"] or "[sem texto]"))
     def footer(canvas, doc):
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#526777"))

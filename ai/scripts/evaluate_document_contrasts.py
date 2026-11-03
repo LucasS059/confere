@@ -29,6 +29,10 @@ def matching_cohort(left,right):
     return [[r[k] for k in fields] for r in left["samples"]]==[[r[k] for k in fields] for r in right["samples"]]
 
 
+def matching_validation_rows(left,right):
+    return [r for r in left if r["split"]=="validation"]==[r for r in right if r["split"]=="validation"]
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument("run_dir",type=Path)
     parser.add_argument("--perfect-documents",action="store_true",help="Exigir 100% por status antes de consultar o teste.")
@@ -41,7 +45,11 @@ def main():
         previous=json.loads((args.baseline_evaluation_run/"instruction-evaluation.json").read_text())
         previous_info=json.loads((args.baseline_evaluation_run/"run.json").read_text())
         info=json.loads((root/"run.json").read_text())
+        current_rows,current_hash=load_instructions(Path(info["data"]))
+        previous_rows,previous_hash=load_instructions(Path(previous_info["data"]))
         if (not matching_cohort(evaluation["selected"],previous["baseline"])
+            or current_hash!=info["dataset_fingerprint"] or previous_hash!=previous_info["dataset_fingerprint"]
+            or not matching_validation_rows(current_rows,previous_rows)
             or any(info[k]!=previous_info[k] for k in ("paired_evaluation_context","paired_evaluation_response_tokens"))):
             raise ValueError("Referência em cache não corresponde à coorte ou janela pareada.")
         evaluation["baseline"]=previous["baseline"]

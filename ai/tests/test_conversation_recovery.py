@@ -7,10 +7,16 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 from prepare_conversation_recovery import recovery_rows
 from confere_ai.instruct import load_instructions
-from evaluate_document_contrasts import matching_cohort
+from evaluate_document_contrasts import matching_cohort, matching_validation_rows
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_cached_reference_also_requires_initial_history_to_match(self):
+        rows=[dict(split="validation",history=[["oi","olá"]],prompt="seu nome?",target="Confere")]
+        changed=[dict(rows[0],history=[["outra pergunta","outra resposta"]])]
+        self.assertFalse(matching_validation_rows(rows,changed))
+        self.assertTrue(matching_validation_rows(rows,rows+[dict(split="train",prompt="novo")]))
+
     def test_cached_reference_requires_same_order_prompts_and_targets(self):
         rows=[dict(id="a",task="conversation_fixture",prompt="oi",expected="olá"),
               dict(id="b",task="grounded_atendido",prompt="requisito",expected="json")]
