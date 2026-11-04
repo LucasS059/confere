@@ -11,16 +11,12 @@ export function createAuth() {
   return betterAuth({
     database: drizzleAdapter(db, {
       provider: "pg",
-
       schema: schema,
     }),
     trustedOrigins: [
       env.CORS_ORIGIN,
-      "confere://",
       "confere://*",
-      "exp://",
       "exp://*",
-      "http://localhost:8081",
     ],
     emailAndPassword: {
       enabled: true,

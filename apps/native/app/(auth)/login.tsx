@@ -25,7 +25,7 @@ const GOOGLE_COLORS = ["#EA4335", "#4285F4", "#FBBC05", "#34A853"];
 export default function Login() {
   const router = useRouter();
   const { toast } = useToast();
-  const passwordRef = useRef<TextInput>(null);
+  const passwordRef = useRef<any>(null);
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,7 +50,9 @@ export default function Login() {
             ? "E-mail ou senha incorretos"
             : "Não foi possível entrar. Tente novamente.",
         );
+        return;
       }
+      router.replace("/(tabs)");
     } catch {
       showError("Sem conexão com o servidor. Tente novamente.");
     } finally {

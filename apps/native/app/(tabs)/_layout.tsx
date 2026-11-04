@@ -52,7 +52,9 @@ function LiquidGlassTabBar({
   state,
   descriptors,
   navigation,
-}: BottomTabBarProps) {
+  emitter,
+  navigateToTab,
+}: any) {
   const insets = useSafeAreaInsets();
   const brandColor = (useCSSVariable("--color-brand") as string) || "#2F6BFF";
   const inactiveColor = (useCSSVariable("--ink2") as string) || "#5B6270";
@@ -76,13 +78,13 @@ function LiquidGlassTabBar({
           const tintColor = isFocused ? brandColor : inactiveColor;
 
           const onPress = () => {
-            const event = navigation.emit({
+            const event = (emitter?.emit ?? navigation?.emit)?.({
               type: "tabPress",
               target: route.key,
               canPreventDefault: true,
             });
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name, route.params);
+            if (!isFocused && !event?.defaultPrevented) {
+              navigateToTab ? navigateToTab(route.key) : navigation?.navigate?.(route.name, route.params);
             }
           };
 

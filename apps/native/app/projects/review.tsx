@@ -1,47 +1,82 @@
-import { useRouter } from "expo-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useToast } from "heroui-native";
 import { useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/blob";
 import { Icon } from "@/components/icon";
 import { ScreenHeader } from "@/components/screen-header";
-
-interface RequirementItem {
-  id: string;
-  title: string;
-  code?: string;
-  checked: boolean;
-  warning?: string;
-  disabledNote?: string;
-}
+import { trpc } from "@/utils/trpc";
 
 export default function ReviewRequirementsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [items, setItems] = useState<RequirementItem[]>([]);
+  const { toast } = useToast();
+  const { projectId } = useLocalSearchParams<{ projectId: string }>();
+
   const [newTitle, setNewTitle] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
-  function toggleItem(id: string) {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      )
-    );
+  const queryClient = useQueryClient();
+
+  // Busca projeto do banco
+  const { data: projectData, isLoading } = useQuery(
+    trpc.project.getById.queryOptions(
+      { id: projectId || "" },
+      { enabled: Boolean(projectId) },
+    ),
+  );
+
+  const toggleMutation = useMutation(
+    trpc.project.toggleRequirement.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries(
+          trpc.project.getById.queryFilter({ id: projectId || "" }),
+        );
+      },
+    }),
+  );
+
+  const addMutation = useMutation(
+    trpc.project.addRequirement.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries(
+          trpc.project.getById.queryFilter({ id: projectId || "" }),
+        );
+        setNewTitle("");
+        setIsAdding(false);
+        toast.show({ label: "Requisito adicionado!" });
+      },
+      onError: (err) => {
+        toast.show({ variant: "danger", label: err.message || "Erro ao adicionar" });
+      },
+    }),
+  );
+
+  function handleToggle(requirementId: string, currentChecked: boolean) {
+    toggleMutation.mutate({
+      requirementId,
+      checked: !currentChecked,
+    });
   }
 
   function handleAddRequirement() {
-    if (!newTitle.trim()) return;
-    const newItem: RequirementItem = {
-      id: String(Date.now()),
+    if (!newTitle.trim() || !projectId) return;
+    addMutation.mutate({
+      projectId,
       title: newTitle.trim(),
-      checked: true,
-    };
-    setItems((prev) => [...prev, newItem]);
-    setNewTitle("");
-    setIsAdding(false);
+    });
   }
 
+  const items = projectData?.requirements || [];
   const selectedCount = items.filter((i) => i.checked).length;
 
   return (
@@ -57,21 +92,7 @@ export default function ReviewRequirementsScreen() {
 
       <ScreenHeader
         title="Revisar requisitos"
-        subtitle="requisitos do projeto"
-        rightElement={
-          <Pressable
-            onPress={() => setIsAdding((prev) => !prev)}
-            hitSlop={8}
-            className="size-9 items-center justify-center rounded-full border border-line-glass bg-glass"
-          >
-            <Icon
-              name={isAdding ? "xmark" : "plus"}
-              fallback={isAdding ? "close" : "add"}
-              size={18}
-              color="#2F6BFF"
-            />
-          </Pressable>
-        }
+        subtitle={projectData?.name || "Requisitos da rubrica"}
       />
 
       <ScrollView
@@ -79,151 +100,135 @@ export default function ReviewRequirementsScreen() {
         contentContainerStyle={{
           paddingHorizontal: 20,
           paddingTop: 16,
-          paddingBottom: insets.bottom + 100,
+          paddingBottom: insets.bottom + 120,
         }}
       >
-        {isAdding && (
-          <View className="mb-4 rounded-2xl border border-brand/30 bg-glass p-3.5 shadow-sm gap-2.5">
-            <Text className="text-[13px] font-semibold text-ink">
-              Adicionar requisito manual
+        <View className="mb-4 flex-row items-center justify-between">
+          <Text className="text-[14px] text-ink2">
+            Critérios selecionados:{" "}
+            <Text className="font-bold text-ink">
+              {selectedCount}/{items.length}
             </Text>
-            <View className="h-11 justify-center rounded-xl border border-line bg-canvas px-3">
-              <TextInput
-                value={newTitle}
-                onChangeText={setNewTitle}
-                placeholder="Ex: Resumo em português e inglês"
-                placeholderTextColor="#94A3B8"
-                className="text-[14px] text-ink"
-              />
-            </View>
-            <Pressable
-              onPress={handleAddRequirement}
-              className="h-10 items-center justify-center rounded-xl bg-brand active:opacity-90"
-            >
-              <Text className="text-[13px] font-semibold text-white">
-                Adicionar
-              </Text>
-            </Pressable>
-          </View>
-        )}
-
-        <View className="mb-4 flex-row items-center gap-2.5 rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-          <Icon
-            name="info.circle"
-            fallback="information-circle-outline"
-            size={18}
-            color="#2F6BFF"
-          />
-          <Text className="flex-1 text-[13px] leading-snug text-ink2">
-            <Text className="font-semibold text-ink">
-              {items.length} requisitos encontrados.
-            </Text>{" "}
-            Toque para editar ou marcar o que se aplica.
           </Text>
+
+          <Pressable
+            onPress={() => setIsAdding(!isAdding)}
+            className="flex-row items-center gap-1 rounded-xl bg-brand/10 px-3 py-1.5 active:opacity-75"
+          >
+            <Icon name="plus" fallback="add" size={14} color="#2F6BFF" />
+            <Text className="text-[13px] font-semibold text-brand">
+              Adicionar
+            </Text>
+          </Pressable>
         </View>
 
-        {items.length === 0 ? (
-          <View className="items-center rounded-3xl border border-line-glass bg-glass p-8 text-center shadow-sm">
-            <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
-              <Icon
-                name="list.bullet"
-                fallback="list-outline"
-                size={22}
-                color="#2F6BFF"
-              />
+        {isAdding ? (
+          <View className="mb-4 rounded-2xl border border-line-glass bg-glass p-3 shadow-sm">
+            <TextInput
+              value={newTitle}
+              onChangeText={setNewTitle}
+              placeholder="Descreva o critério da rubrica..."
+              placeholderTextColor="#94A3B8"
+              autoFocus
+              className="mb-3 font-instrument text-[14px] text-ink"
+            />
+            <View className="flex-row justify-end gap-2">
+              <Pressable
+                onPress={() => setIsAdding(false)}
+                className="rounded-xl px-3 py-1.5"
+              >
+                <Text className="text-[13px] text-ink2">Cancelar</Text>
+              </Pressable>
+              <Pressable
+                onPress={handleAddRequirement}
+                disabled={addMutation.isPending}
+                className="rounded-xl bg-brand px-3 py-1.5"
+              >
+                {addMutation.isPending ? (
+                  <ActivityIndicator color="#fff" size="small" />
+                ) : (
+                  <Text className="text-[13px] font-semibold text-white">
+                    Salvar
+                  </Text>
+                )}
+              </Pressable>
             </View>
-            <Text className="text-[16px] font-semibold text-ink">
+          </View>
+        ) : null}
+
+        {isLoading ? (
+          <ActivityIndicator className="my-10" color="#2F6BFF" />
+        ) : items.length === 0 ? (
+          <View className="items-center justify-center rounded-3xl border border-line-glass bg-glass p-8 text-center my-6">
+            <Icon
+              name="list.bullet.rectangle"
+              fallback="list-outline"
+              size={36}
+              color="#94A3B8"
+            />
+            <Text className="mt-3 text-[16px] font-bold text-ink">
               Nenhum requisito cadastrado
             </Text>
-            <Text className="mt-1 text-center text-[13px] text-ink3 leading-relaxed">
-              Toque no botão + acima para adicionar regras ou avance para criar
-              requisitos depois.
+            <Text className="mt-1 text-center text-[13px] text-ink2">
+              Clique em "+ Adicionar" acima para cadastrar os critérios da rubrica.
             </Text>
           </View>
         ) : (
-          <View className="gap-3">
-            {items.map((item) => {
-              return (
-                <Pressable
-                  key={item.id}
-                  onPress={() => toggleItem(item.id)}
-                  className={`rounded-2xl border p-4 shadow-sm ${
+          <View className="gap-2.5">
+            {items.map((item) => (
+              <Pressable
+                key={item.id}
+                onPress={() => handleToggle(item.id, item.checked)}
+                className="flex-row items-center gap-3.5 rounded-2xl border border-line-glass bg-glass p-4 shadow-sm active:bg-card/60"
+              >
+                <View
+                  className={`size-6 items-center justify-center rounded-lg border ${
                     item.checked
-                      ? "border-line-glass bg-glass"
-                      : "border-line/40 bg-card/40 opacity-60"
+                      ? "border-brand bg-brand"
+                      : "border-line bg-card"
                   }`}
                 >
-                  <View className="flex-row items-start gap-3">
-                    <View
-                      className={`mt-0.5 size-5 items-center justify-center rounded-md border ${
-                        item.checked
-                          ? "border-brand bg-brand"
-                          : "border-line bg-canvas"
-                      }`}
-                    >
-                      {item.checked && (
-                        <Icon
-                          name="checkmark"
-                          fallback="checkmark"
-                          size={13}
-                          color="#FFFFFF"
-                        />
-                      )}
-                    </View>
+                  {item.checked ? (
+                    <Icon
+                      name="checkmark"
+                      fallback="checkmark"
+                      size={14}
+                      color="#fff"
+                    />
+                  ) : null}
+                </View>
 
-                    <View className="flex-1 gap-1.5">
-                      <Text
-                        className={`text-[15px] font-medium leading-snug ${
-                          item.disabledNote
-                            ? "line-through text-ink3"
-                            : item.checked
-                            ? "text-ink"
-                            : "text-ink3"
-                        }`}
-                      >
-                        {item.title}
-                      </Text>
-
-                      {item.code ? (
-                        <Text className="font-mono text-[12px] text-ink3">
-                          {item.code}
-                        </Text>
-                      ) : null}
-
-                      {item.warning ? (
-                        <View className="mt-1 rounded-xl border border-warn/30 bg-warn/10 p-2.5">
-                          <Text className="text-[12px] font-medium leading-snug text-warn">
-                            {item.warning}
-                          </Text>
-                        </View>
-                      ) : null}
-
-                      {item.disabledNote ? (
-                        <Text className="text-[12px] italic text-ink3">
-                          {item.disabledNote}
-                        </Text>
-                      ) : null}
-                    </View>
-                  </View>
-                </Pressable>
-              );
-            })}
+                <Text
+                  className={`flex-1 text-[15px] ${
+                    item.checked
+                      ? "font-medium text-ink"
+                      : "text-ink3 line-through"
+                  }`}
+                >
+                  {item.title}
+                </Text>
+              </Pressable>
+            ))}
           </View>
         )}
       </ScrollView>
 
+      {/* Barra de Ação Inferior */}
       <View
         style={{ paddingBottom: Math.max(insets.bottom, 16) }}
-        className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-canvas/90 px-5 pt-3"
+        className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-glass p-4 backdrop-blur-md"
       >
         <Pressable
-          onPress={() => router.push("/projects/details")}
-          className="h-13 items-center justify-center rounded-2xl bg-brand shadow-lg shadow-brand/25 active:opacity-90"
+          onPress={() => {
+            router.push({
+              pathname: "/projects/submission",
+              params: { projectId: projectId || "" },
+            });
+          }}
+          className="h-[52px] items-center justify-center rounded-2xl bg-brand shadow-brand-button active:opacity-85"
         >
-          <Text className="text-[16px] font-semibold text-white">
-            {selectedCount > 0
-              ? `Salvar ${selectedCount} requisitos`
-              : "Avançar para o projeto"}
+          <Text className="font-instrument-semibold text-[15px] text-white">
+            Avançar para entrega do trabalho
           </Text>
         </Pressable>
       </View>

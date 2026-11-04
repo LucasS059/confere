@@ -39,8 +39,8 @@ export default function SignUpScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { toast } = useToast();
-  const emailRef = useRef<TextInput>(null);
-  const passwordRef = useRef<TextInput>(null);
+  const emailRef = useRef<any>(null);
+  const passwordRef = useRef<any>(null);
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
 
   const [name, setName] = useState("");
@@ -82,7 +82,9 @@ export default function SignUpScreen() {
         showError(
           error.message || "Não foi possível criar sua conta. Tente novamente.",
         );
+        return;
       }
+      router.replace("/(tabs)");
     } catch {
       showError("Sem conexão com o servidor. Tente novamente.");
     } finally {
