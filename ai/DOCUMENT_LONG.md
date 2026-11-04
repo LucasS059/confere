@@ -82,3 +82,45 @@ ai/.venv/bin/python ai/scripts/evaluate_long_documents.py CAMINHO_EXECUCAO_NOVO 
 O relatório combina treino e avaliação conjunta. Os arquivos brutos do piloto
 novo ficam em `full-file-validation.json` dentro da execução; as decisões e
 métricas por família ficam em `long-document-evaluation.json`.
+
+## Resultado
+
+Execução `document-long-2026-11-04`: 2.000 atualizações em 251,03 segundos do
+laço. Foram processados 2.384 exemplos documentais, com repetição. Selecionado
+por loss: passo 1.200, loss 0,03543; final do treino 0,03836, ante 0,39273 no
+estado inicial. Preparação e avaliação gerativa não estão nessa duração.
+
+| Coorte de validação | Origem | Selecionado |
+| --- | ---: | ---: |
+| Trechos longos | 0/144 | 87/144 |
+| Documentos curtos anteriores | 180/180 | 168/180 |
+| Turnos de conversa | 775/871 | 769/871 |
+
+Nos trechos longos, presença 40/48, negação 0/48 e evidência insuficiente 47/48;
+143/144 saídas com formato e referência válidos. A forma de negação usada na
+validação longa não foi generalizada: o modelo marcou presença em todos os
+casos negativos. Nos curtos, presença e negação caíram para 54/60 cada; falta
+de evidência ficou em 60/60. A conversa teve regressões em repetição, pedidos
+compostos, reparos e outras famílias, detalhadas no JSON e no PDF.
+
+Repetição dos arquivos completos: os mesmos 28.906 caracteres foram percorridos
+por requisito em 57 lotes. Saídas inválidas caíram de 54 para 9, mas nenhuma
+das 48 citações do novo modelo continha a frase autoral que sustentaria sua
+classificação. Os três resultados ficaram inconclusivos. O conflito sinalizado
+nos testes foi espúrio; o conflito real do backup não foi detectado. Formato
+melhor não demonstrou interpretação melhor nesse piloto.
+
+**Os quatro critérios reprovaram.** Não foi consultado o teste reservado, não
+houve promoção e o padrão da TUI permanece o mesmo. O checkpoint próprio do
+experimento está em `ai/runs/document-long-2026-11-04/best.pt`, SHA-256
+`26282db798388af904193b24190d0bfc6a1a14ef0cceeff2f8ad49f97a21acd7`.
+
+Artefatos versionados: [métricas e proveniência](../output/ai/document-long-2026-11-04.json),
+[respostas brutas dos arquivos completos](../output/ai/document-long-full-files-2026-11-04.json)
+e [relatório de treino e avaliação](../output/pdf/training/document-long-2026-11-04.pdf).
+Os pesos e o corpus permanecem locais. Os 115 testes de software passaram;
+eles não substituem a avaliação da qualidade do modelo.
+
+Próximo foco: pares mínimos longos com variações de negação e controle de
+evidência irrelevante, além de retenção estratificada de conversa e documentos
+curtos. Mais passos nesse mesmo currículo não garantem resolver as falhas.

@@ -51,6 +51,10 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    no piloto PDF/DOCX; a interpretação falhou e os três resultados ficaram
    inconclusivos. Nenhum treino novo, padrão de chat alterado ou integração ao
    aplicativo. As metas conjuntas das etapas 2 e 3 continuam abertas.
+   O [treino de contextos longos](DOCUMENT_LONG.md) fez 2.000 atualizações:
+   87/144 trechos longos, 168/180 curtos e 769/871 turnos de conversa. Negações
+   longas 0/48 e nenhuma das 48 citações do piloto completo sustentou o rótulo.
+   Critérios conjuntos reprovados; teste reservado e padrão da TUI preservados.
 
 Os TCCs candidatos não foram usados para treinar. Disponibilidade pública não
 substitui verificação de licença nem anotação de evidências. Se não obtivermos

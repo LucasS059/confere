@@ -75,6 +75,11 @@ ai/.venv/bin/python ai/scripts/evaluate_full_files.py \
 
 ## Continuação
 
+O [primeiro treino de contextos longos](DOCUMENT_LONG.md) foi executado em
+04/11. Melhorou o formato, mas reprovou interpretação e retenção; o checkpoint
+experimental não foi promovido. O guia acima mantém explícito o modelo do
+piloto original para preservar sua reprodução.
+
 Preparar treino e validação separados por projeto com contextos extensos,
 distratores, evidência distante e contradições entre arquivos. Medir formato,
 suporte semântico e retenção de conversa juntos antes de promover pesos.
