@@ -410,7 +410,7 @@ def create_report(run_dir, output=None):
                 p("Regressões por família ante a origem: " + ("; ".join(f'{family}: {old["families"][family][0]}/{t} para {c}/{t}' for family,(c,t) in new["families"].items() if c<old["families"][family][0]) or "nenhuma") + ".")
         for label in ("pilot_before","pilot_after"):
             pilot=long_documents[label]
-            p(f'{label}: ' + ", ".join(pilot["statuses"]) + f'. Saídas inválidas: {pilot["audit"]["invalid_calls"]}; citações literais: {pilot["audit"]["literal_quotes_verified"]}.')
+            p(f'{label}: ' + ", ".join(pilot["statuses"]) + f'. Saídas inválidas: {pilot["audit"]["invalid_calls"]}; citações literais: {pilot["audit"]["literal_quotes_verified"]}; com suporte às frases autorais do piloto: {pilot["supported_citations"]}.')
         p("Critérios: " + "; ".join(f'{name}: {passed}' for name,passed in long_documents["gates"].items()) + ".")
         p("Teste reservado não consultado; padrão da TUI preservado. Piloto com PDF textual e DOCX fictícios: não valida TCC real, OCR ou aplicativo.")
         for row in long_documents["failed_long_examples"]:

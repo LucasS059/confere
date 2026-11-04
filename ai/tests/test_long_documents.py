@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 from prepare_long_documents import long_rows
-from evaluate_long_documents import gates, full_file_gate
+from evaluate_long_documents import gates, full_file_gate, supported_citations
 from confere_ai.grounding import judge
 from confere_ai.project_review import input_ids
 from confere_ai.tokenizer import ByteBPE
@@ -21,8 +21,10 @@ class LongDocumentsTests(unittest.TestCase):
         phrases=[[("atendido","O projeto inclui testes.")],[("atendido","O projeto inclui backup."),("nao_atendido","O projeto não inclui backup.")],[("atendido","O projeto inclui relatórios.")]]
         for row,pairs in zip(rows,phrases):row["evidence"]=[dict(model_status=s,quote=t) for s,t in pairs]
         self.assertTrue(full_file_gate(dict(requirements=rows),audit))
+        self.assertEqual(supported_citations(dict(requirements=rows)),4)
         rows[0]["evidence"][0]["quote"]="Equipe: registro de atividades."
         self.assertFalse(full_file_gate(dict(requirements=rows),audit))
+        self.assertEqual(supported_citations(dict(requirements=rows)),3)
 
     def test_joint_gate_rejects_invalid_output_and_family_regression(self):
         import copy

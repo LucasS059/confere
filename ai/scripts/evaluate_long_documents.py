@@ -11,6 +11,15 @@ from confere_ai.report import create_report
 from evaluate_document_contrasts import metrics, document_passes, matching_cohort
 from evaluate_full_files import audit_result
 
+PILOT_SUPPORT=[[("atendido","O projeto inclui testes.")],
+               [("atendido","O projeto inclui backup."),("nao_atendido","O projeto não inclui backup.")],
+               [("atendido","O projeto inclui relatórios.")]]
+
+
+def supported_citations(result):
+    return sum(any(e["model_status"]==status and phrase in e["quote"] for status,phrase in pairs)
+               for row,pairs in zip(result["requirements"],PILOT_SUPPORT) for e in row["evidence"])
+
 
 def cohorts(result):
     return {name:metrics(dict(samples=[r for r in result["samples"] if predicate(r)]),prefix)
@@ -32,12 +41,9 @@ def gates(before,after):
 
 def full_file_gate(result,audit):
     # Oráculo restrito às frases autorais do piloto conhecido, sem julgar texto livre.
-    expected=[[("atendido","O projeto inclui testes.")],
-              [("atendido","O projeto inclui backup."),("nao_atendido","O projeto não inclui backup.")],
-              [("atendido","O projeto inclui relatórios.")]]
     if ([r["status"] for r in result["requirements"]]!=audit["expected_statuses"]
         or not result["requirements"][1]["conflicting_evidence"] or audit["invalid_calls"]):return False
-    for row,pairs in zip(result["requirements"],expected):
+    for row,pairs in zip(result["requirements"],PILOT_SUPPORT):
         evidence=row["evidence"]
         if not all(any(e["model_status"]==status and phrase in e["quote"] for e in evidence) for status,phrase in pairs):return False
         if any(not any(e["model_status"]==status and phrase in e["quote"] for status,phrase in pairs) for e in evidence):return False
@@ -70,8 +76,10 @@ def main():
                                 baseline_checkpoint_sha256=pilot["model"]["sha256"],
                                 pilot_source_sha256=[d["sha256"] for d in documents]),
                 passed=all(checks.values()),adopted=False,test_used=False,
-                pilot_before=dict(statuses=[r["status"] for r in pilot["requirements"]],audit=audit_result(pilot,documents)),
+                pilot_before=dict(statuses=[r["status"] for r in pilot["requirements"]],audit=audit_result(pilot,documents),
+                                  supported_citations=supported_citations(pilot)),
                 pilot_after=dict(statuses=[r["status"] for r in full["requirements"]],audit=audit,
+                                 supported_citations=supported_citations(full),
                                  conflicting_evidence=[r["conflicting_evidence"] for r in full["requirements"]]),
                 failed_long_examples=[r for r in evaluation["selected"]["samples"] if r["id"].startswith("long-") and not r["exact_match"]][:3],
                 note="Validação autoral, receitas compartilhadas. Piloto completo já conhecido pelo diagnóstico, fora do gradiente mas não independente. Citação literal não prova suporte semântico. Checkpoint e padrão da TUI preservados separadamente.")

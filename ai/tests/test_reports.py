@@ -17,7 +17,7 @@ class ReportTests(unittest.TestCase):
             (root/"metrics.jsonl").write_text(json.dumps(dict(step=1,train_loss=1.,validation_loss=1.)))
             docs=dict(correct=3,total=3,valid=3,references=3,families={"grounded_atendido":[3,3]})
             cohorts=dict(short_documents=docs,long_documents=docs,conversation=dict(correct=5,total=10,families={"conversation_memory":[5,10]}))
-            pilot=dict(statuses=["evidencia_insuficiente"],audit=dict(invalid_calls=54,literal_quotes_verified=3))
+            pilot=dict(statuses=["evidencia_insuficiente"],audit=dict(invalid_calls=54,literal_quotes_verified=3),supported_citations=0)
             record=dict(policy="Política conjunta",note="Receitas compartilhadas",before=cohorts,after=cohorts,
                         pilot_before=pilot,pilot_after=pilot,gates=dict(conversation=False),failed_long_examples=[])
             (root/"long-document-evaluation.json").write_text(json.dumps(record))
