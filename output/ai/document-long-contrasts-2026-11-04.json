@@ -1,0 +1,516 @@
+{
+  "policy": "Selecionado por menor loss. Documentos curtos: 100% por status. Longos: >=90% por status. Ambos: 100% formato/referências. Conversa: >=80% por família, sem queda por família ou agregado ante a origem, janela 1024/64. Piloto completo: todos os rótulos, conflito do backup, citações com as frases autorais corretas e zero saída inválida. Nenhuma promoção automática ou abertura do teste neste experimento.",
+  "selected_step": 1200,
+  "before": {
+    "conversation": {
+      "correct": 769,
+      "total": 871,
+      "families": {
+        "conversation_capability": [
+          25,
+          26
+        ],
+        "conversation_memory": [
+          96,
+          96
+        ],
+        "conversation_repeat": [
+          40,
+          46
+        ],
+        "conversation_clarify": [
+          37,
+          38
+        ],
+        "conversation_repair": [
+          33,
+          33
+        ],
+        "conversation_definition": [
+          28,
+          32
+        ],
+        "conversation_identity": [
+          8,
+          8
+        ],
+        "conversation_insufficient": [
+          16,
+          16
+        ],
+        "conversation_social_context": [
+          24,
+          24
+        ],
+        "conversation_social": [
+          21,
+          24
+        ],
+        "conversation_guidance": [
+          56,
+          72
+        ],
+        "conversation_wellbeing": [
+          37,
+          48
+        ],
+        "conversation_composed": [
+          31,
+          48
+        ],
+        "conversation_misunderstanding": [
+          10,
+          12
+        ],
+        "conversation_closure": [
+          10,
+          12
+        ],
+        "conversation_flow_greeting": [
+          16,
+          16
+        ],
+        "conversation_flow_acknowledgement": [
+          16,
+          16
+        ],
+        "conversation_flow_identity": [
+          24,
+          24
+        ],
+        "conversation_flow_negation": [
+          24,
+          24
+        ],
+        "conversation_flow_switch": [
+          24,
+          24
+        ],
+        "conversation_flow_closure": [
+          16,
+          16
+        ],
+        "conversation_flow_state": [
+          28,
+          32
+        ],
+        "conversation_flow_topic": [
+          29,
+          32
+        ],
+        "conversation_flow_repair": [
+          8,
+          8
+        ],
+        "conversation_slang_hello": [
+          16,
+          24
+        ],
+        "conversation_slang_identity": [
+          20,
+          24
+        ],
+        "conversation_slang_function": [
+          14,
+          24
+        ],
+        "conversation_slang_scope": [
+          21,
+          24
+        ],
+        "conversation_slang_praise": [
+          22,
+          24
+        ],
+        "conversation_slang_negation": [
+          19,
+          24
+        ]
+      },
+      "valid": 0,
+      "references": 0
+    },
+    "short_documents": {
+      "correct": 168,
+      "total": 180,
+      "families": {
+        "grounded_atendido": [
+          54,
+          60
+        ],
+        "grounded_nao_atendido": [
+          54,
+          60
+        ],
+        "grounded_evidencia_insuficiente": [
+          60,
+          60
+        ]
+      },
+      "valid": 180,
+      "references": 180
+    },
+    "long_documents": {
+      "correct": 87,
+      "total": 144,
+      "families": {
+        "grounded_atendido": [
+          40,
+          48
+        ],
+        "grounded_nao_atendido": [
+          0,
+          48
+        ],
+        "grounded_evidencia_insuficiente": [
+          47,
+          48
+        ]
+      },
+      "valid": 143,
+      "references": 143
+    }
+  },
+  "after": {
+    "conversation": {
+      "correct": 796,
+      "total": 871,
+      "families": {
+        "conversation_capability": [
+          25,
+          26
+        ],
+        "conversation_memory": [
+          96,
+          96
+        ],
+        "conversation_repeat": [
+          46,
+          46
+        ],
+        "conversation_clarify": [
+          37,
+          38
+        ],
+        "conversation_repair": [
+          33,
+          33
+        ],
+        "conversation_definition": [
+          28,
+          32
+        ],
+        "conversation_identity": [
+          8,
+          8
+        ],
+        "conversation_insufficient": [
+          16,
+          16
+        ],
+        "conversation_social_context": [
+          24,
+          24
+        ],
+        "conversation_social": [
+          21,
+          24
+        ],
+        "conversation_guidance": [
+          58,
+          72
+        ],
+        "conversation_wellbeing": [
+          37,
+          48
+        ],
+        "conversation_composed": [
+          37,
+          48
+        ],
+        "conversation_misunderstanding": [
+          12,
+          12
+        ],
+        "conversation_closure": [
+          12,
+          12
+        ],
+        "conversation_flow_greeting": [
+          16,
+          16
+        ],
+        "conversation_flow_acknowledgement": [
+          16,
+          16
+        ],
+        "conversation_flow_identity": [
+          24,
+          24
+        ],
+        "conversation_flow_negation": [
+          24,
+          24
+        ],
+        "conversation_flow_switch": [
+          24,
+          24
+        ],
+        "conversation_flow_closure": [
+          16,
+          16
+        ],
+        "conversation_flow_state": [
+          30,
+          32
+        ],
+        "conversation_flow_topic": [
+          26,
+          32
+        ],
+        "conversation_flow_repair": [
+          8,
+          8
+        ],
+        "conversation_slang_hello": [
+          16,
+          24
+        ],
+        "conversation_slang_identity": [
+          20,
+          24
+        ],
+        "conversation_slang_function": [
+          17,
+          24
+        ],
+        "conversation_slang_scope": [
+          24,
+          24
+        ],
+        "conversation_slang_praise": [
+          24,
+          24
+        ],
+        "conversation_slang_negation": [
+          21,
+          24
+        ]
+      },
+      "valid": 0,
+      "references": 0
+    },
+    "short_documents": {
+      "correct": 180,
+      "total": 180,
+      "families": {
+        "grounded_atendido": [
+          60,
+          60
+        ],
+        "grounded_nao_atendido": [
+          60,
+          60
+        ],
+        "grounded_evidencia_insuficiente": [
+          60,
+          60
+        ]
+      },
+      "valid": 180,
+      "references": 180
+    },
+    "long_documents": {
+      "correct": 126,
+      "total": 144,
+      "families": {
+        "grounded_atendido": [
+          37,
+          48
+        ],
+        "grounded_nao_atendido": [
+          42,
+          48
+        ],
+        "grounded_evidencia_insuficiente": [
+          47,
+          48
+        ]
+      },
+      "valid": 143,
+      "references": 143
+    }
+  },
+  "gates": {
+    "short_documents": true,
+    "long_documents": false,
+    "conversation": false,
+    "full_files": false
+  },
+  "provenance": {
+    "dataset_sha256": "df80c1ee52205ff72356ca194f7d7818be8a195b32d2604625c656859345f4ad",
+    "checkpoint_sha256": "d86d03e807bc1da34fd813e3797a8149e2d893f71d95ee92ae84bbeb941d11d0",
+    "baseline_checkpoint_sha256": "26282db798388af904193b24190d0bfc6a1a14ef0cceeff2f8ad49f97a21acd7",
+    "pilot_source_sha256": [
+      "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+      "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92"
+    ]
+  },
+  "passed": false,
+  "adopted": false,
+  "test_used": false,
+  "pilot_before": {
+    "statuses": [
+      "evidencia_insuficiente",
+      "evidencia_insuficiente",
+      "evidencia_insuficiente"
+    ],
+    "audit": {
+      "contiguous_text_coverage_verified": true,
+      "literal_quotes_verified": 48,
+      "invalid_calls": 9,
+      "expected_statuses": [
+        "atendido",
+        "evidencia_insuficiente",
+        "atendido"
+      ],
+      "expected_note": "Rótulos por construção em três casos fictícios; sem revisão independente de semântica."
+    },
+    "supported_citations": 0
+  },
+  "pilot_after": {
+    "statuses": [
+      "evidencia_insuficiente",
+      "evidencia_insuficiente",
+      "evidencia_insuficiente"
+    ],
+    "audit": {
+      "contiguous_text_coverage_verified": true,
+      "literal_quotes_verified": 18,
+      "invalid_calls": 3,
+      "expected_statuses": [
+        "atendido",
+        "evidencia_insuficiente",
+        "atendido"
+      ],
+      "expected_note": "Rótulos por construção em três casos fictícios; sem revisão independente de semântica."
+    },
+    "supported_citations": 0,
+    "conflicting_evidence": [
+      true,
+      true,
+      true
+    ]
+  },
+  "failed_long_examples": [
+    {
+      "id": "long-validation-3",
+      "task": "grounded_atendido",
+      "prompt": "Confira o requisito. Retorne JSON com status e unit.\nRequisito: O projeto deve incluir busca.\n[page:1] Registro long-validation-3-0. Foi confirmada a presença de busca. O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3. \n[page:2] Registro long-validation-3-1. O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3. ",
+      "expected": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+      "actual": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+      "valid_format": true,
+      "reference_valid": true,
+      "result": {
+        "status": "atendido",
+        "evidence": [
+          {
+            "document": "long-validation-3.pdf",
+            "unit": "page:2",
+            "quote": "Registro long-validation-3-1. O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-3. "
+          }
+        ],
+        "justification": "Classificação experimental do modelo; trecho selecionado na fonte. Suporte semântico ainda exige verificação."
+      },
+      "status_correct": true,
+      "unit_correct": false,
+      "exact_match": false
+    },
+    {
+      "id": "long-validation-39",
+      "task": "grounded_atendido",
+      "prompt": "Confira o requisito. Retorne JSON com status e unit.\nRequisito: O projeto deve incluir relatórios.\n[page:1] Registro long-validation-39-0. Foi confirmada a presença de relatórios. O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39. \n[page:2] Registro long-validation-39-1. O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39. ",
+      "expected": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+      "actual": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+      "valid_format": true,
+      "reference_valid": true,
+      "result": {
+        "status": "atendido",
+        "evidence": [
+          {
+            "document": "long-validation-39.pdf",
+            "unit": "page:2",
+            "quote": "Registro long-validation-39-1. O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39.  O encontro encerrou com a distribuição das próximas atividades. Registro long-validation-39. "
+          }
+        ],
+        "justification": "Classificação experimental do modelo; trecho selecionado na fonte. Suporte semântico ainda exige verificação."
+      },
+      "status_correct": true,
+      "unit_correct": false,
+      "exact_match": false
+    },
+    {
+      "id": "long-validation-42",
+      "task": "grounded_atendido",
+      "prompt": "Confira o requisito. Retorne JSON com status e unit.\nRequisito: O projeto deve incluir busca.\n[page:1] Registro long-validation-42-0. Foi confirmada a presença de busca. Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42. \n[page:2] Registro long-validation-42-1. Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42. \n[page:3] Registro long-validation-42-2. Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42. ",
+      "expected": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+      "actual": "{\"status\": \"atendido\", \"unit\": \"page:3\"}",
+      "valid_format": true,
+      "reference_valid": true,
+      "result": {
+        "status": "atendido",
+        "evidence": [
+          {
+            "document": "long-validation-42.pdf",
+            "unit": "page:3",
+            "quote": "Registro long-validation-42-2. Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42.  Os integrantes atualizaram o registro de acompanhamento semanal. Registro long-validation-42. "
+          }
+        ],
+        "justification": "Classificação experimental do modelo; trecho selecionado na fonte. Suporte semântico ainda exige verificação."
+      },
+      "status_correct": true,
+      "unit_correct": false,
+      "exact_match": false
+    }
+  ],
+  "note": "Validação autoral, receitas compartilhadas. Piloto completo já conhecido pelo diagnóstico, fora do gradiente mas não independente. Citação literal não prova suporte semântico. Checkpoint e padrão da TUI preservados separadamente.",
+  "training": {
+    "start_step": 0,
+    "final_step": 2400,
+    "stop_reason": "steps",
+    "elapsed_seconds": 345.881404792,
+    "tokens_processed": 110863,
+    "initial": {
+      "step": 0,
+      "train_loss": 0.030734122469756632,
+      "validation_loss": 0.03543350621860176,
+      "elapsed_seconds": 15.89862845799999
+    },
+    "final": {
+      "step": 2400,
+      "train_loss": 2.9423647398118315e-05,
+      "validation_loss": 0.01991050405059352,
+      "elapsed_seconds": 345.322829917
+    },
+    "human_examples_processed": 0,
+    "human_tokens_processed": 0,
+    "public_examples_processed": 0,
+    "public_tokens_processed": 0,
+    "document_examples_processed": 2092,
+    "document_tokens_processed": 61231,
+    "mps_allocated_bytes_max_observed": 413366272,
+    "process_peak_rss_bytes": 3867475968
+  },
+  "settings": {
+    "objective": "conversation",
+    "seed": 42,
+    "batch_size": 2,
+    "learning_rate": 1e-05,
+    "generation_budget": 256,
+    "human_fraction": 0.0,
+    "human_sampling_policy": "homogeneous_batches",
+    "public_fraction": 0.0,
+    "document_fraction": 0.45
+  },
+  "run_directory": "ai/runs/document-long-contrasts-2026-11-04"
+}

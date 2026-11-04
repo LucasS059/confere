@@ -55,6 +55,14 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    87/144 trechos longos, 168/180 curtos e 769/871 turnos de conversa. Negações
    longas 0/48 e nenhuma das 48 citações do piloto completo sustentou o rótulo.
    Critérios conjuntos reprovados; teste reservado e padrão da TUI preservados.
+   [Contrastes em lotes reais](DOCUMENT_LONG_CONTRASTS.md) recuperaram 180/180
+   curtos e chegaram a 126/144 longos, 42/48 negações longas e 796/871 turnos
+   de conversa. Presença longa regrediu e o piloto completo seguiu sem citações
+   com suporte: só o critério curto passou. Nenhum checkpoint promovido.
+
+O [plano de modelos e versões](MODEL_PLAN.md) mantém um modelo principal como
+objetivo inicial. Múltiplos checkpoints são versões experimentais; dois
+especialistas ou outra arquitetura dependem de comparação medida no Mac.
 
 Os TCCs candidatos não foram usados para treinar. Disponibilidade pública não
 substitui verificação de licença nem anotação de evidências. Se não obtivermos
