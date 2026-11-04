@@ -6,6 +6,8 @@ texto experimental, sem integração com o app. O conjunto autoral é mínimo e 
 comprova qualidade de análise de projetos reais.
 
 Para treinar, retomar e gerar respostas, veja [o guia de treinamento](TRAINING.md).
+O [plano de modelos e versões](MODEL_PLAN.md) explica a relação entre a branch,
+as várias execuções e o checkpoint principal do aplicativo.
 O [pré-treino de linguagem em português](PRETRAINING.md) usa um snapshot da
 Wikipédia com proveniência e splits por artigo; ainda não é um chat validado.
 
