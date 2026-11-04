@@ -46,6 +46,11 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    integração ao simulador. Extração existente não significa que a rede consiga
    interpretar um arquivo inteiro. Testar tabelas, páginas digitalizadas,
    documentos longos e ausência de evidência separadamente.
+   Em 04/11, o usuário autorizou a próxima etapa: [CLI de arquivos completos](FULL_FILES.md)
+   iniciada como integração isolada. A varredura preservou todo o texto extraído
+   no piloto PDF/DOCX; a interpretação falhou e os três resultados ficaram
+   inconclusivos. Nenhum treino novo, padrão de chat alterado ou integração ao
+   aplicativo. As metas conjuntas das etapas 2 e 3 continuam abertas.
 
 Os TCCs candidatos não foram usados para treinar. Disponibilidade pública não
 substitui verificação de licença nem anotação de evidências. Se não obtivermos

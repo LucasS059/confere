@@ -35,6 +35,20 @@ necessário instalar PyTorch para executar esta etapa.
 
 ## Documentos e localização
 
+A CLI agora aceita vários arquivos completos e requisitos manuais. O fluxo é
+experimental; veja [uso, piloto e limitações](FULL_FILES.md). Requer o ambiente
+de treinamento com PyTorch instalado, além de um checkpoint local explícito:
+
+```sh
+ai/.venv/bin/confere-ai review-project entrega.pdf complemento.docx \
+  --requirement "O projeto deve incluir testes." \
+  --checkpoint ai/runs/document-paired-2026-11-03/last.pt \
+  --device mps --output resultado-novo.json
+```
+
+O diretório de saída deve existir e o arquivo deve ser novo. Não há extração
+automática dos requisitos, OCR automático ou integração deste fluxo ao app.
+
 - PDF textual: uma unidade por página, como `page:2`, com texto e SHA-256 do arquivo.
 - DOCX: parágrafos e linhas das tabelas de primeiro nível, em ordem documental,
   como `paragraph:3` e `table:1:row:2`. Não se inventa uma página para DOCX.
