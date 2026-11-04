@@ -24,8 +24,11 @@ dos erros; um acerto agregado maior não compensa perder uma família importante
 
 ## Direção para a apresentação
 
-O objetivo inicial é um único modelo principal para conversar e interpretar os
-trechos fornecidos pelo pipeline. Extração de PDF/DOCX, divisão de contexto,
+O app usado na apresentação deve executar um único modelo, escolhido como o
+mais competente na avaliação conjunta de conversa e análise documental,
+incluindo qualidade das evidências, latência e memória no Mac. Não haverá
+alternância entre especialistas ou combinação de modelos na apresentação.
+Extração de PDF/DOCX, divisão de contexto,
 referências e consolidação ficam no código. O app no simulador acessará o
 serviço local do Mac quando a integração estiver pronta; esse fluxo ainda não
 está integrado.
@@ -35,11 +38,11 @@ medindo qualidade, tempo e memória no Mac. Só devemos avaliar uma arquitetura
 maior se dados e diagnóstico justificarem o custo; mais parâmetros ou passos
 não garantem compreensão.
 
-Se um checkpoint único continuar perdendo conversa ao especializar documentos,
-podemos comparar dois especialistas: um de conversa e outro documental,
-ambos derivados do GPT próprio. Isso é uma alternativa a medir, ainda não uma
-arquitetura implementada ou escolhida. A comparação precisará incluir custo,
-latência, memória e regressões sob as mesmas condições antes de decidir.
+Internamente podemos manter vários modelos, especialistas e arquiteturas para
+pesquisa, treino e comparação. Esses candidatos ajudam a encontrar a melhor
+versão; não alteram o requisito de levar um único modelo ao app da apresentação.
+A escolha deve considerar o conjunto de tarefas do projeto e as regressões,
+sem presumir que o treino mais recente ou a menor loss identifica o vencedor.
 
 ## Como organizar o desenvolvimento
 

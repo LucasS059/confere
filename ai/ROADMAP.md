@@ -60,9 +60,9 @@ ao aplicativo no simulador. Nenhum peso externo substitui a rede própria.
    de conversa. Presença longa regrediu e o piloto completo seguiu sem citações
    com suporte: só o critério curto passou. Nenhum checkpoint promovido.
 
-O [plano de modelos e versões](MODEL_PLAN.md) mantém um modelo principal como
-objetivo inicial. Múltiplos checkpoints são versões experimentais; dois
-especialistas ou outra arquitetura dependem de comparação medida no Mac.
+O [plano de modelos e versões](MODEL_PLAN.md) exige um único modelo no app da
+apresentação: o mais competente na avaliação conjunta. Internamente podemos
+manter vários modelos e arquiteturas para pesquisa e comparação no Mac.
 
 Os TCCs candidatos não foram usados para treinar. Disponibilidade pública não
 substitui verificação de licença nem anotação de evidências. Se não obtivermos
