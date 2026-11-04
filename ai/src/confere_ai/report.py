@@ -394,6 +394,28 @@ def create_report(run_dir, output=None):
         final_tui = read_json(run_dir / "tui-smoke-final.json")
         if final_tui:
             p(f'TUI do checkpoint final: {len(final_tui["messages"])} mensagens conferidas no piloto headless Textual com modelo real em MPS. Isso valida o transporte, não a correção semântica.')
+    long_documents = read_json(run_dir / "long-document-evaluation.json")
+    if long_documents:
+        story.append(PageBreak())
+        heading("Contextos longos e arquivos completos")
+        p(long_documents["policy"])
+        p(long_documents["note"])
+        for name in ("long_documents", "short_documents", "conversation"):
+            old,new=(long_documents[label][name] for label in ("before","after"))
+            p(f'{name}: origem {old["correct"]}/{old["total"]}; selecionado {new["correct"]}/{new["total"]}.')
+            if name!="conversation":
+                p(f'Formato {new["valid"]}/{new["total"]}; referências {new["references"]}/{new["total"]}. ' + "; ".join(f'{family}: {c}/{t}' for family,(c,t) in new["families"].items()))
+            else:
+                p("Famílias abaixo de 80%: " + ("; ".join(f'{family}: {c}/{t}' for family,(c,t) in new["families"].items() if c/t<.8) or "nenhuma") + ".")
+                p("Regressões por família ante a origem: " + ("; ".join(f'{family}: {old["families"][family][0]}/{t} para {c}/{t}' for family,(c,t) in new["families"].items() if c<old["families"][family][0]) or "nenhuma") + ".")
+        for label in ("pilot_before","pilot_after"):
+            pilot=long_documents[label]
+            p(f'{label}: ' + ", ".join(pilot["statuses"]) + f'. Saídas inválidas: {pilot["audit"]["invalid_calls"]}; citações literais: {pilot["audit"]["literal_quotes_verified"]}.')
+        p("Critérios: " + "; ".join(f'{name}: {passed}' for name,passed in long_documents["gates"].items()) + ".")
+        p("Teste reservado não consultado; padrão da TUI preservado. Piloto com PDF textual e DOCX fictícios: não valida TCC real, OCR ou aplicativo.")
+        for row in long_documents["failed_long_examples"]:
+            p(row["id"]+" | Esperado: "+row["expected"],"Heading3")
+            p("Modelo: "+(row["actual"] or "[sem texto]"))
     open_dialogue = read_json(run_dir / "open-dialogue.json")
     if open_dialogue:
         story.append(PageBreak())
