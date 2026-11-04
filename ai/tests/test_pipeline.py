@@ -1,12 +1,14 @@
 import copy
+import hashlib
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from docx import Document
 from jsonschema import ValidationError
-from pypdf import PdfWriter
+from pypdf import PdfWriter, PdfReader
 from reportlab.pdfgen.canvas import Canvas
 
 from confere_ai.dataset import validate_dataset
@@ -14,6 +16,18 @@ from confere_ai.extract import extract_document
 
 
 class PipelineTests(unittest.TestCase):
+    def test_hash_and_text_use_same_snapshot_if_source_changes_during_extraction(self):
+        path=self.root/"brief.pdf";original=path.read_bytes()
+        replacement=self.root/"replacement.pdf"
+        canvas=Canvas(str(replacement));canvas.drawString(50,750,"Outro conteúdo.");canvas.save()
+        def replace_during_read(source):
+            path.write_bytes(replacement.read_bytes())
+            return PdfReader(source)
+        with patch("confere_ai.extract.PdfReader",side_effect=replace_during_read):
+            result=extract_document(path)
+        self.assertEqual(result["sha256"],hashlib.sha256(original).hexdigest())
+        self.assertIn("autenticação",result["units"][0]["text"])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

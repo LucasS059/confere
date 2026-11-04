@@ -1,6 +1,7 @@
 """Extração local com referências estáveis dentro de uma versão do arquivo."""
 
 import hashlib
+from io import BytesIO
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -14,13 +15,16 @@ def extract_document(path: Path) -> dict:
     suffix = path.suffix.lower()
     if suffix not in {".pdf", ".docx"}:
         raise ValueError("Formato não suportado. Use PDF ou DOCX; converta DOC antes.")
-    if path.stat().st_size > 50 * 1024 * 1024:
+    limit = 50 * 1024 * 1024
+    with path.open("rb") as file:
+        payload = file.read(limit+1)
+    if len(payload) > limit:
         raise ValueError("Arquivo excede o limite inicial de 50 MiB.")
 
     units = []
     warnings = []
     if suffix == ".pdf":
-        reader = PdfReader(path)
+        reader = PdfReader(BytesIO(payload))
         if reader.is_encrypted:
             raise ValueError("PDF protegido: forneça uma cópia sem senha.")
         for number, page in enumerate(reader.pages, 1):
@@ -30,10 +34,10 @@ def extract_document(path: Path) -> dict:
                 warnings.append(f"page:{number}: sem texto; verificar página em branco ou necessidade de OCR")
         warnings.append("Imagens e a estrutura das tabelas do PDF não são interpretadas nesta etapa.")
     else:
-        with ZipFile(path) as archive:
+        with ZipFile(BytesIO(payload)) as archive:
             if sum(item.file_size for item in archive.infolist()) > 100 * 1024 * 1024:
                 raise ValueError("DOCX excede o limite inicial de 100 MiB descompactado.")
-        document = Document(path)
+        document = Document(BytesIO(payload))
         paragraph_number = table_number = 0
         for block in document.iter_inner_content():
             if isinstance(block, Table):
@@ -51,7 +55,7 @@ def extract_document(path: Path) -> dict:
     return {
         "schema_version": 1,
         "name": path.name,
-        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "sha256": hashlib.sha256(payload).hexdigest(),
         "format": suffix[1:],
         "units": units,
         "warnings": warnings,
