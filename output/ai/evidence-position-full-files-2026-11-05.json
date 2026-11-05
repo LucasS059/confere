@@ -1,0 +1,1484 @@
+{
+  "schema_version": 1,
+  "experimental": true,
+  "offset_unit": "unicode_codepoints",
+  "scope_note": "Propostas restritas ao texto extraído. Referência válida não garante suporte semântico; imagens e demais conteúdos não extraídos exigem revisão.",
+  "sources": [
+    {
+      "id": "doc:1",
+      "name": "entrega-longa.pdf",
+      "sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+      "format": "pdf",
+      "warnings": [
+        "Imagens e a estrutura das tabelas do PDF não são interpretadas nesta etapa."
+      ],
+      "units": [
+        {
+          "id": "page:1",
+          "characters": 4789
+        },
+        {
+          "id": "page:2",
+          "characters": 4789
+        },
+        {
+          "id": "page:3",
+          "characters": 4789
+        },
+        {
+          "id": "page:4",
+          "characters": 4789
+        },
+        {
+          "id": "page:5",
+          "characters": 4789
+        },
+        {
+          "id": "page:6",
+          "characters": 4839
+        }
+      ]
+    },
+    {
+      "id": "doc:2",
+      "name": "entrega-tabelas.docx",
+      "sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+      "format": "docx",
+      "warnings": [
+        "Somente corpo e tabelas de primeiro nível; imagens, caixas de texto, revisões, cabeçalhos e rodapés não são interpretados."
+      ],
+      "units": [
+        {
+          "id": "paragraph:1",
+          "characters": 28
+        },
+        {
+          "id": "table:1:row:1",
+          "characters": 15
+        },
+        {
+          "id": "table:1:row:2",
+          "characters": 38
+        },
+        {
+          "id": "paragraph:2",
+          "characters": 41
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R1",
+      "requirement": "O projeto deve incluir testes.",
+      "status": "evidencia_insuficiente",
+      "requires_human_review": true,
+      "conflicting_evidence": true,
+      "model_outputs_valid": false,
+      "evidence": [
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 1-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 3-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 4-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 5-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 4143,
+          "char_end": 4839,
+          "quote": "atual.\nEquipe: registro 6-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-59. A equipe registrou atividades e decisões da etapa atual.\nO projeto inclui testes.\nO projeto inclui backup.",
+          "model_status": "nao_atendido"
+        },
+        {
+          "document_id": "doc:2",
+          "document": "entrega-tabelas.docx",
+          "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+          "source_unit": "paragraph:2",
+          "char_start": 0,
+          "char_end": 41,
+          "quote": "Equipe: documento fictício de integração.",
+          "model_status": "atendido"
+        }
+      ],
+      "calls": [
+        {
+          "batch": 1,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 2,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 3,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 4,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 5,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 6,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 7,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 8,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 9,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 10,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 11,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 12,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 13,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 14,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 15,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 16,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 17,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 18,
+          "input_tokens": 434,
+          "raw_model_output": "{\"status\": \"nao_atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "nao_atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 4143,
+              "char_end": 4839
+            },
+            {
+              "alias": "page:2",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:1",
+              "char_start": 0,
+              "char_end": 28
+            },
+            {
+              "alias": "page:3",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:1",
+              "char_start": 0,
+              "char_end": 15
+            },
+            {
+              "alias": "page:4",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:2",
+              "char_start": 0,
+              "char_end": 38
+            }
+          ]
+        },
+        {
+          "batch": 19,
+          "input_tokens": 78,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:2",
+              "char_start": 0,
+              "char_end": 41
+            }
+          ]
+        }
+      ],
+      "coverage": {
+        "scope": "all_extracted_text",
+        "all_extracted_text_processed": true,
+        "text_characters": 28906,
+        "processed_characters": 28906,
+        "batches": 19,
+        "units_without_text": []
+      }
+    },
+    {
+      "id": "R2",
+      "requirement": "O projeto deve incluir backup.",
+      "status": "evidencia_insuficiente",
+      "requires_human_review": true,
+      "conflicting_evidence": true,
+      "model_outputs_valid": false,
+      "evidence": [
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 1-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 3-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 4-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 5-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 4143,
+          "char_end": 4839,
+          "quote": "atual.\nEquipe: registro 6-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-59. A equipe registrou atividades e decisões da etapa atual.\nO projeto inclui testes.\nO projeto inclui backup.",
+          "model_status": "nao_atendido"
+        },
+        {
+          "document_id": "doc:2",
+          "document": "entrega-tabelas.docx",
+          "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+          "source_unit": "paragraph:2",
+          "char_start": 0,
+          "char_end": 41,
+          "quote": "Equipe: documento fictício de integração.",
+          "model_status": "atendido"
+        }
+      ],
+      "calls": [
+        {
+          "batch": 1,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 2,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 3,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 4,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 5,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 6,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 7,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 8,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 9,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 10,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 11,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 12,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 13,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 14,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 15,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 16,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 17,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 18,
+          "input_tokens": 436,
+          "raw_model_output": "{\"status\": \"nao_atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "nao_atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 4143,
+              "char_end": 4839
+            },
+            {
+              "alias": "page:2",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:1",
+              "char_start": 0,
+              "char_end": 28
+            },
+            {
+              "alias": "page:3",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:1",
+              "char_start": 0,
+              "char_end": 15
+            },
+            {
+              "alias": "page:4",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:2",
+              "char_start": 0,
+              "char_end": 38
+            }
+          ]
+        },
+        {
+          "batch": 19,
+          "input_tokens": 80,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:2",
+              "char_start": 0,
+              "char_end": 41
+            }
+          ]
+        }
+      ],
+      "coverage": {
+        "scope": "all_extracted_text",
+        "all_extracted_text_processed": true,
+        "text_characters": 28906,
+        "processed_characters": 28906,
+        "batches": 19,
+        "units_without_text": []
+      }
+    },
+    {
+      "id": "R3",
+      "requirement": "O projeto deve incluir relatórios.",
+      "status": "evidencia_insuficiente",
+      "requires_human_review": true,
+      "conflicting_evidence": true,
+      "model_outputs_valid": false,
+      "evidence": [
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 1-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 3-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 4-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 5-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 4143,
+          "char_end": 4839,
+          "quote": "atual.\nEquipe: registro 6-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-59. A equipe registrou atividades e decisões da etapa atual.\nO projeto inclui testes.\nO projeto inclui backup.",
+          "model_status": "nao_atendido"
+        },
+        {
+          "document_id": "doc:2",
+          "document": "entrega-tabelas.docx",
+          "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+          "source_unit": "paragraph:2",
+          "char_start": 0,
+          "char_end": 41,
+          "quote": "Equipe: documento fictício de integração.",
+          "model_status": "atendido"
+        }
+      ],
+      "calls": [
+        {
+          "batch": 1,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 2,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 3,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 4,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 5,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 6,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 7,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 8,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 9,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 10,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 11,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 12,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 13,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 14,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 15,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 16,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 17,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"evidencia_insuficiente\", \"unit\": null}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 18,
+          "input_tokens": 435,
+          "raw_model_output": "{\"status\": \"nao_atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "nao_atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 4143,
+              "char_end": 4839
+            },
+            {
+              "alias": "page:2",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:1",
+              "char_start": 0,
+              "char_end": 28
+            },
+            {
+              "alias": "page:3",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:1",
+              "char_start": 0,
+              "char_end": 15
+            },
+            {
+              "alias": "page:4",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:2",
+              "char_start": 0,
+              "char_end": 38
+            }
+          ]
+        },
+        {
+          "batch": 19,
+          "input_tokens": 79,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:2",
+              "char_start": 0,
+              "char_end": 41
+            }
+          ]
+        }
+      ],
+      "coverage": {
+        "scope": "all_extracted_text",
+        "all_extracted_text_processed": true,
+        "text_characters": 28906,
+        "processed_characters": 28906,
+        "batches": 19,
+        "units_without_text": []
+      }
+    }
+  ],
+  "model": {
+    "checkpoint": "ai/runs/evidence-position-2026-11-05/best.pt",
+    "sha256": "f26b061e500ccf5d9290c4df5d74ac8534b75055a2ade94cf86146b37fe02d2a",
+    "step": 0,
+    "device": "mps",
+    "context_size": 1024,
+    "response_tokens": 64
+  }
+}

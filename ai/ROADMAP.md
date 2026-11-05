@@ -64,6 +64,11 @@ O [plano de modelos e versões](MODEL_PLAN.md) exige um único modelo no app da
 apresentação: o mais competente na avaliação conjunta. Internamente podemos
 manter vários modelos e arquiteturas para pesquisa e comparação no Mac.
 
+O [experimento de localização](EVIDENCE_POSITIONS.md), em 05/11, acrescentou
+1.440 exemplos e concluiu 2.400 passos. O passo zero herdado continuou melhor
+por loss; não houve ganho no selecionado. Avaliações e PDF foram preservados,
+sem promoção ou consulta ao teste reservado.
+
 Os TCCs candidatos não foram usados para treinar. Disponibilidade pública não
 substitui verificação de licença nem anotação de evidências. Se não obtivermos
 entregas antigas utilizáveis, manter o corpus autoral e ajustar o escopo de

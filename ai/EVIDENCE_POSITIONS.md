@@ -22,3 +22,27 @@ verdadeiro, zero saída inválida e citações sustentadas pelas frases autorais
 Piloto conhecido e validação repetida são diagnósticos, não teste cego.
 Sem consulta ao teste reservado ou promoção automática; o app da apresentação
 continua limitado a um único modelo selecionado por avaliação conjunta.
+
+## Resultado
+
+Concluiu 2.400 atualizações em 320,42 segundos de laço. A loss de validação
+inicial foi 0,01845 e a final 0,02348; nenhum estado avaliado superou o inicial.
+O selecionado foi o passo zero. Comparação tensor a tensor confirmou pesos
+idênticos aos da origem: não houve melhoria do checkpoint selecionado.
+
+Validação inalterada: 180/180 curtos, 126/144 longos e 796/871 turnos de
+conversa. Piloto completo: três requisitos inconclusivos, três saídas inválidas
+e nenhuma das 18 citações com suporte às frases autorais. Somente o critério
+curto passou; os demais reprovaram. Teste reservado não consultado, padrão da
+TUI preservado. O final treinado permanece local e não foi promovido nem
+escolhido retrospectivamente depois dos resultados.
+
+Os 118 testes de software passaram. O experimento mostra que acrescentar esses
+templates de posição não melhorou a seleção atual; não permite concluir que
+toda estratégia de localização falhará. Antes de ampliar passos novamente,
+precisamos diversificar contextos e separar erros de classificação dos de
+ponteiro, com evidências anotadas e avaliação semântica independente.
+
+Artefatos: [avaliação e treino](../output/ai/evidence-position-2026-11-05.json),
+[piloto bruto](../output/ai/evidence-position-full-files-2026-11-05.json) e
+[PDF](../output/pdf/training/evidence-position-2026-11-05.pdf).
