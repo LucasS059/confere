@@ -50,18 +50,16 @@ export default function NewSubmissionScreen() {
 
   const submissionMutation = useMutation(
     trpc.project.addSubmission.mutationOptions({
-      onSuccess: (sub) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(trpc.project.list.queryFilter());
         queryClient.invalidateQueries(
           trpc.project.getById.queryFilter({ id: projectId || "" }),
         );
-        toast.show({ label: "Trabalho enviado para conferência!" });
+        toast.show({ label: "Dados da entrega salvos. Análise ainda indisponível." });
         router.push({
-          pathname: "/projects/checking",
+          pathname: "/projects/details",
           params: {
             projectId: projectId || "",
-            submissionId: sub.id,
-            filename: sub.filename,
           },
         });
       },
@@ -135,7 +133,7 @@ export default function NewSubmissionScreen() {
 
       <ScreenHeader
         title="Entrega do trabalho"
-        subtitle={projectData?.name || "Submeter versão para conferência"}
+        subtitle={projectData?.name || "Cadastrar dados da entrega"}
       />
 
       <ScrollView
@@ -191,7 +189,7 @@ export default function NewSubmissionScreen() {
               Selecionar relatório em PDF
             </Text>
             <Text className="mt-1 text-center text-[13px] text-ink2">
-              Toque aqui para anexar o PDF da 1ª versão do seu trabalho
+              Somente nome e tamanho serão salvos. Upload e análise ainda indisponíveis.
             </Text>
           </Pressable>
         )}
@@ -238,7 +236,7 @@ export default function NewSubmissionScreen() {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text className="font-instrument-semibold text-[15px] text-white">
-              Conferir requisitos do relatório
+              Salvar dados da entrega
             </Text>
           )}
         </Pressable>

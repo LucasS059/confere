@@ -57,14 +57,12 @@ export default function NewProjectScreen() {
         queryClient.invalidateQueries(trpc.project.list.queryFilter());
         toast.show({ label: "Projeto criado com sucesso!" });
 
-        // Se já anexou o trabalho inicial, vai para a conferência
+        // A análise ficará disponível após a integração do modelo.
         if (newProject.submission) {
           router.push({
-            pathname: "/projects/checking",
+            pathname: "/projects/details",
             params: {
               projectId: newProject.id,
-              submissionId: newProject.submission.id,
-              filename: newProject.submission.filename,
             },
           });
         } else {
@@ -348,7 +346,7 @@ export default function NewProjectScreen() {
               2. Seu trabalho (Relatório / Artigo em PDF)
             </Text>
             <Text className="font-instrument text-[11.5px] text-ink3">
-              Anexe a primeira versão do seu relatório para conferir com a rubrica
+              Selecione a primeira versão para cadastrar os dados do relatório
             </Text>
           </View>
 
@@ -402,7 +400,7 @@ export default function NewProjectScreen() {
                   Anexar primeira versão do relatório (PDF)
                 </Text>
                 <Text className="font-instrument text-[11px] text-ink3">
-                  Opcional agora — você também pode enviar mais tarde
+                  Somente nome e tamanho serão salvos. Upload e análise ainda indisponíveis.
                 </Text>
               </Pressable>
             )}
@@ -420,7 +418,7 @@ export default function NewProjectScreen() {
           ) : (
             <Text className="font-instrument-semibold text-[15px] text-white">
               {studentWorkFile
-                ? "Salvar projeto e conferir trabalho"
+                ? "Salvar projeto e cadastrar entrega"
                 : "Salvar projeto e revisar requisitos"}
             </Text>
           )}
