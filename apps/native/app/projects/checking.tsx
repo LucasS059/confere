@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Blob } from "@/components/blob";
-import { Icon } from "@/components/icon";
+import { Blob } from "@/components/ui/blob";
+import { Icon } from "@/components/ui/icon";
 
 export default function ConferenceProgressScreen() {
   const router = useRouter();

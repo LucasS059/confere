@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import type { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useCSSVariable } from "uniwind";
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 
 type ScreenHeaderProps = {
   title: string;

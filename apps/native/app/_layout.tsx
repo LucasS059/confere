@@ -17,9 +17,9 @@ import { HeroUINativeProvider } from "heroui-native";
 import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { Splash } from "@/components/splash";
+import { Splash } from "@/components/ui/splash";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
-import { queryClient } from "@/utils/trpc";
+import { queryClient } from "@/lib/trpc";
 
 const SPLASH_MIN_MS = 1000;
 
@@ -43,7 +43,7 @@ function StackLayout() {
       <Stack.Screen name="projects/checking" />
       <Stack.Screen name="projects/result" />
       <Stack.Screen name="projects/requirement-detail" />
-      <Stack.Screen name="settings" />
+      <Stack.Screen name="(account)/settings" />
     </Stack>
   );
 }

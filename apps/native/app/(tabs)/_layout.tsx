@@ -4,7 +4,7 @@ import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
 import type { SFSymbol } from "expo-symbols";
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 import { Ionicons } from "@expo/vector-icons";
 
 type BottomTabBarProps = Parameters<
@@ -26,21 +26,21 @@ const TAB_ITEMS: Array<{
     fallback: "home-outline",
   },
   {
-    name: "conferir",
+    name: "check",
     label: "Conferir",
     icon: "checkmark.seal",
     activeIcon: "checkmark.seal.fill",
     fallback: "checkmark-circle-outline",
   },
   {
-    name: "historico",
+    name: "history",
     label: "Histórico",
     icon: "clock",
     activeIcon: "clock.fill",
     fallback: "time-outline",
   },
   {
-    name: "perfil",
+    name: "profile",
     label: "Perfil",
     icon: "person",
     activeIcon: "person.fill",
@@ -129,9 +129,9 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: "Início" }} />
-      <Tabs.Screen name="conferir" options={{ title: "Conferir" }} />
-      <Tabs.Screen name="historico" options={{ title: "Histórico" }} />
-      <Tabs.Screen name="perfil" options={{ title: "Perfil" }} />
+      <Tabs.Screen name="check" options={{ title: "Conferir" }} />
+      <Tabs.Screen name="history" options={{ title: "Histórico" }} />
+      <Tabs.Screen name="profile" options={{ title: "Perfil" }} />
     </Tabs>
   );
 }

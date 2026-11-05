@@ -11,9 +11,9 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useCSSVariable } from "uniwind";
 import z from "zod";
-import { Blob } from "@/components/blob";
-import { CheckMark } from "@/components/check-mark";
-import { authClient } from "@/lib/auth-client";
+import { Blob } from "@/components/ui/blob";
+import { CheckMark } from "@/components/ui/check-mark";
+import { authClient } from "@/lib/auth/client";
 
 const loginSchema = z.object({
   email: z.email("Digite um e-mail válido"),

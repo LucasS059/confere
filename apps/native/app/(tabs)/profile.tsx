@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Blob } from "@/components/blob";
-import { Icon } from "@/components/icon";
-import { authClient } from "@/lib/auth-client";
+import { Blob } from "@/components/ui/blob";
+import { Icon } from "@/components/ui/icon";
+import { authClient } from "@/lib/auth/client";
 
 export default function PerfilTabScreen() {
   const router = useRouter();

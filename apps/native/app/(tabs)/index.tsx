@@ -12,10 +12,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
 import { useCSSVariable } from "uniwind";
-import { Blob } from "@/components/blob";
-import { Icon } from "@/components/icon";
-import { authClient } from "@/lib/auth-client";
-import { trpc } from "@/utils/trpc";
+import { Blob } from "@/components/ui/blob";
+import { Icon } from "@/components/ui/icon";
+import { authClient } from "@/lib/auth/client";
+import { trpc } from "@/lib/trpc";
 
 function CoverageRing({ coverage }: { coverage: number }) {
   const size = 56;

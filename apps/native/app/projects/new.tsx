@@ -13,10 +13,10 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
-import { Blob } from "@/components/blob";
-import { Icon } from "@/components/icon";
-import { ScreenHeader } from "@/components/screen-header";
-import { trpc } from "@/utils/trpc";
+import { Blob } from "@/components/ui/blob";
+import { Icon } from "@/components/ui/icon";
+import { ScreenHeader } from "@/components/ui/screen-header";
+import { trpc } from "@/lib/trpc";
 
 type RubricInputMode = "text" | "file";
 

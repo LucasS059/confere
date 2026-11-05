@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Blob } from "@/components/blob";
-import { Icon } from "@/components/icon";
-import { ScreenHeader } from "@/components/screen-header";
+import { Blob } from "@/components/ui/blob";
+import { Icon } from "@/components/ui/icon";
+import { ScreenHeader } from "@/components/ui/screen-header";
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();

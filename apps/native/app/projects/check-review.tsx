@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Blob } from "@/components/blob";
-import { ScreenHeader } from "@/components/screen-header";
+import { Blob } from "@/components/ui/blob";
+import { ScreenHeader } from "@/components/ui/screen-header";
 
 export default function ConferenceReviewScreen() {
   const router = useRouter();

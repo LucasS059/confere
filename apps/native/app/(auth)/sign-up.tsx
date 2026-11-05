@@ -12,10 +12,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
 import z from "zod";
-import { Blob } from "@/components/blob";
-import { CheckMark } from "@/components/check-mark";
-import { ScreenHeader } from "@/components/screen-header";
-import { authClient } from "@/lib/auth-client";
+import { Blob } from "@/components/ui/blob";
+import { CheckMark } from "@/components/ui/check-mark";
+import { ScreenHeader } from "@/components/ui/screen-header";
+import { authClient } from "@/lib/auth/client";
 
 const signUpSchema = z.object({
   name: z.string().trim().min(2, "Digite seu nome completo"),

@@ -12,8 +12,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
 import z from "zod";
-import { Blob } from "@/components/blob";
-import { ScreenHeader } from "@/components/screen-header";
+import { Blob } from "@/components/ui/blob";
+import { ScreenHeader } from "@/components/ui/screen-header";
 
 const forgotSchema = z.object({
   email: z.email("Digite um e-mail válido"),
