@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Blob } from "@/components/blob";
-import { CheckMark } from "@/components/check-mark";
+import { Blob } from "@/components/ui/blob";
+import { CheckMark } from "@/components/ui/check-mark";
 
 const SAMPLE_REQUIREMENTS = [
   {

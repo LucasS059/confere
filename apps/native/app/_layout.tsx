@@ -17,9 +17,10 @@ import { HeroUINativeProvider } from "heroui-native";
 import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { Splash } from "@/components/splash";
+import { Splash } from "@/components/ui/splash";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
-import { queryClient } from "@/utils/trpc";
+import { authClient } from "@/lib/auth/client";
+import { queryClient } from "@/lib/trpc";
 
 const SPLASH_MIN_MS = 1000;
 
@@ -27,23 +28,28 @@ export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-function StackLayout() {
+function StackLayout({ isAuthenticated }: { isAuthenticated: boolean }) {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="(auth)/onboarding" />
-      <Stack.Screen name="(auth)/login" />
-      <Stack.Screen name="(auth)/sign-up" />
-      <Stack.Screen name="(auth)/forgot-password" />
-      <Stack.Screen name="projects/new" />
-      <Stack.Screen name="projects/review" />
-      <Stack.Screen name="projects/details" />
-      <Stack.Screen name="projects/submission" />
-      <Stack.Screen name="projects/check-review" />
-      <Stack.Screen name="projects/checking" />
-      <Stack.Screen name="projects/result" />
-      <Stack.Screen name="projects/requirement-detail" />
-      <Stack.Screen name="settings" />
+      <Stack.Protected guard={isAuthenticated}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="projects/new" />
+        <Stack.Screen name="projects/review" />
+        <Stack.Screen name="projects/details" />
+        <Stack.Screen name="projects/submission" />
+        <Stack.Screen name="projects/check-review" />
+        <Stack.Screen name="projects/checking" />
+        <Stack.Screen name="projects/result" />
+        <Stack.Screen name="projects/requirement-detail" />
+        <Stack.Screen name="(account)/settings" />
+      </Stack.Protected>
+      <Stack.Protected guard={!isAuthenticated}>
+        <Stack.Screen name="(auth)/onboarding" />
+        <Stack.Screen name="(auth)/login" />
+        <Stack.Screen name="(auth)/sign-up" />
+        <Stack.Screen name="(auth)/forgot-password" />
+      </Stack.Protected>
+      <Stack.Screen name="(auth)/reset-password" />
     </Stack>
   );
 }
@@ -64,7 +70,11 @@ export default function Layout() {
     return () => clearTimeout(timer);
   }, []);
 
-  const isReady = (fontsLoaded || !!fontsError) && minTimeElapsed;
+  const { data: session, isPending: isSessionPending } =
+    authClient.useSession();
+
+  const isReady =
+    (fontsLoaded || !!fontsError) && minTimeElapsed && !isSessionPending;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -72,7 +82,7 @@ export default function Layout() {
         <KeyboardProvider>
           <AppThemeProvider>
             <HeroUINativeProvider>
-              <StackLayout />
+              <StackLayout isAuthenticated={Boolean(session)} />
               <Splash fontsLoaded={fontsLoaded} hidden={isReady} />
             </HeroUINativeProvider>
           </AppThemeProvider>

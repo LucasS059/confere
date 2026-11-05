@@ -5,34 +5,30 @@ import {
   ActivityIndicator,
   Pressable,
   Text,
-  TextInput,
+  type TextInputInstance,
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { useCSSVariable } from "uniwind";
-import z from "zod";
-import { Blob } from "@/components/blob";
-import { CheckMark } from "@/components/check-mark";
-import { authClient } from "@/lib/auth-client";
-
-const loginSchema = z.object({
-  email: z.email("Digite um e-mail válido"),
-  password: z.string().min(1, "Digite sua senha"),
-});
-
-const GOOGLE_COLORS = ["#EA4335", "#4285F4", "#FBBC05", "#34A853"];
+import { AuthField } from "@/components/auth/auth-field";
+import { SocialButtons } from "@/components/auth/social-buttons";
+import { Blob } from "@/components/ui/blob";
+import { CheckMark } from "@/components/ui/check-mark";
+import { authClient } from "@/lib/auth/client";
+import {
+  authErrorMessage,
+  NETWORK_ERROR_MESSAGE,
+} from "@/lib/auth/error-messages";
+import { loginSchema } from "@/lib/auth/schemas";
 
 export default function Login() {
   const router = useRouter();
   const { toast } = useToast();
-  const passwordRef = useRef<TextInput>(null);
-  const placeholderColor = useCSSVariable("--ink3") as string | undefined;
+  const passwordRef = useRef<TextInputInstance>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const showError = (label: string) => toast.show({ variant: "danger", label });
-  const comingSoon = () => toast.show({ label: "Em breve" });
 
   async function submit() {
     if (isSubmitting) return;
@@ -41,18 +37,17 @@ export default function Login() {
       showError(parsed.error.issues[0].message);
       return;
     }
+
     setIsSubmitting(true);
     try {
       const { error } = await authClient.signIn.email(parsed.data);
       if (error) {
         showError(
-          error.status === 401
-            ? "E-mail ou senha incorretos"
-            : "Não foi possível entrar. Tente novamente.",
+          authErrorMessage(error, "Não foi possível entrar. Tente novamente."),
         );
       }
     } catch {
-      showError("Sem conexão com o servidor. Tente novamente.");
+      showError(NETWORK_ERROR_MESSAGE);
     } finally {
       setIsSubmitting(false);
     }
@@ -96,53 +91,42 @@ export default function Login() {
         </View>
 
         <View className="gap-2.5">
-          <View className="h-[54px] flex-row items-center gap-2.5 rounded-2xl border border-hair bg-card px-4">
-            <Text className="w-[52px] font-instrument text-ink3 text-xs">
-              E-mail
-            </Text>
-            <TextInput
-              className="h-full flex-1 font-instrument text-[15px] text-ink web:outline-none"
-              placeholderTextColor={placeholderColor}
-              accessibilityLabel="E-mail"
-              value={email}
-              onChangeText={setEmail}
-              placeholder="seu@email.com"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete="email"
-              textContentType="emailAddress"
-              returnKeyType="next"
-              submitBehavior="submit"
-              onSubmitEditing={() => passwordRef.current?.focus()}
-            />
-          </View>
-          <View className="h-[54px] flex-row items-center gap-2.5 rounded-2xl border border-hair bg-card px-4">
-            <Text className="w-[52px] font-instrument text-ink3 text-xs">
-              Senha
-            </Text>
-            <TextInput
-              ref={passwordRef}
-              className="h-full flex-1 font-instrument text-[15px] text-ink tracking-[3px] web:outline-none"
-              placeholderTextColor={placeholderColor}
-              accessibilityLabel="Senha"
-              value={password}
-              onChangeText={setPassword}
-              placeholder="••••••••"
-              secureTextEntry
-              autoComplete="current-password"
-              textContentType="password"
-              returnKeyType="go"
-              onSubmitEditing={submit}
-            />
-            <Text
-              className="font-instrument-medium text-[13px] text-brand"
-              accessibilityRole="button"
-              onPress={() => router.push("/forgot-password")}
-            >
-              Esqueci
-            </Text>
-          </View>
+          <AuthField
+            label="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="seu@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="email"
+            textContentType="emailAddress"
+            returnKeyType="next"
+            submitBehavior="submit"
+            onSubmitEditing={() => passwordRef.current?.focus()}
+          />
+          <AuthField
+            ref={passwordRef}
+            label="Senha"
+            className="tracking-[3px]"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="••••••••"
+            secureTextEntry
+            autoComplete="current-password"
+            textContentType="password"
+            returnKeyType="go"
+            onSubmitEditing={submit}
+            trailing={
+              <Text
+                className="font-instrument-medium text-[13px] text-brand"
+                accessibilityRole="button"
+                onPress={() => router.push("/forgot-password")}
+              >
+                Esqueci
+              </Text>
+            }
+          />
           <Pressable
             className="mt-1.5 h-[54px] items-center justify-center rounded-[27px] bg-brand shadow-brand-button active:opacity-80"
             accessibilityRole="button"
@@ -165,36 +149,7 @@ export default function Login() {
           <View className="h-px flex-1 bg-hair" />
         </View>
 
-        <View className="gap-2.5">
-          <Pressable
-            className="h-[52px] flex-row items-center justify-center gap-2.5 rounded-[26px] border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-80"
-            accessibilityRole="button"
-            onPress={comingSoon}
-          >
-            <View className="size-[18px] rounded-full bg-ink" />
-            <Text className="font-instrument-semibold text-ink text-sm">
-              Continuar com Apple
-            </Text>
-          </Pressable>
-          <Pressable
-            className="h-[52px] flex-row items-center justify-center gap-2.5 rounded-[26px] border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-80"
-            accessibilityRole="button"
-            onPress={comingSoon}
-          >
-            <View className="size-[18px] flex-row flex-wrap overflow-hidden rounded-full">
-              {GOOGLE_COLORS.map((color) => (
-                <View
-                  key={color}
-                  className="size-[9px]"
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </View>
-            <Text className="font-instrument-semibold text-ink text-sm">
-              Continuar com Google
-            </Text>
-          </Pressable>
-        </View>
+        <SocialButtons onPress={() => toast.show({ label: "Em breve" })} />
 
         <Text className="mt-auto text-center font-instrument text-[13px] text-ink2">
           Novo por aqui?{" "}

@@ -6,7 +6,8 @@ import { cors } from "@elysiajs/cors";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Elysia } from "elysia";
 
-const app = new Elysia()
+new Elysia()
+  // CORS
   .use(
     cors({
       origin: env.CORS_ORIGIN,
@@ -16,6 +17,7 @@ const app = new Elysia()
     }),
   )
 
+  // Auth
   .all("/api/auth/*", async (context) => {
     const { request, status } = context;
     if (["POST", "GET"].includes(request.method)) {
@@ -23,6 +25,7 @@ const app = new Elysia()
     }
     return status(405);
   })
+  // tRPC
   .all("/trpc/*", async (context) => {
     const res = await fetchRequestHandler({
       endpoint: "/trpc",
@@ -32,7 +35,9 @@ const app = new Elysia()
     });
     return res;
   })
+  // Teste
   .get("/", () => "OK")
+  // Porta
   .listen(3000, () => {
     console.log("Server is running on http://localhost:3000");
   });
