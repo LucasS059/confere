@@ -1,51 +1,54 @@
 import { useRouter } from "expo-router";
 import { useToast } from "heroui-native";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useCSSVariable } from "uniwind";
-import z from "zod";
+import { AuthField } from "@/components/auth/auth-field";
 import { Blob } from "@/components/ui/blob";
 import { ScreenHeader } from "@/components/ui/screen-header";
+import { authClient } from "@/lib/auth/client";
+import { NETWORK_ERROR_MESSAGE } from "@/lib/auth/error-messages";
+import { forgotPasswordSchema } from "@/lib/auth/schemas";
 
-const forgotSchema = z.object({
-  email: z.email("Digite um e-mail válido"),
-});
+const RESET_REDIRECT_URL = "confere://reset-password";
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { toast } = useToast();
-  const placeholderColor = useCSSVariable("--ink3") as string | undefined;
 
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function submit() {
     if (isSubmitting) return;
-    const parsed = forgotSchema.safeParse({ email: email.trim() });
+    const parsed = forgotPasswordSchema.safeParse({ email: email.trim() });
     if (!parsed.success) {
-      toast.show({
-        variant: "danger",
-        label: parsed.error.issues[0].message,
-      });
+      toast.show({ variant: "danger", label: parsed.error.issues[0].message });
       return;
     }
 
     setIsSubmitting(true);
     try {
+      const { error } = await authClient.requestPasswordReset({
+        email: parsed.data.email,
+        redirectTo: RESET_REDIRECT_URL,
+      });
+      if (error) {
+        toast.show({
+          variant: "danger",
+          label: "Não foi possível enviar o link. Tente novamente.",
+        });
+        return;
+      }
       toast.show({
         variant: "success",
-        label: "Link de recuperação enviado para seu e-mail",
+        label: "Se houver uma conta com esse e-mail, enviamos o link.",
       });
       router.replace("/login");
+    } catch {
+      toast.show({ variant: "danger", label: NETWORK_ERROR_MESSAGE });
     } finally {
       setIsSubmitting(false);
     }
@@ -89,26 +92,19 @@ export default function ForgotPasswordScreen() {
         </View>
 
         <View className="gap-3">
-          <View className="h-[54px] flex-row items-center gap-2.5 rounded-2xl border border-hair bg-card px-4">
-            <Text className="w-[52px] font-instrument text-ink3 text-xs">
-              E-mail
-            </Text>
-            <TextInput
-              className="h-full flex-1 font-instrument text-[15px] text-ink web:outline-none"
-              placeholderTextColor={placeholderColor}
-              accessibilityLabel="E-mail"
-              value={email}
-              onChangeText={setEmail}
-              placeholder="seu@email.com"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete="email"
-              textContentType="emailAddress"
-              returnKeyType="send"
-              onSubmitEditing={submit}
-            />
-          </View>
+          <AuthField
+            label="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="seu@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="email"
+            textContentType="emailAddress"
+            returnKeyType="send"
+            onSubmitEditing={submit}
+          />
 
           <Pressable
             className="h-[54px] items-center justify-center rounded-[27px] bg-brand shadow-brand-button active:opacity-80"
@@ -124,14 +120,6 @@ export default function ForgotPasswordScreen() {
               </Text>
             )}
           </Pressable>
-        </View>
-
-        <View className="flex-row items-start gap-2.5 rounded-2xl border-[0.5px] border-glass-bd bg-glass p-4 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%]">
-          <View className="mt-1.5 size-1.5 rounded-full bg-brand" />
-          <Text className="flex-1 font-instrument text-[13px] text-ink2 leading-[19px]">
-            Entrou com Apple ou Google? Não há senha para recuperar: volte e use
-            o mesmo botão.
-          </Text>
         </View>
 
         <Text className="mt-auto text-center font-instrument text-[13px] text-ink2">

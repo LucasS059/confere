@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { authClient } from "@/lib/auth/client";
+import { queryClient } from "@/lib/trpc";
 
 export default function PerfilTabScreen() {
   const router = useRouter();
@@ -21,10 +22,8 @@ export default function PerfilTabScreen() {
     .toUpperCase();
 
   async function handleSignOut() {
-    try {
-      await authClient.signOut();
-    } catch {}
-    router.replace("/(auth)/login");
+    await authClient.signOut();
+    queryClient.clear();
   }
 
   return (
@@ -46,34 +45,30 @@ export default function PerfilTabScreen() {
           paddingBottom: insets.bottom + 100,
         }}
       >
-        <View className="items-center mb-6">
-          <View className="size-20 items-center justify-center rounded-full bg-brand shadow-lg shadow-brand/30 mb-3">
-            <Text className="text-[24px] font-bold text-white tracking-wide">
+        <View className="mb-6 items-center">
+          <View className="mb-3 size-20 items-center justify-center rounded-full bg-brand shadow-brand/30 shadow-lg">
+            <Text className="font-bold text-[24px] text-white tracking-wide">
               {initials}
             </Text>
           </View>
 
-          <Text className="text-[20px] font-bold text-ink">
-            {displayName}
-          </Text>
+          <Text className="font-bold text-[20px] text-ink">{displayName}</Text>
           {displayEmail ? (
-            <Text className="text-[13px] text-ink2 mt-0.5">
-              {displayEmail}
-            </Text>
+            <Text className="mt-0.5 text-[13px] text-ink2">{displayEmail}</Text>
           ) : null}
         </View>
 
         <View className="mb-6 flex-row gap-3">
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="text-[20px] font-bold text-ink">0</Text>
+            <Text className="font-bold text-[20px] text-ink">0</Text>
             <Text className="text-[12px] text-ink3">projetos</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="text-[20px] font-bold text-ink">0</Text>
+            <Text className="font-bold text-[20px] text-ink">0</Text>
             <Text className="text-[12px] text-ink3">conferências</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="text-[20px] font-bold text-ink">0</Text>
+            <Text className="font-bold text-[20px] text-ink">0</Text>
             <Text className="text-center text-[11px] text-ink3">
               requisitos
             </Text>
@@ -83,7 +78,7 @@ export default function PerfilTabScreen() {
         <View className="mb-6 rounded-3xl border border-line-glass bg-glass p-2 shadow-sm">
           <Pressable
             onPress={() => router.push("/settings")}
-            className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50"
+            className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50"
           >
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-brand/10">
@@ -94,7 +89,7 @@ export default function PerfilTabScreen() {
                   color="#2F6BFF"
                 />
               </View>
-              <Text className="text-[15px] font-medium text-ink">
+              <Text className="font-medium text-[15px] text-ink">
                 Configurações
               </Text>
             </View>
@@ -106,9 +101,9 @@ export default function PerfilTabScreen() {
             />
           </Pressable>
 
-          <View className="h-[1px] bg-line-glass mx-3.5" />
+          <View className="mx-3.5 h-[1px] bg-line-glass" />
 
-          <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
+          <Pressable className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50">
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-ok/10">
                 <Icon
@@ -118,13 +113,13 @@ export default function PerfilTabScreen() {
                   color="#10B981"
                 />
               </View>
-              <Text className="text-[15px] font-medium text-ink">
+              <Text className="font-medium text-[15px] text-ink">
                 Relatórios exportados
               </Text>
             </View>
             <View className="flex-row items-center gap-2">
               <View className="rounded-full bg-line px-2 py-0.5">
-                <Text className="font-mono text-[11px] font-bold text-ink2">
+                <Text className="font-bold font-mono text-[11px] text-ink2">
                   0
                 </Text>
               </View>
@@ -137,9 +132,9 @@ export default function PerfilTabScreen() {
             </View>
           </Pressable>
 
-          <View className="h-[1px] bg-line-glass mx-3.5" />
+          <View className="mx-3.5 h-[1px] bg-line-glass" />
 
-          <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
+          <Pressable className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50">
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-warn/10">
                 <Icon
@@ -149,13 +144,13 @@ export default function PerfilTabScreen() {
                   color="#F59E0B"
                 />
               </View>
-              <Text className="text-[15px] font-medium text-ink">
+              <Text className="font-medium text-[15px] text-ink">
                 Orientadores conectados
               </Text>
             </View>
             <View className="flex-row items-center gap-2">
               <View className="rounded-full bg-line px-2 py-0.5">
-                <Text className="font-mono text-[11px] font-bold text-ink2">
+                <Text className="font-bold font-mono text-[11px] text-ink2">
                   0
                 </Text>
               </View>
@@ -168,9 +163,9 @@ export default function PerfilTabScreen() {
             </View>
           </Pressable>
 
-          <View className="h-[1px] bg-line-glass mx-3.5" />
+          <View className="mx-3.5 h-[1px] bg-line-glass" />
 
-          <Pressable className="flex-row items-center justify-between p-3.5 rounded-2xl active:bg-card/50">
+          <Pressable className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50">
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-ink/5">
                 <Icon
@@ -180,7 +175,7 @@ export default function PerfilTabScreen() {
                   color="#64748B"
                 />
               </View>
-              <Text className="text-[15px] font-medium text-ink">
+              <Text className="font-medium text-[15px] text-ink">
                 Ajuda e feedback
               </Text>
             </View>
@@ -197,7 +192,7 @@ export default function PerfilTabScreen() {
           onPress={handleSignOut}
           className="h-12 items-center justify-center rounded-2xl border border-err/20 bg-err/5 active:bg-err/10"
         >
-          <Text className="text-[15px] font-semibold text-err">
+          <Text className="font-semibold text-[15px] text-err">
             Sair da conta
           </Text>
         </Pressable>

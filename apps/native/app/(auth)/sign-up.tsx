@@ -5,59 +5,58 @@ import {
   ActivityIndicator,
   Pressable,
   Text,
-  TextInput,
+  type TextInputInstance,
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useCSSVariable } from "uniwind";
-import z from "zod";
+import { AuthField } from "@/components/auth/auth-field";
+import { SocialButtons } from "@/components/auth/social-buttons";
 import { Blob } from "@/components/ui/blob";
 import { CheckMark } from "@/components/ui/check-mark";
 import { ScreenHeader } from "@/components/ui/screen-header";
 import { authClient } from "@/lib/auth/client";
+import {
+  authErrorMessage,
+  NETWORK_ERROR_MESSAGE,
+} from "@/lib/auth/error-messages";
+import { signUpSchema } from "@/lib/auth/schemas";
 
-const signUpSchema = z.object({
-  name: z.string().trim().min(2, "Digite seu nome completo"),
-  email: z.email("Digite um e-mail válido"),
-  password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
-});
+const STRENGTH = [
+  null,
+  { label: "Senha fraca", bar: "bg-err", text: "text-err" },
+  { label: "Senha média", bar: "bg-warn", text: "text-warn" },
+  { label: "Senha forte", bar: "bg-ok", text: "text-ok" },
+] as const;
 
-const GOOGLE_COLORS = ["#EA4335", "#4285F4", "#FBBC05", "#34A853"];
-
-function getPasswordStrength(password: string): {
-  level: 0 | 1 | 2 | 3;
-  label: string;
-} {
-  if (!password) return { level: 0, label: "" };
-  if (password.length < 6) return { level: 1, label: "Senha fraca" };
-  if (password.length < 10) return { level: 2, label: "Senha média" };
-  return { level: 3, label: "Senha forte" };
+function getPasswordStrength(password: string): 0 | 1 | 2 | 3 {
+  if (!password) return 0;
+  if (password.length < 8) return 1;
+  if (password.length < 12) return 2;
+  return 3;
 }
+
+const INSTITUTIONAL_EMAIL = /\.edu(\.br)?$/i;
 
 export default function SignUpScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { toast } = useToast();
-  const emailRef = useRef<any>(null);
-  const passwordRef = useRef<any>(null);
-  const placeholderColor = useCSSVariable("--ink3") as string | undefined;
+  const emailRef = useRef<TextInputInstance>(null);
+  const passwordRef = useRef<TextInputInstance>(null);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailFocused, setEmailFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isInstitutional = Boolean(
-    email.trim() && /(\.edu(\.br)?|\.br)$/i.test(email.trim()),
-  );
-  const strength = getPasswordStrength(password);
+  const isInstitutional = INSTITUTIONAL_EMAIL.test(email.trim());
+  const strengthLevel = getPasswordStrength(password);
+  const strength = STRENGTH[strengthLevel];
 
   const showError = (label: string) => toast.show({ variant: "danger", label });
-  const comingSoon = () => toast.show({ label: "Em breve" });
 
   async function submit() {
     if (isSubmitting) return;
@@ -80,13 +79,14 @@ export default function SignUpScreen() {
       const { error } = await authClient.signUp.email(parsed.data);
       if (error) {
         showError(
-          error.message || "Não foi possível criar sua conta. Tente novamente.",
+          authErrorMessage(
+            error,
+            "Não foi possível criar sua conta. Tente novamente.",
+          ),
         );
-        return;
       }
-      router.replace("/(tabs)");
     } catch {
-      showError("Sem conexão com o servidor. Tente novamente.");
+      showError(NETWORK_ERROR_MESSAGE);
     } finally {
       setIsSubmitting(false);
     }
@@ -124,110 +124,83 @@ export default function SignUpScreen() {
         </Text>
 
         <View className="gap-2.5">
-          <View className="h-[54px] flex-row items-center gap-2.5 rounded-2xl border border-hair bg-card px-4">
-            <Text className="w-[52px] font-instrument text-ink3 text-xs">
-              Nome
-            </Text>
-            <TextInput
-              className="h-full flex-1 font-instrument text-[15px] text-ink web:outline-none"
-              placeholderTextColor={placeholderColor}
-              accessibilityLabel="Nome"
-              value={name}
-              onChangeText={setName}
-              placeholder="Seu nome completo"
-              autoComplete="name"
-              textContentType="name"
-              returnKeyType="next"
-              submitBehavior="submit"
-              onSubmitEditing={() => emailRef.current?.focus()}
-            />
-          </View>
-
-          <View
-            className={`h-[54px] flex-row items-center gap-2.5 rounded-2xl bg-card px-4 ${
-              emailFocused
-                ? "border-[1.5px] border-brand"
-                : "border border-hair"
-            }`}
-          >
-            <Text className="w-[52px] font-instrument text-ink3 text-xs">
-              E-mail
-            </Text>
-            <TextInput
-              ref={emailRef}
-              className="h-full flex-1 font-instrument text-[15px] text-ink web:outline-none"
-              placeholderTextColor={placeholderColor}
-              accessibilityLabel="E-mail"
-              value={email}
-              onFocus={() => setEmailFocused(true)}
-              onBlur={() => setEmailFocused(false)}
-              onChangeText={setEmail}
-              placeholder="seu@email.com"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete="email"
-              textContentType="emailAddress"
-              returnKeyType="next"
-              submitBehavior="submit"
-              onSubmitEditing={() => passwordRef.current?.focus()}
-            />
-            {isInstitutional ? (
-              <View className="flex-row items-center gap-1 rounded-full bg-ok-soft px-2.5 py-1">
-                <View className="size-1.5 rounded-full bg-ok" />
-                <Text className="font-instrument-medium text-[11px] text-ok">
-                  institucional
+          <AuthField
+            label="Nome"
+            value={name}
+            onChangeText={setName}
+            placeholder="Seu nome completo"
+            autoComplete="name"
+            textContentType="name"
+            returnKeyType="next"
+            submitBehavior="submit"
+            onSubmitEditing={() => emailRef.current?.focus()}
+          />
+          <AuthField
+            ref={emailRef}
+            label="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="seu@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="email"
+            textContentType="emailAddress"
+            returnKeyType="next"
+            submitBehavior="submit"
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            trailing={
+              isInstitutional ? (
+                <View className="flex-row items-center gap-1 rounded-full bg-ok-soft px-2.5 py-1">
+                  <View className="size-1.5 rounded-full bg-ok" />
+                  <Text className="font-instrument-medium text-[11px] text-ok">
+                    institucional
+                  </Text>
+                </View>
+              ) : null
+            }
+          />
+          <AuthField
+            ref={passwordRef}
+            label="Senha"
+            className="tracking-[2.5px]"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="••••••••••"
+            secureTextEntry={!showPassword}
+            autoComplete="new-password"
+            textContentType="newPassword"
+            returnKeyType="go"
+            onSubmitEditing={submit}
+            trailing={
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => setShowPassword((prev) => !prev)}
+              >
+                <Text className="font-instrument text-[13px] text-ink3">
+                  {showPassword ? "Ocultar" : "Mostrar"}
                 </Text>
-              </View>
-            ) : null}
-          </View>
+              </Pressable>
+            }
+          />
 
-          <View className="h-[54px] flex-row items-center gap-2.5 rounded-2xl border border-hair bg-card px-4">
-            <Text className="w-[52px] font-instrument text-ink3 text-xs">
-              Senha
-            </Text>
-            <TextInput
-              ref={passwordRef}
-              className="h-full flex-1 font-instrument text-[15px] text-ink tracking-[2.5px] web:outline-none"
-              placeholderTextColor={placeholderColor}
-              accessibilityLabel="Senha"
-              value={password}
-              onChangeText={setPassword}
-              placeholder="••••••••••"
-              secureTextEntry={!showPassword}
-              autoComplete="new-password"
-              textContentType="newPassword"
-              returnKeyType="go"
-              onSubmitEditing={submit}
-            />
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => setShowPassword((prev) => !prev)}
-            >
-              <Text className="font-instrument text-[13px] text-ink3">
-                {showPassword ? "Ocultar" : "Mostrar"}
-              </Text>
-            </Pressable>
-          </View>
-
-          {strength.level > 0 && (
+          {strength ? (
             <View className="flex-row items-center gap-2 px-1 pt-0.5">
-              <View className="h-1 flex-1 rounded-full bg-ok" />
-              <View
-                className={`h-1 flex-1 rounded-full ${
-                  strength.level >= 2 ? "bg-ok" : "bg-hair"
-                }`}
-              />
-              <View
-                className={`h-1 flex-1 rounded-full ${
-                  strength.level >= 3 ? "bg-ok" : "bg-hair"
-                }`}
-              />
-              <Text className="ml-1 font-instrument-medium text-[11px] text-ok">
+              {[1, 2, 3].map((step) => (
+                <View
+                  key={step}
+                  className={`h-1 flex-1 rounded-full ${
+                    strengthLevel >= step ? strength.bar : "bg-hair"
+                  }`}
+                />
+              ))}
+              <Text
+                className={`ml-1 font-instrument-medium text-[11px] ${strength.text}`}
+              >
                 {strength.label}
               </Text>
             </View>
-          )}
+          ) : null}
 
           <Pressable
             accessibilityRole="checkbox"
@@ -277,37 +250,10 @@ export default function SignUpScreen() {
           <View className="h-px flex-1 bg-hair" />
         </View>
 
-        <View className="flex-row gap-2.5">
-          <Pressable
-            className="h-[50px] flex-1 flex-row items-center justify-center gap-2 rounded-[25px] border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-80"
-            accessibilityRole="button"
-            onPress={comingSoon}
-          >
-            <View className="size-4 rounded-full bg-ink" />
-            <Text className="font-instrument-semibold text-ink text-sm">
-              Apple
-            </Text>
-          </Pressable>
-
-          <Pressable
-            className="h-[50px] flex-1 flex-row items-center justify-center gap-2 rounded-[25px] border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-80"
-            accessibilityRole="button"
-            onPress={comingSoon}
-          >
-            <View className="size-4 flex-row flex-wrap overflow-hidden rounded-full">
-              {GOOGLE_COLORS.map((color) => (
-                <View
-                  key={color}
-                  className="size-2"
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </View>
-            <Text className="font-instrument-semibold text-ink text-sm">
-              Google
-            </Text>
-          </Pressable>
-        </View>
+        <SocialButtons
+          compact
+          onPress={() => toast.show({ label: "Em breve" })}
+        />
 
         <Text className="mt-auto text-center font-instrument text-[13px] text-ink2">
           Já tem conta?{" "}
