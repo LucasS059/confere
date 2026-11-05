@@ -4,11 +4,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { ScreenHeader } from "@/components/ui/screen-header";
+import { type ThemeMode, useAppTheme } from "@/contexts/app-theme-context";
+
+const THEME_OPTIONS: { mode: ThemeMode; label: string }[] = [
+  { mode: "system", label: "Sistema" },
+  { mode: "light", label: "Claro" },
+  { mode: "dark", label: "Escuro" },
+];
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
+  const { mode, setMode } = useAppTheme();
 
-  const [theme, setTheme] = useState<"sistema" | "claro" | "escuro">("sistema");
   const [showConfidence, setShowConfidence] = useState(true);
   const [compareVersions, setCompareVersions] = useState(true);
   const [useDataForTraining, setUseDataForTraining] = useState(false);
@@ -40,50 +47,25 @@ export default function SettingsScreen() {
             <Text className="mb-2.5 text-[14px] font-medium text-ink">Tema</Text>
 
             <View className="flex-row rounded-2xl border border-line-glass bg-canvas/60 p-1">
-              <Pressable
-                onPress={() => setTheme("sistema")}
-                className={`flex-1 items-center justify-center py-2 rounded-xl ${
-                  theme === "sistema" ? "bg-card shadow-sm" : ""
-                }`}
-              >
-                <Text
-                  className={`text-[13px] font-medium ${
-                    theme === "sistema" ? "text-ink font-semibold" : "text-ink3"
+              {THEME_OPTIONS.map((option) => (
+                <Pressable
+                  key={option.mode}
+                  onPress={() => setMode(option.mode)}
+                  className={`flex-1 items-center justify-center rounded-xl py-2 ${
+                    mode === option.mode ? "bg-card shadow-sm" : ""
                   }`}
                 >
-                  Sistema
-                </Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => setTheme("claro")}
-                className={`flex-1 items-center justify-center py-2 rounded-xl ${
-                  theme === "claro" ? "bg-card shadow-sm" : ""
-                }`}
-              >
-                <Text
-                  className={`text-[13px] font-medium ${
-                    theme === "claro" ? "text-ink font-semibold" : "text-ink3"
-                  }`}
-                >
-                  Claro
-                </Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => setTheme("escuro")}
-                className={`flex-1 items-center justify-center py-2 rounded-xl ${
-                  theme === "escuro" ? "bg-card shadow-sm" : ""
-                }`}
-              >
-                <Text
-                  className={`text-[13px] font-medium ${
-                    theme === "escuro" ? "text-ink font-semibold" : "text-ink3"
-                  }`}
-                >
-                  Escuro
-                </Text>
-              </Pressable>
+                  <Text
+                    className={`text-[13px] font-medium ${
+                      mode === option.mode
+                        ? "font-semibold text-ink"
+                        : "text-ink3"
+                    }`}
+                  >
+                    {option.label}
+                  </Text>
+                </Pressable>
+              ))}
             </View>
           </View>
         </View>

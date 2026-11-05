@@ -1,16 +1,26 @@
+import * as SecureStore from "expo-secure-store";
 import type React from "react";
-import { createContext, useCallback, useContext, useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Uniwind, useUniwind } from "uniwind";
 
-type ThemeName = "light" | "dark";
+export type ThemeMode = "system" | "light" | "dark";
 
 type AppThemeContextType = {
+  mode: ThemeMode;
   currentTheme: string;
   isLight: boolean;
   isDark: boolean;
-  setTheme: (theme: ThemeName) => void;
-  toggleTheme: () => void;
+  setMode: (mode: ThemeMode) => void;
 };
+
+const STORAGE_KEY = "confere.theme-mode";
 
 const AppThemeContext = createContext<AppThemeContextType | undefined>(
   undefined,
@@ -22,32 +32,35 @@ export const AppThemeProvider = ({
   children: React.ReactNode;
 }) => {
   const { theme } = useUniwind();
+  const [mode, setModeState] = useState<ThemeMode>("system");
 
-  const isLight = useMemo(() => {
-    return theme === "light";
-  }, [theme]);
-
-  const isDark = useMemo(() => {
-    return theme === "dark";
-  }, [theme]);
-
-  const setTheme = useCallback((newTheme: ThemeName) => {
-    Uniwind.setTheme(newTheme);
+  // Restaura a escolha salva
+  useEffect(() => {
+    SecureStore.getItemAsync(STORAGE_KEY)
+      .then((saved) => {
+        if (saved === "light" || saved === "dark" || saved === "system") {
+          setModeState(saved);
+          Uniwind.setTheme(saved);
+        }
+      })
+      .catch(() => undefined);
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    Uniwind.setTheme(theme === "light" ? "dark" : "light");
-  }, [theme]);
+  const setMode = useCallback((next: ThemeMode) => {
+    setModeState(next);
+    Uniwind.setTheme(next);
+    SecureStore.setItemAsync(STORAGE_KEY, next).catch(() => undefined);
+  }, []);
 
   const value = useMemo(
     () => ({
+      mode,
       currentTheme: theme,
-      isLight,
-      isDark,
-      setTheme,
-      toggleTheme,
+      isLight: theme === "light",
+      isDark: theme === "dark",
+      setMode,
     }),
-    [theme, isLight, isDark, setTheme, toggleTheme],
+    [mode, theme, setMode],
   );
 
   return (
