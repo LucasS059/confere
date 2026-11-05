@@ -79,6 +79,7 @@ export default function ForgotPasswordScreen() {
         <ScreenHeader
           title="Recuperar senha"
           onBack={() => router.replace("/login")}
+          safeTop={false}
         />
 
         <View className="gap-2 pt-2">

@@ -90,6 +90,7 @@ export default function ResetPasswordScreen() {
         <ScreenHeader
           title="Nova senha"
           onBack={() => router.replace("/login")}
+          safeTop={false}
         />
 
         {linkInvalid ? (

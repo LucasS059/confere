@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import type { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
 import { Icon } from "@/components/ui/icon";
 
@@ -10,6 +11,8 @@ type ScreenHeaderProps = {
   onBack?: () => void;
   rightSlot?: ReactNode;
   rightElement?: ReactNode;
+  // Desligue quando a tela já aplica a área segura do topo
+  safeTop?: boolean;
 };
 
 export function ScreenHeader({
@@ -18,8 +21,10 @@ export function ScreenHeader({
   onBack,
   rightSlot,
   rightElement,
+  safeTop = true,
 }: ScreenHeaderProps) {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const inkColor = (useCSSVariable("--ink") as string) || "#141821";
 
   const handleBack = () => {
@@ -35,7 +40,10 @@ export function ScreenHeader({
   };
 
   return (
-    <View className="flex-row items-center justify-between gap-3">
+    <View
+      className={`flex-row items-center justify-between gap-3 ${safeTop ? "px-5" : ""}`}
+      style={safeTop ? { paddingTop: Math.max(insets.top + 8, 44) } : undefined}
+    >
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Voltar"

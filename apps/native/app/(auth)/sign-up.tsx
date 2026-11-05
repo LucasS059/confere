@@ -117,6 +117,7 @@ export default function SignUpScreen() {
         <ScreenHeader
           title="Criar conta"
           onBack={() => router.replace("/login")}
+          safeTop={false}
         />
 
         <Text className="font-instrument text-[14.5px] text-ink2 leading-[21.5px]">

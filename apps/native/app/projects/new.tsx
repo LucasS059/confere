@@ -210,6 +210,7 @@ export default function NewProjectScreen() {
         <ScreenHeader
           title="Novo projeto"
           subtitle="Cadastre o que o professor pediu e o seu trabalho"
+          safeTop={false}
         />
 
         {/* 1. Nome do Projeto */}
