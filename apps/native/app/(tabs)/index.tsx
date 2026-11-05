@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
+  RefreshControl,
   ScrollView,
   Text,
   TextInput,
@@ -64,9 +65,13 @@ export default function HomeProjectsScreen() {
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
   const [search, setSearch] = useState("");
 
-  const { data: projects = [], isLoading } = useQuery(
-    trpc.project.list.queryOptions(),
-  );
+  const {
+    data: projects = [],
+    isLoading,
+    isError,
+    isRefetching,
+    refetch,
+  } = useQuery(trpc.project.list.queryOptions());
 
   const firstName = session?.user?.name
     ? session.user.name.trim().split(" ")[0]
@@ -100,6 +105,14 @@ export default function HomeProjectsScreen() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              refetch();
+            }}
+          />
+        }
         contentContainerStyle={{
           gap: 20,
           paddingTop: Math.max(insets.top + 16, 44),
@@ -130,7 +143,7 @@ export default function HomeProjectsScreen() {
             className="flex-row items-center gap-1.5 rounded-full bg-brand px-3.5 py-2 shadow-brand-button active:opacity-85"
           >
             <Icon name="plus" fallback="add" size={14} color="#ffffff" />
-            <Text className="font-instrument-semibold text-xs text-white">
+            <Text className="font-instrument-semibold text-white text-xs">
               Novo projeto
             </Text>
           </Pressable>
@@ -138,13 +151,18 @@ export default function HomeProjectsScreen() {
 
         {/* Barra de Busca */}
         <View className="h-11 flex-row items-center gap-2 rounded-2xl border border-hair bg-card px-3.5 shadow-xs">
-          <Icon name="magnifyingglass" fallback="search" size={15} color="#94A3B8" />
+          <Icon
+            name="magnifyingglass"
+            fallback="search"
+            size={15}
+            color="#94A3B8"
+          />
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder="Buscar entre meus projetos..."
             placeholderTextColor={placeholderColor}
-            className="flex-1 font-instrument text-sm text-ink web:outline-none"
+            className="flex-1 font-instrument text-ink text-sm web:outline-none"
           />
         </View>
 
@@ -156,19 +174,41 @@ export default function HomeProjectsScreen() {
 
           {isLoading ? (
             <ActivityIndicator className="my-10" color="#2F6BFF" />
+          ) : isError ? (
+            <View className="my-4 items-center rounded-3xl border border-line-glass bg-glass p-8">
+              <Text className="font-instrument-semibold text-[16px] text-ink">
+                Não foi possível carregar os projetos
+              </Text>
+              <Text className="mt-1 text-center font-instrument text-[13px] text-ink2">
+                Confira sua conexão e tente novamente.
+              </Text>
+              <Pressable
+                onPress={() => refetch()}
+                className="mt-4 rounded-full bg-brand px-5 py-2.5 shadow-brand-button active:opacity-85"
+              >
+                <Text className="font-instrument-semibold text-[13px] text-white">
+                  Tentar novamente
+                </Text>
+              </Pressable>
+            </View>
+          ) : projects.length > 0 && filtered.length === 0 ? (
+            <Text className="my-6 text-center font-instrument text-[13px] text-ink2">
+              Nenhum projeto encontrado para "{search}".
+            </Text>
           ) : filtered.length === 0 ? (
-            <View className="items-center justify-center rounded-3xl border border-line-glass bg-glass p-8 text-center my-4">
+            <View className="my-4 items-center justify-center rounded-3xl border border-line-glass bg-glass p-8 text-center">
               <Icon
                 name="folder.badge.plus"
                 fallback="folder-open-outline"
                 size={40}
                 color="#94A3B8"
               />
-              <Text className="mt-3 text-[16px] font-bold text-ink">
+              <Text className="mt-3 font-bold text-[16px] text-ink">
                 Nenhum projeto cadastrado ainda
               </Text>
               <Text className="mt-1 text-center text-[13px] text-ink2 leading-relaxed">
-                Crie seu primeiro projeto colando a rubrica ou critérios informados pelo seu professor.
+                Crie seu primeiro projeto colando a rubrica ou critérios
+                informados pelo seu professor.
               </Text>
               <Pressable
                 onPress={() => router.push("/projects/new")}
@@ -195,7 +235,7 @@ export default function HomeProjectsScreen() {
                   <View className="flex-1 gap-1">
                     <View className="flex-row items-center gap-2">
                       <View className="rounded-md bg-brand/10 px-2 py-0.5">
-                        <Text className="font-mono text-[10px] font-bold text-brand uppercase">
+                        <Text className="font-bold font-mono text-[10px] text-brand uppercase">
                           {item.sourceType}
                         </Text>
                       </View>
@@ -204,7 +244,7 @@ export default function HomeProjectsScreen() {
                       </Text>
                     </View>
 
-                    <Text className="text-[17px] font-bold text-ink">
+                    <Text className="font-bold text-[17px] text-ink">
                       {item.name}
                     </Text>
 
