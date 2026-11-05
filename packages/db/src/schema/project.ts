@@ -55,7 +55,7 @@ export const submission = pgTable(
     fileUrl: text("file_url"),
     fileSize: text("file_size"),
     totalPages: integer("total_pages"),
-    status: text("status").default("processando").notNull(), // processando, concluido, erro
+    status: text("status").default("processando").notNull(), // aguardando_analise, processando, concluido, erro
     coverage: integer("coverage"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },

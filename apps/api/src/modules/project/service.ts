@@ -116,8 +116,8 @@ export abstract class ProjectService {
           version: input.initialSubmission.version || "v1",
           fileSize: input.initialSubmission.fileSize,
           totalPages: input.initialSubmission.totalPages,
-          status: "concluido",
-          coverage: 100,
+          status: "aguardando_analise",
+          coverage: null,
         })
         .returning();
       initialSub = createdSub;
@@ -207,8 +207,8 @@ export abstract class ProjectService {
         version: input.version,
         fileSize: input.fileSize,
         totalPages: input.totalPages,
-        status: "concluido",
-        coverage: 100,
+        status: "aguardando_analise",
+        coverage: null,
       })
       .returning();
 
