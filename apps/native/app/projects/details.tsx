@@ -150,10 +150,10 @@ export default function ProjectDetailsScreen() {
         {submissions.length === 0 ? (
           <View className="items-center justify-center rounded-2xl border border-line-glass bg-glass p-6 text-center">
             <Text className="text-[14px] font-semibold text-ink">
-              Nenhum PDF enviado ainda
+              Nenhuma entrega cadastrada ainda
             </Text>
             <Text className="mt-1 text-center text-[12px] text-ink2">
-              Envie a 1ª versão do seu trabalho em PDF para conferir com a rubrica.
+              Cadastre os dados da primeira versão. Upload e análise ainda indisponíveis.
             </Text>
             <Pressable
               onPress={() => {
@@ -165,7 +165,7 @@ export default function ProjectDetailsScreen() {
               className="mt-3 rounded-full bg-brand px-4 py-2"
             >
               <Text className="text-[12px] font-semibold text-white">
-                Enviar PDF do relatório
+                Cadastrar entrega do relatório
               </Text>
             </Pressable>
           </View>
@@ -194,9 +194,15 @@ export default function ProjectDetailsScreen() {
                     </Text>
                   </View>
                 </View>
-                <View className="rounded-full bg-ok/10 px-2.5 py-1">
-                  <Text className="font-mono text-[11px] font-bold text-ok">
-                    Conferido
+                <View className="rounded-full bg-glass px-2.5 py-1">
+                  <Text className="font-mono text-[11px] font-bold text-ink2">
+                    {sub.status === "concluido"
+                      ? "Conferido"
+                      : sub.status === "erro"
+                        ? "Erro na análise"
+                        : sub.status === "processando"
+                          ? "Processando"
+                          : "Aguardando análise"}
                   </Text>
                 </View>
               </View>
@@ -220,7 +226,7 @@ export default function ProjectDetailsScreen() {
           className="h-[52px] items-center justify-center rounded-2xl bg-brand shadow-brand-button active:opacity-85"
         >
           <Text className="font-instrument-semibold text-[15px] text-white">
-            Enviar nova versão do trabalho (PDF)
+            Cadastrar nova versão do trabalho
           </Text>
         </Pressable>
       </View>
