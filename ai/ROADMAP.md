@@ -69,6 +69,12 @@ O [experimento de localização](EVIDENCE_POSITIONS.md), em 05/11, acrescentou
 por loss; não houve ganho no selecionado. Avaliações e PDF foram preservados,
 sem promoção ou consulta ao teste reservado.
 
+O [diagnóstico de evidências](EVIDENCE_DIAGNOSTIC.md) separou um lote contendo
+afirmação e negação de backup: o contrato de status/unit único não devolve as
+duas evidências. Controle com a frase correta isolada ainda errou um dos dois
+lotes relevantes restantes. Próximo passo: corrigir representação de múltiplas
+evidências antes de criar novos alvos de treino. Nenhum peso foi alterado.
+
 Os TCCs candidatos não foram usados para treinar. Disponibilidade pública não
 substitui verificação de licença nem anotação de evidências. Se não obtivermos
 entregas antigas utilizáveis, manter o corpus autoral e ajustar o escopo de
