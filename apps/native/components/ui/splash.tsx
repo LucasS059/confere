@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
-import { CheckMark } from "@/components/check-mark";
+import { CheckMark } from "@/components/ui/check-mark";
 
 type SplashProps = {
   fontsLoaded: boolean;

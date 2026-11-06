@@ -19,7 +19,7 @@
     }
   },
   "overrides": {
-    "react-native-screens": "~4.26.0"
+    "react-native-screens": "~4.30.0"
   },
   "scripts": {
     "ai:chat": "./ai/.venv/bin/python -m confere_ai.chat",

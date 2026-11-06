@@ -4,7 +4,7 @@ import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
 import type { SFSymbol } from "expo-symbols";
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 import { Ionicons } from "@expo/vector-icons";
 
 type BottomTabBarProps = Parameters<
@@ -26,21 +26,21 @@ const TAB_ITEMS: Array<{
     fallback: "home-outline",
   },
   {
-    name: "conferir",
+    name: "check",
     label: "Conferir",
     icon: "checkmark.seal",
     activeIcon: "checkmark.seal.fill",
     fallback: "checkmark-circle-outline",
   },
   {
-    name: "historico",
+    name: "history",
     label: "Histórico",
     icon: "clock",
     activeIcon: "clock.fill",
     fallback: "time-outline",
   },
   {
-    name: "perfil",
+    name: "profile",
     label: "Perfil",
     icon: "person",
     activeIcon: "person.fill",
@@ -52,7 +52,9 @@ function LiquidGlassTabBar({
   state,
   descriptors,
   navigation,
-}: BottomTabBarProps) {
+  emitter,
+  navigateToTab,
+}: any) {
   const insets = useSafeAreaInsets();
   const brandColor = (useCSSVariable("--color-brand") as string) || "#2F6BFF";
   const inactiveColor = (useCSSVariable("--ink2") as string) || "#5B6270";
@@ -76,13 +78,13 @@ function LiquidGlassTabBar({
           const tintColor = isFocused ? brandColor : inactiveColor;
 
           const onPress = () => {
-            const event = navigation.emit({
+            const event = (emitter?.emit ?? navigation?.emit)?.({
               type: "tabPress",
               target: route.key,
               canPreventDefault: true,
             });
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name, route.params);
+            if (!isFocused && !event?.defaultPrevented) {
+              navigateToTab ? navigateToTab(route.key) : navigation?.navigate?.(route.name, route.params);
             }
           };
 
@@ -127,9 +129,9 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: "Início" }} />
-      <Tabs.Screen name="conferir" options={{ title: "Conferir" }} />
-      <Tabs.Screen name="historico" options={{ title: "Histórico" }} />
-      <Tabs.Screen name="perfil" options={{ title: "Perfil" }} />
+      <Tabs.Screen name="check" options={{ title: "Conferir" }} />
+      <Tabs.Screen name="history" options={{ title: "Histórico" }} />
+      <Tabs.Screen name="profile" options={{ title: "Perfil" }} />
     </Tabs>
   );
 }

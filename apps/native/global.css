@@ -41,6 +41,8 @@
       --glass-hi: rgba(255, 255, 255, 0.75);
       --glass-sh: rgba(20, 30, 60, 0.08);
       --glass-bd: rgba(255, 255, 255, 0.6);
+      --line: rgba(20, 24, 33, 0.08);
+      --line-glass: rgba(20, 24, 33, 0.1);
     }
   }
 
@@ -56,6 +58,8 @@
       --glass-hi: rgba(255, 255, 255, 0.14);
       --glass-sh: rgba(0, 0, 0, 0.45);
       --glass-bd: rgba(255, 255, 255, 0.12);
+      --line: rgba(255, 255, 255, 0.09);
+      --line-glass: rgba(255, 255, 255, 0.12);
     }
   }
 }
@@ -69,6 +73,8 @@
   --color-hair: var(--hair);
   --color-glass: var(--glass);
   --color-glass-bd: var(--glass-bd);
+  --color-line: var(--line);
+  --color-line-glass: var(--line-glass);
 }
 
 @utility bg-brand-gradient {

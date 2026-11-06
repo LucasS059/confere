@@ -1,27 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
 import { useCSSVariable } from "uniwind";
-import { Blob } from "@/components/blob";
-import { Icon } from "@/components/icon";
-import { authClient } from "@/lib/auth-client";
-
-export type Project = {
-  id: string;
-  tag: string;
-  title: string;
-  meta: string;
-  coverage: number | null;
-  pendingDelivery?: {
-    filename: string;
-    date: string;
-    missingCount: number;
-    reviewCount: number;
-    coverage: number;
-  };
-};
+import { Blob } from "@/components/ui/blob";
+import { Icon } from "@/components/ui/icon";
+import { authClient } from "@/lib/auth/client";
+import { trpc } from "@/lib/trpc";
 
 function CoverageRing({ coverage }: { coverage: number }) {
   const size = 56;
@@ -69,7 +64,14 @@ export default function HomeProjectsScreen() {
   const { data: session } = authClient.useSession();
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
   const [search, setSearch] = useState("");
-  const [projects] = useState<Project[]>([]);
+
+  const {
+    data: projects = [],
+    isLoading,
+    isError,
+    isRefetching,
+    refetch,
+  } = useQuery(trpc.project.list.queryOptions());
 
   const firstName = session?.user?.name
     ? session.user.name.trim().split(" ")[0]
@@ -79,186 +81,200 @@ export default function HomeProjectsScreen() {
     ? session.user.name
         .trim()
         .split(" ")
+        .map((n) => n[0])
         .filter(Boolean)
         .slice(0, 2)
-        .map((p) => p[0]?.toUpperCase())
         .join("")
-    : "CF";
+        .toUpperCase()
+    : "ES";
 
-  const filteredProjects = projects.filter((p) =>
-    p.title.toLowerCase().includes(search.trim().toLowerCase()),
+  const filtered = projects.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase()),
   );
-
-  const pendingProject = projects.find((p) => Boolean(p.pendingDelivery));
 
   return (
     <View className="flex-1 overflow-hidden bg-canvas">
       <Blob
         color="#2F6BFF"
-        className="-top-[120px] -left-[80px] size-[360px] opacity-[0.18] dark:opacity-[0.30]"
+        className="-top-[120px] -left-[100px] size-[420px] opacity-[0.20] dark:opacity-[0.35]"
       />
       <Blob
         color="#1E9E62"
-        className="top-[320px] -right-[140px] size-[320px] opacity-[0.14] dark:opacity-[0.24]"
+        className="top-[320px] -right-[160px] size-[380px] opacity-[0.16] dark:opacity-[0.26]"
       />
 
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              refetch();
+            }}
+          />
+        }
         contentContainerStyle={{
-          gap: 18,
-          paddingTop: Math.max(insets.top + 12, 56),
+          gap: 20,
+          paddingTop: Math.max(insets.top + 16, 44),
           paddingHorizontal: 20,
-          paddingBottom: Math.max(insets.bottom + 100, 120),
+          paddingBottom: insets.bottom + 90,
         }}
-        keyboardShouldPersistTaps="handled"
       >
+        {/* Cabeçalho */}
         <View className="flex-row items-center justify-between">
-          <View>
-            <Text className="font-instrument text-ink2 text-xs">Boa tarde,</Text>
-            <Text className="font-instrument-semibold text-[28px] text-ink leading-[32px] tracking-[-0.7px]">
-              {firstName}
-            </Text>
+          <View className="flex-row items-center gap-3">
+            <View className="size-11 items-center justify-center rounded-full bg-brand-gradient shadow-brand-tile">
+              <Text className="font-instrument-bold text-sm text-white">
+                {initials}
+              </Text>
+            </View>
+            <View>
+              <Text className="font-instrument text-ink3 text-xs">
+                Bem-vindo de volta
+              </Text>
+              <Text className="font-instrument-semibold text-[17px] text-ink leading-tight">
+                {firstName}
+              </Text>
+            </View>
           </View>
+
           <Pressable
-            accessibilityRole="button"
-            onPress={() => router.push("/(tabs)/perfil")}
-            className="size-10 items-center justify-center rounded-full border-[0.5px] border-glass-bd bg-brand/15 shadow-glass"
+            onPress={() => router.push("/projects/new")}
+            className="flex-row items-center gap-1.5 rounded-full bg-brand px-3.5 py-2 shadow-brand-button active:opacity-85"
           >
-            <Text className="font-instrument-semibold text-[13px] text-brand">
-              {initials}
+            <Icon name="plus" fallback="add" size={14} color="#ffffff" />
+            <Text className="font-instrument-semibold text-white text-xs">
+              Novo projeto
             </Text>
           </Pressable>
         </View>
 
-        <View className="h-[44px] flex-row items-center gap-2.5 rounded-full border-[0.5px] border-glass-bd bg-glass px-4 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%]">
+        {/* Barra de Busca */}
+        <View className="h-11 flex-row items-center gap-2 rounded-2xl border border-hair bg-card px-3.5 shadow-xs">
           <Icon
             name="magnifyingglass"
-            fallback="search-outline"
-            size={16}
-            color={placeholderColor || "#8A91A0"}
+            fallback="search"
+            size={15}
+            color="#94A3B8"
           />
           <TextInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Buscar projetos"
+            placeholder="Buscar entre meus projetos..."
             placeholderTextColor={placeholderColor}
-            className="h-full flex-1 font-instrument text-ink text-sm web:outline-none"
+            className="flex-1 font-instrument text-ink text-sm web:outline-none"
           />
         </View>
 
-        {pendingProject && pendingProject.pendingDelivery && (
-          <Pressable
-            onPress={() => router.push("/projects/new")}
-            className="gap-3.5 rounded-[22px] border border-hair bg-card p-4 shadow-xs active:opacity-90"
-          >
-            <View className="flex-row items-center justify-between gap-3">
-              <View className="flex-1 gap-1">
-                <Text className="font-instrument-semibold text-[10px] text-brand tracking-[0.8px]">
-                  PENDENTE
-                </Text>
-                <Text className="font-instrument-semibold text-[16px] text-ink leading-[20px]">
-                  {pendingProject.title}
-                </Text>
-                <Text className="font-instrument text-ink3 text-xs">
-                  {pendingProject.pendingDelivery.filename} ·{" "}
-                  {pendingProject.pendingDelivery.date}
-                </Text>
-              </View>
+        {/* Lista de Projetos */}
+        <View className="gap-2.5">
+          <Text className="px-1 font-instrument text-ink2 text-xs uppercase tracking-wider">
+            Meus Projetos Cadastrados
+          </Text>
 
-              <CoverageRing
-                coverage={pendingProject.pendingDelivery.coverage}
-              />
-            </View>
-
-            <View className="flex-row items-center gap-2">
-              <View className="rounded-full bg-err-soft px-3 py-1">
-                <Text className="font-instrument-semibold text-[11px] text-err">
-                  {pendingProject.pendingDelivery.missingCount} faltando
-                </Text>
-              </View>
-              <View className="rounded-full bg-warn-soft px-3 py-1">
-                <Text className="font-instrument-semibold text-[11px] text-warn">
-                  {pendingProject.pendingDelivery.reviewCount} revisar
-                </Text>
-              </View>
-            </View>
-          </Pressable>
-        )}
-
-        <View className="gap-3 pt-1">
-          <View className="flex-row items-center justify-between px-1">
-            <Text className="font-instrument-semibold text-[15px] text-ink">
-              Meus projetos
-            </Text>
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => router.push("/projects/new")}
-            >
-              <Text className="font-instrument-semibold text-[13px] text-brand">
-                + Novo
+          {isLoading ? (
+            <ActivityIndicator className="my-10" color="#2F6BFF" />
+          ) : isError ? (
+            <View className="my-4 items-center rounded-3xl border border-line-glass bg-glass p-8">
+              <Text className="font-instrument-semibold text-[16px] text-ink">
+                Não foi possível carregar os projetos
               </Text>
-            </Pressable>
-          </View>
-
-          {filteredProjects.length === 0 ? (
-            <View className="items-center gap-3 rounded-[22px] border border-hair bg-card p-6 shadow-xs">
-              <View className="size-12 items-center justify-center rounded-2xl bg-brand-soft">
-                <Icon name="folder" fallback="folder-open-outline" size={24} color="#2F6BFF" />
-              </View>
-              <View className="items-center gap-1">
-                <Text className="font-instrument-semibold text-[16px] text-ink">
-                  Nenhum projeto cadastrado
+              <Text className="mt-1 text-center font-instrument text-[13px] text-ink2">
+                Confira sua conexão e tente novamente.
+              </Text>
+              <Pressable
+                onPress={() => refetch()}
+                className="mt-4 rounded-full bg-brand px-5 py-2.5 shadow-brand-button active:opacity-85"
+              >
+                <Text className="font-instrument-semibold text-[13px] text-white">
+                  Tentar novamente
                 </Text>
-                <Text className="text-center font-instrument text-[13.5px] text-ink2 leading-[19px]">
-                  Crie seu primeiro projeto para colar ou enviar o edital e
-                  começar a conferir requisitos.
-                </Text>
-              </View>
+              </Pressable>
+            </View>
+          ) : projects.length > 0 && filtered.length === 0 ? (
+            <Text className="my-6 text-center font-instrument text-[13px] text-ink2">
+              Nenhum projeto encontrado para "{search}".
+            </Text>
+          ) : filtered.length === 0 ? (
+            <View className="my-4 items-center justify-center rounded-3xl border border-line-glass bg-glass p-8 text-center">
+              <Icon
+                name="folder.badge.plus"
+                fallback="folder-open-outline"
+                size={40}
+                color="#94A3B8"
+              />
+              <Text className="mt-3 font-bold text-[16px] text-ink">
+                Nenhum projeto cadastrado ainda
+              </Text>
+              <Text className="mt-1 text-center text-[13px] text-ink2 leading-relaxed">
+                Crie seu primeiro projeto colando a rubrica ou critérios
+                informados pelo seu professor.
+              </Text>
               <Pressable
                 onPress={() => router.push("/projects/new")}
-                className="mt-1 h-11 flex-row items-center justify-center rounded-full bg-brand px-5 shadow-brand-button active:opacity-85"
+                className="mt-4 rounded-full bg-brand px-5 py-2.5 shadow-brand-button active:opacity-85"
               >
-                <Text className="font-instrument-semibold text-[14px] text-white">
-                  + Criar projeto
+                <Text className="font-instrument-semibold text-[13px] text-white">
+                  Cadastrar primeiro projeto
                 </Text>
               </Pressable>
             </View>
           ) : (
-            <View className="gap-2.5">
-              {filteredProjects.map((project) => (
-                <Pressable
-                  key={project.id}
-                  onPress={() => router.push("/projects/new")}
-                  className="flex-row items-center justify-between gap-3 rounded-2xl border border-hair bg-card p-3.5 shadow-xs active:opacity-85"
-                >
-                  <View className="size-10 items-center justify-center rounded-xl bg-brand-soft">
-                    <Text className="font-instrument-semibold text-[11px] text-brand">
-                      {project.tag}
+            filtered.map((item) => (
+              <Pressable
+                key={item.id}
+                onPress={() => {
+                  router.push({
+                    pathname: "/projects/details",
+                    params: { projectId: item.id },
+                  });
+                }}
+                className="rounded-3xl border border-line-glass bg-glass p-4 shadow-sm active:bg-card/60"
+              >
+                <View className="flex-row items-start justify-between gap-3">
+                  <View className="flex-1 gap-1">
+                    <View className="flex-row items-center gap-2">
+                      <View className="rounded-md bg-brand/10 px-2 py-0.5">
+                        <Text className="font-bold font-mono text-[10px] text-brand uppercase">
+                          {item.sourceType}
+                        </Text>
+                      </View>
+                      <Text className="text-[12px] text-ink3">
+                        {item.requirementsCount} requisitos
+                      </Text>
+                    </View>
+
+                    <Text className="font-bold text-[17px] text-ink">
+                      {item.name}
                     </Text>
+
+                    {item.latestSubmission ? (
+                      <Text className="text-[13px] text-ink2">
+                        Última entrega: {item.latestSubmission.filename} (
+                        {item.latestSubmission.version})
+                      </Text>
+                    ) : (
+                      <Text className="text-[13px] text-ink3">
+                        Nenhuma entrega em PDF realizada ainda
+                      </Text>
+                    )}
                   </View>
 
-                  <View className="flex-1 gap-0.5">
-                    <Text className="font-instrument-semibold text-[14px] text-ink">
-                      {project.title}
-                    </Text>
-                    <Text className="font-instrument text-ink3 text-xs">
-                      {project.meta}
-                    </Text>
-                  </View>
-
-                  <Text
-                    className={`font-instrument-semibold text-[13px] ${
-                      project.coverage === 100
-                        ? "text-ok"
-                        : project.coverage !== null
-                          ? "text-ink"
-                          : "text-ink3"
-                    }`}
-                  >
-                    {project.coverage !== null ? `${project.coverage}%` : "—"}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
+                  {item.latestSubmission?.coverage != null ? (
+                    <CoverageRing coverage={item.latestSubmission.coverage} />
+                  ) : (
+                    <View className="size-11 items-center justify-center rounded-2xl bg-brand/5">
+                      <Icon
+                        name="chevron.forward"
+                        fallback="chevron-forward"
+                        size={16}
+                        color="#94A3B8"
+                      />
+                    </View>
+                  )}
+                </View>
+              </Pressable>
+            ))
           )}
         </View>
       </ScrollView>
