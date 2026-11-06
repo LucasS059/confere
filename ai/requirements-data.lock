@@ -1,0 +1,2 @@
+# Leitor opcional de snapshots Parquet; não é necessário na inferência.
+pyarrow==21.0.0

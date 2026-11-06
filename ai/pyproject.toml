@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "confere-ai"
+version = "0.1.0"
+description = "Dados e processamento local para o GPT experimental do Confere"
+requires-python = ">=3.9"
+dependencies = [
+  "pypdf>=6,<7",
+  "python-docx>=1.2,<2",
+  "jsonschema>=4.23,<5",
+]
+
+[project.optional-dependencies]
+fixtures = ["reportlab>=4,<5"]
+train = ["torch==2.8.0", "numpy==2.0.2", "textual==6.12.0", "reportlab==4.5.1"]
+
+[project.scripts]
+confere-ai = "confere_ai.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+confere_ai = ["*.json"]

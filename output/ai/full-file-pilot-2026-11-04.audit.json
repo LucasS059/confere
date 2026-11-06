@@ -1,0 +1,13 @@
+{
+  "contiguous_text_coverage_verified": true,
+  "literal_quotes_verified": 3,
+  "expected_statuses": [
+    "atendido",
+    "evidencia_insuficiente",
+    "atendido"
+  ],
+  "expected_note": "Rótulos por construção em três casos fictícios; sem revisão independente de semântica.",
+  "elapsed_seconds": 16.957506209,
+  "result_sha256": "0d17e4264e09547f163a080130da2c3d2cb2b758874d4804e6b686238fdf627a",
+  "invalid_calls": 54
+}

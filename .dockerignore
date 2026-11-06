@@ -26,3 +26,13 @@ docker-compose.yml
 **/.env
 **/.env.*
 !**/.env.example
+
+# Local AI environments and datasets do not belong in the Bun server image.
+ai/.venv
+ai/data/private
+ai/data/extracted
+ai/checkpoints
+ai/runs
+**/__pycache__
+**/*.egg-info
+tmp

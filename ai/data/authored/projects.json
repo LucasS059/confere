@@ -1,0 +1,206 @@
+[
+  {
+    "id": "biblioteca",
+    "title": "Sistema de empréstimos da biblioteca",
+    "split": "train",
+    "requirements": [
+      {
+        "id": "B1",
+        "text": "O sistema deve permitir empréstimos somente a usuários autenticados."
+      },
+      {
+        "id": "B2",
+        "text": "O projeto deve justificar a escolha do banco de dados."
+      },
+      {
+        "id": "B3",
+        "text": "O cronograma deve incluir uma etapa de testes com duração de duas semanas."
+      }
+    ],
+    "submissions": [
+      {
+        "id": "completo",
+        "sections": [
+          [
+            "Acesso",
+            "Somente usuários autenticados podem registrar empréstimos."
+          ],
+          [
+            "Persistência",
+            "Escolhemos PostgreSQL para garantir integridade referencial entre usuários, livros e empréstimos."
+          ]
+        ],
+        "table": [
+          ["Etapa", "Duração"],
+          ["Implementação", "quatro semanas"],
+          ["Testes", "duas semanas"]
+        ],
+        "labels": [
+          {
+            "requirement": "B1",
+            "status": "atendido",
+            "quote": "Somente usuários autenticados podem registrar empréstimos.",
+            "justification": "O texto restringe explicitamente os empréstimos a usuários autenticados."
+          },
+          {
+            "requirement": "B2",
+            "status": "atendido",
+            "quote": "Escolhemos PostgreSQL para garantir integridade referencial entre usuários, livros e empréstimos.",
+            "justification": "A escolha do banco é acompanhada de uma justificativa de integridade referencial."
+          },
+          {
+            "requirement": "B3",
+            "status": "atendido",
+            "quote": "Testes | duas semanas",
+            "justification": "O cronograma reserva duas semanas para testes."
+          }
+        ]
+      },
+      {
+        "id": "alterado",
+        "derived_from": "completo",
+        "sections": [
+          [
+            "Acesso",
+            "Qualquer visitante pode registrar empréstimos sem autenticação."
+          ],
+          ["Persistência", "O banco escolhido é PostgreSQL."],
+          ["Cronograma", "A etapa de testes terá duração de uma semana."]
+        ],
+        "labels": [
+          {
+            "requirement": "B1",
+            "status": "nao_atendido",
+            "quote": "Qualquer visitante pode registrar empréstimos sem autenticação.",
+            "justification": "O acesso sem autenticação contradiz a restrição exigida."
+          },
+          {
+            "requirement": "B2",
+            "status": "evidencia_insuficiente",
+            "quote": "O banco escolhido é PostgreSQL.",
+            "justification": "O banco é identificado, mas o documento não apresenta uma justificativa para sua escolha."
+          },
+          {
+            "requirement": "B3",
+            "status": "nao_atendido",
+            "quote": "A etapa de testes terá duração de uma semana.",
+            "justification": "Uma semana é inferior às duas semanas exigidas."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "horta",
+    "title": "Irrigação da horta comunitária",
+    "split": "validation",
+    "requirements": [
+      {
+        "id": "H1",
+        "text": "A irrigação deve ser acionada quando a umidade do solo ficar abaixo de 30 por cento."
+      },
+      {
+        "id": "H2",
+        "text": "O relatório deve informar o custo total dos componentes em reais."
+      },
+      {
+        "id": "H3",
+        "text": "O projeto deve descrever como agir em caso de falha do sensor."
+      }
+    ],
+    "submissions": [
+      {
+        "id": "entrega",
+        "sections": [
+          [
+            "Controle",
+            "A válvula abre quando a umidade do solo fica abaixo de 30 por cento."
+          ],
+          [
+            "Componentes",
+            "Serão utilizados uma válvula e um sensor de umidade."
+          ],
+          ["Falhas", "Não foi definido procedimento para falha do sensor."]
+        ],
+        "labels": [
+          {
+            "requirement": "H1",
+            "status": "atendido",
+            "quote": "A válvula abre quando a umidade do solo fica abaixo de 30 por cento.",
+            "justification": "O limiar de acionamento corresponde ao requisito."
+          },
+          {
+            "requirement": "H2",
+            "status": "evidencia_insuficiente",
+            "quote": "Serão utilizados uma válvula e um sensor de umidade.",
+            "justification": "A lista de componentes não informa seus preços nem o custo total."
+          },
+          {
+            "requirement": "H3",
+            "status": "nao_atendido",
+            "quote": "Não foi definido procedimento para falha do sensor.",
+            "justification": "O documento declara explicitamente que o procedimento exigido não foi definido."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "acessibilidade",
+    "title": "Portal de eventos acessível",
+    "split": "test",
+    "requirements": [
+      {
+        "id": "A1",
+        "text": "Todas as funções de inscrição devem estar disponíveis por teclado."
+      },
+      {
+        "id": "A2",
+        "text": "O relatório deve apresentar resultados de testes com leitores de tela."
+      },
+      {
+        "id": "A3",
+        "text": "O projeto deve identificar um responsável pela manutenção."
+      }
+    ],
+    "submissions": [
+      {
+        "id": "entrega",
+        "sections": [
+          [
+            "Inscrição",
+            "O envio da inscrição depende de arrastar um cartão com o mouse e não possui alternativa por teclado."
+          ],
+          [
+            "Avaliação",
+            "Os testes com leitores de tela serão realizados após a entrega."
+          ],
+          [
+            "Manutenção",
+            "A equipe de suporte do portal será responsável pela manutenção."
+          ]
+        ],
+        "labels": [
+          {
+            "requirement": "A1",
+            "status": "nao_atendido",
+            "quote": "O envio da inscrição depende de arrastar um cartão com o mouse e não possui alternativa por teclado.",
+            "justification": "Uma função de inscrição não está disponível por teclado."
+          },
+          {
+            "requirement": "A2",
+            "status": "evidencia_insuficiente",
+            "quote": "Os testes com leitores de tela serão realizados após a entrega.",
+            "justification": "A promessa de testes futuros não apresenta resultados que possam ser conferidos."
+          },
+          {
+            "requirement": "A3",
+            "status": "atendido",
+            "quote": "A equipe de suporte do portal será responsável pela manutenção.",
+            "justification": "O documento identifica a equipe responsável pela manutenção."
+          }
+        ]
+      }
+    ]
+  }
+]

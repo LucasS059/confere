@@ -1,0 +1,1784 @@
+{
+  "schema_version": 1,
+  "experimental": true,
+  "offset_unit": "unicode_codepoints",
+  "scope_note": "Propostas restritas ao texto extraído. Referência válida não garante suporte semântico; imagens e demais conteúdos não extraídos exigem revisão.",
+  "sources": [
+    {
+      "id": "doc:1",
+      "name": "entrega-longa.pdf",
+      "sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+      "format": "pdf",
+      "warnings": [
+        "Imagens e a estrutura das tabelas do PDF não são interpretadas nesta etapa."
+      ],
+      "units": [
+        {
+          "id": "page:1",
+          "characters": 4789
+        },
+        {
+          "id": "page:2",
+          "characters": 4789
+        },
+        {
+          "id": "page:3",
+          "characters": 4789
+        },
+        {
+          "id": "page:4",
+          "characters": 4789
+        },
+        {
+          "id": "page:5",
+          "characters": 4789
+        },
+        {
+          "id": "page:6",
+          "characters": 4839
+        }
+      ]
+    },
+    {
+      "id": "doc:2",
+      "name": "entrega-tabelas.docx",
+      "sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+      "format": "docx",
+      "warnings": [
+        "Somente corpo e tabelas de primeiro nível; imagens, caixas de texto, revisões, cabeçalhos e rodapés não são interpretados."
+      ],
+      "units": [
+        {
+          "id": "paragraph:1",
+          "characters": 28
+        },
+        {
+          "id": "table:1:row:1",
+          "characters": 15
+        },
+        {
+          "id": "table:1:row:2",
+          "characters": 38
+        },
+        {
+          "id": "paragraph:2",
+          "characters": 41
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R1",
+      "requirement": "O projeto deve incluir testes.",
+      "status": "evidencia_insuficiente",
+      "requires_human_review": true,
+      "conflicting_evidence": true,
+      "model_outputs_valid": false,
+      "evidence": [
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 0,
+          "char_end": 2093,
+          "quote": "Equipe: registro 1-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-26. ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 2093,
+          "char_end": 4143,
+          "quote": "A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 1-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 0,
+          "char_end": 2093,
+          "quote": "Equipe: registro 3-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-26. ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 2093,
+          "char_end": 4143,
+          "quote": "A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 3-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 0,
+          "char_end": 2093,
+          "quote": "Equipe: registro 4-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-26. ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 2093,
+          "char_end": 4143,
+          "quote": "A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 4-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 0,
+          "char_end": 2093,
+          "quote": "Equipe: registro 5-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-26. ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 2093,
+          "char_end": 4143,
+          "quote": "A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 5-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 0,
+          "char_end": 2093,
+          "quote": "Equipe: registro 6-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-26. ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 2093,
+          "char_end": 4143,
+          "quote": "A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 4143,
+          "char_end": 4839,
+          "quote": "atual.\nEquipe: registro 6-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-59. A equipe registrou atividades e decisões da etapa atual.\nO projeto inclui testes.\nO projeto inclui backup.",
+          "model_status": "nao_atendido"
+        },
+        {
+          "document_id": "doc:2",
+          "document": "entrega-tabelas.docx",
+          "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+          "source_unit": "paragraph:2",
+          "char_start": 0,
+          "char_end": 41,
+          "quote": "Equipe: documento fictício de integração.",
+          "model_status": "atendido"
+        }
+      ],
+      "calls": [
+        {
+          "batch": 1,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 2,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 3,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 4,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 5,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 6,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 7,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 8,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 9,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 10,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 11,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 12,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 13,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 14,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 15,
+          "input_tokens": 341,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 16,
+          "input_tokens": 960,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 0,
+              "char_end": 2093
+            }
+          ]
+        },
+        {
+          "batch": 17,
+          "input_tokens": 952,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 2093,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 18,
+          "input_tokens": 434,
+          "raw_model_output": "{\"status\": \"nao_atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "nao_atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 4143,
+              "char_end": 4839
+            },
+            {
+              "alias": "page:2",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:1",
+              "char_start": 0,
+              "char_end": 28
+            },
+            {
+              "alias": "page:3",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:1",
+              "char_start": 0,
+              "char_end": 15
+            },
+            {
+              "alias": "page:4",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:2",
+              "char_start": 0,
+              "char_end": 38
+            }
+          ]
+        },
+        {
+          "batch": 19,
+          "input_tokens": 78,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:2",
+              "char_start": 0,
+              "char_end": 41
+            }
+          ]
+        }
+      ],
+      "coverage": {
+        "scope": "all_extracted_text",
+        "all_extracted_text_processed": true,
+        "text_characters": 28906,
+        "processed_characters": 28906,
+        "batches": 19,
+        "units_without_text": []
+      }
+    },
+    {
+      "id": "R2",
+      "requirement": "O projeto deve incluir backup.",
+      "status": "evidencia_insuficiente",
+      "requires_human_review": true,
+      "conflicting_evidence": false,
+      "model_outputs_valid": false,
+      "evidence": [
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 1-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "1-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 1-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:2",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "2-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 3-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "3-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 3-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 4-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "4-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 4-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 5-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "5-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 5-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 6-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "6-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:2",
+          "document": "entrega-tabelas.docx",
+          "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+          "source_unit": "paragraph:2",
+          "char_start": 0,
+          "char_end": 41,
+          "quote": "Equipe: documento fictício de integração.",
+          "model_status": "atendido"
+        }
+      ],
+      "calls": [
+        {
+          "batch": 1,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 2,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 3,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 4,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 5,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 6,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 7,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 8,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 9,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 10,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 11,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 12,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 13,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 14,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 15,
+          "input_tokens": 343,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 16,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 17,
+          "input_tokens": 958,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 18,
+          "input_tokens": 436,
+          "raw_model_output": "{\"status\": \"}",
+          "valid_format": false,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 4143,
+              "char_end": 4839
+            },
+            {
+              "alias": "page:2",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:1",
+              "char_start": 0,
+              "char_end": 28
+            },
+            {
+              "alias": "page:3",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:1",
+              "char_start": 0,
+              "char_end": 15
+            },
+            {
+              "alias": "page:4",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:2",
+              "char_start": 0,
+              "char_end": 38
+            }
+          ]
+        },
+        {
+          "batch": 19,
+          "input_tokens": 80,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:2",
+              "char_start": 0,
+              "char_end": 41
+            }
+          ]
+        }
+      ],
+      "coverage": {
+        "scope": "all_extracted_text",
+        "all_extracted_text_processed": true,
+        "text_characters": 28906,
+        "processed_characters": 28906,
+        "batches": 19,
+        "units_without_text": []
+      }
+    },
+    {
+      "id": "R3",
+      "requirement": "O projeto deve incluir relatórios.",
+      "status": "evidencia_insuficiente",
+      "requires_human_review": true,
+      "conflicting_evidence": false,
+      "model_outputs_valid": false,
+      "evidence": [
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 1-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "1-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:1",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 1-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 1-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:2",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "2-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 2-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 3-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "3-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:3",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 3-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 3-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 4-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "4-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:4",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 4-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 4-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 5-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "5-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:5",
+          "char_start": 4143,
+          "char_end": 4789,
+          "quote": "atual.\nEquipe: registro 5-52. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-53. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-54. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-55. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-56. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-57. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-58. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 5-59. A equipe registrou atividades e decisões da etapa atual.",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 0,
+          "char_end": 2087,
+          "quote": "Equipe: registro 6-0. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-1. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-2. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-3. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-4. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-5. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-6. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-7. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-8. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-9. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-10. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-11. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-12. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-13. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-14. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-15. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-16. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-17. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-18. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-19. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-20. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-21. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-22. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-23. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-24. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-25. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:1",
+          "document": "entrega-longa.pdf",
+          "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+          "source_unit": "page:6",
+          "char_start": 2087,
+          "char_end": 4143,
+          "quote": "6-26. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-27. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-28. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-29. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-30. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-31. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-32. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-33. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-34. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-35. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-36. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-37. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-38. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-39. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-40. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-41. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-42. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-43. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-44. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-45. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-46. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-47. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-48. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-49. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-50. A equipe registrou atividades e decisões da etapa atual.\nEquipe: registro 6-51. A equipe registrou atividades e decisões da etapa ",
+          "model_status": "atendido"
+        },
+        {
+          "document_id": "doc:2",
+          "document": "entrega-tabelas.docx",
+          "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+          "source_unit": "paragraph:2",
+          "char_start": 0,
+          "char_end": 41,
+          "quote": "Equipe: documento fictício de integração.",
+          "model_status": "atendido"
+        }
+      ],
+      "calls": [
+        {
+          "batch": 1,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 2,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 3,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:1",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 4,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 5,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 6,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:2\"}",
+          "valid_format": true,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:2",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 7,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 8,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 9,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:3",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 10,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 11,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 12,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:4",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 13,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 14,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 15,
+          "input_tokens": 342,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:5",
+              "char_start": 4143,
+              "char_end": 4789
+            }
+          ]
+        },
+        {
+          "batch": 16,
+          "input_tokens": 956,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 0,
+              "char_end": 2087
+            }
+          ]
+        },
+        {
+          "batch": 17,
+          "input_tokens": 957,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 2087,
+              "char_end": 4143
+            }
+          ]
+        },
+        {
+          "batch": 18,
+          "input_tokens": 435,
+          "raw_model_output": "{\"status\": \"}",
+          "valid_format": false,
+          "reference_valid": false,
+          "proposed_status": "evidencia_insuficiente",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:1",
+              "document": "entrega-longa.pdf",
+              "source_sha256": "7706cfb2c4b33455b7709889d408c190d5930e337be958c7715dac19fbc0ac99",
+              "source_unit": "page:6",
+              "char_start": 4143,
+              "char_end": 4839
+            },
+            {
+              "alias": "page:2",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:1",
+              "char_start": 0,
+              "char_end": 28
+            },
+            {
+              "alias": "page:3",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:1",
+              "char_start": 0,
+              "char_end": 15
+            },
+            {
+              "alias": "page:4",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "table:1:row:2",
+              "char_start": 0,
+              "char_end": 38
+            }
+          ]
+        },
+        {
+          "batch": 19,
+          "input_tokens": 79,
+          "raw_model_output": "{\"status\": \"atendido\", \"unit\": \"page:1\"}",
+          "valid_format": true,
+          "reference_valid": true,
+          "proposed_status": "atendido",
+          "sources": [
+            {
+              "alias": "page:1",
+              "document_id": "doc:2",
+              "document": "entrega-tabelas.docx",
+              "source_sha256": "183dd0fa8d8fb5cf0cfce5f7153c4bef455e74d4cfb32e68f2ecfa3590712a92",
+              "source_unit": "paragraph:2",
+              "char_start": 0,
+              "char_end": 41
+            }
+          ]
+        }
+      ],
+      "coverage": {
+        "scope": "all_extracted_text",
+        "all_extracted_text_processed": true,
+        "text_characters": 28906,
+        "processed_characters": 28906,
+        "batches": 19,
+        "units_without_text": []
+      }
+    }
+  ],
+  "model": {
+    "checkpoint": "ai/runs/document-long-2026-11-04/best.pt",
+    "sha256": "26282db798388af904193b24190d0bfc6a1a14ef0cceeff2f8ad49f97a21acd7",
+    "step": 1200,
+    "device": "mps",
+    "context_size": 1024,
+    "response_tokens": 64
+  }
+}

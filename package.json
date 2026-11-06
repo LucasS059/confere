@@ -22,6 +22,8 @@
     "react-native-screens": "~4.30.0"
   },
   "scripts": {
+    "ai:chat": "./ai/.venv/bin/python -m confere_ai.chat",
+    "ai:review": "./ai/.venv/bin/python -m confere_ai.review",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "check-types": "turbo run check-types",
