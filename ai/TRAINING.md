@@ -47,7 +47,7 @@ Na raiz do repositório:
 bun run ai:chat
 ```
 
-O comando carrega `ai/runs/conversation-social-context-2026-11-02/best.pt` e seleciona MPS quando
+O comando carrega `ai/runs/conversation-identity-2026-11-02/last.pt` e seleciona MPS quando
 disponível. Para outro checkpoint ou para CPU:
 
 ```sh
