@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { AuthField } from "@/components/auth/auth-field";
 import { SocialButtons } from "@/components/auth/social-buttons";
 import { Blob } from "@/components/ui/blob";
-import { CheckMark } from "@/components/ui/check-mark";
+import { Logo } from "@/components/ui/logo";
 import { authClient } from "@/lib/auth/client";
 import {
   authErrorMessage,
@@ -76,12 +76,9 @@ export default function Login() {
         }}
       >
         <View className="items-start gap-3.5">
-          <Pressable
-            onPress={() => router.push("/onboarding")}
-            className="size-14 items-center justify-center rounded-[17px] bg-brand-gradient shadow-brand-tile"
-          >
-            <CheckMark size={30} />
-          </Pressable>
+          <View className="size-14 items-center justify-center">
+            <Logo size={56} />
+          </View>
           <Text className="font-instrument-semibold text-[28px] text-ink leading-[32.2px] tracking-[-0.7px]">
             Entrar no Confere
           </Text>

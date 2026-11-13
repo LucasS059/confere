@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
-import { CheckMark } from "@/components/ui/check-mark";
+import { Logo } from "@/components/ui/logo";
 
 type SplashProps = {
   fontsLoaded: boolean;
@@ -33,9 +33,7 @@ export function Splash({ fontsLoaded, hidden }: SplashProps) {
     >
       <StatusBar style="light" />
       <View className="flex-1 items-center justify-center gap-[18px] bg-splash-gradient">
-        <View className="size-24 items-center justify-center rounded-[28px] border-[0.5px] border-white/40 bg-white/18 shadow-splash-tile backdrop-blur-[18px] backdrop-saturate-[180%]">
-          <CheckMark size={52} />
-        </View>
+        <Logo size={96} appearance="light" />
         {/* Text waits for the font so it never flashes in the system face. */}
         <View
           className="items-center gap-[18px]"
