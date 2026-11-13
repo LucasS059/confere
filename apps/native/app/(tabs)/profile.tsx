@@ -1,15 +1,25 @@
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { authClient } from "@/lib/auth/client";
-import { queryClient } from "@/lib/trpc";
+import { queryClient, trpc } from "@/lib/trpc";
 
 export default function PerfilTabScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { data: session } = authClient.useSession();
+
+  const { data: projects = [] } = useQuery(trpc.project.list.queryOptions());
+
+  const totalProjects = projects.length;
+  const totalConferences = projects.filter((p) => p.latestSubmission !== null).length;
+  const totalRequirements = projects.reduce(
+    (acc, p) => acc + (p.requirementsCount ?? 0),
+    0,
+  );
 
   const displayName = session?.user?.name || "Estudante";
   const displayEmail = session?.user?.email || "";
@@ -60,15 +70,15 @@ export default function PerfilTabScreen() {
 
         <View className="mb-6 flex-row gap-3">
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="font-bold text-[20px] text-ink">0</Text>
+            <Text className="font-bold text-[20px] text-ink">{totalProjects}</Text>
             <Text className="text-[12px] text-ink3">projetos</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="font-bold text-[20px] text-ink">0</Text>
+            <Text className="font-bold text-[20px] text-ink">{totalConferences}</Text>
             <Text className="text-[12px] text-ink3">conferências</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="font-bold text-[20px] text-ink">0</Text>
+            <Text className="font-bold text-[20px] text-ink">{totalRequirements}</Text>
             <Text className="text-center text-[11px] text-ink3">
               requisitos
             </Text>
@@ -103,80 +113,21 @@ export default function PerfilTabScreen() {
 
           <View className="mx-3.5 h-[1px] bg-line-glass" />
 
-          <Pressable className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50">
+          <Pressable
+            onPress={() => router.push("/history")}
+            className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50"
+          >
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-ok/10">
                 <Icon
-                  name="arrow.down.to.line"
-                  fallback="download-outline"
+                  name="clock"
+                  fallback="time-outline"
                   size={18}
                   color="#10B981"
                 />
               </View>
               <Text className="font-medium text-[15px] text-ink">
-                Relatórios exportados
-              </Text>
-            </View>
-            <View className="flex-row items-center gap-2">
-              <View className="rounded-full bg-line px-2 py-0.5">
-                <Text className="font-bold font-mono text-[11px] text-ink2">
-                  0
-                </Text>
-              </View>
-              <Icon
-                name="chevron.forward"
-                fallback="chevron-forward"
-                size={16}
-                color="#94A3B8"
-              />
-            </View>
-          </Pressable>
-
-          <View className="mx-3.5 h-[1px] bg-line-glass" />
-
-          <Pressable className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50">
-            <View className="flex-row items-center gap-3">
-              <View className="size-9 items-center justify-center rounded-xl bg-warn/10">
-                <Icon
-                  name="person.2"
-                  fallback="people-outline"
-                  size={18}
-                  color="#F59E0B"
-                />
-              </View>
-              <Text className="font-medium text-[15px] text-ink">
-                Orientadores conectados
-              </Text>
-            </View>
-            <View className="flex-row items-center gap-2">
-              <View className="rounded-full bg-line px-2 py-0.5">
-                <Text className="font-bold font-mono text-[11px] text-ink2">
-                  0
-                </Text>
-              </View>
-              <Icon
-                name="chevron.forward"
-                fallback="chevron-forward"
-                size={16}
-                color="#94A3B8"
-              />
-            </View>
-          </Pressable>
-
-          <View className="mx-3.5 h-[1px] bg-line-glass" />
-
-          <Pressable className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50">
-            <View className="flex-row items-center gap-3">
-              <View className="size-9 items-center justify-center rounded-xl bg-ink/5">
-                <Icon
-                  name="questionmark.circle"
-                  fallback="help-circle-outline"
-                  size={18}
-                  color="#64748B"
-                />
-              </View>
-              <Text className="font-medium text-[15px] text-ink">
-                Ajuda e feedback
+                Histórico de Conferências
               </Text>
             </View>
             <Icon
