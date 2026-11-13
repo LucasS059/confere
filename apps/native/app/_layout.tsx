@@ -24,10 +24,6 @@ import { queryClient } from "@/lib/trpc";
 
 const SPLASH_MIN_MS = 1000;
 
-export const unstable_settings = {
-  initialRouteName: "(tabs)",
-};
-
 function StackLayout({ isAuthenticated }: { isAuthenticated: boolean }) {
   return (
     <Stack screenOptions={{ headerShown: false }}>
