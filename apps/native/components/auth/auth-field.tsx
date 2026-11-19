@@ -34,7 +34,7 @@ export function AuthField({
       </Text>
       <TextInput
         ref={ref}
-        className="h-full flex-1 font-instrument text-[15px] text-ink"
+        className="h-full flex-1 font-instrument text-[15px] text-ink web:outline-none"
         placeholderTextColor={placeholderColor}
         accessibilityLabel={label}
         {...props}
