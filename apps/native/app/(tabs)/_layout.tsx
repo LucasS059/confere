@@ -13,7 +13,7 @@ type BottomTabBarProps = Parameters<
 
 const TAB_ITEMS: Array<{
   name: string;
-  href: "/" | "/check" | "/history" | "/profile";
+  href: "/(tabs)" | "/check" | "/history" | "/profile";
   label: string;
   icon: SFSymbol;
   activeIcon: SFSymbol;
@@ -21,7 +21,7 @@ const TAB_ITEMS: Array<{
 }> = [
   {
     name: "index",
-    href: "/",
+    href: "/(tabs)",
     label: "Início",
     icon: "house",
     activeIcon: "house.fill",
