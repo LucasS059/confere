@@ -19,7 +19,6 @@ export function AuthField({
   ref,
   focused,
   trailing,
-  className,
   ...props
 }: AuthFieldProps) {
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
@@ -35,7 +34,7 @@ export function AuthField({
       </Text>
       <TextInput
         ref={ref}
-        className={`h-full flex-1 font-instrument text-[15px] text-ink web:outline-none ${className ?? ""}`}
+        className="h-full flex-1 font-instrument text-[15px] text-ink"
         placeholderTextColor={placeholderColor}
         accessibilityLabel={label}
         {...props}

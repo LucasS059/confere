@@ -24,28 +24,27 @@ import { queryClient } from "@/lib/trpc";
 
 const SPLASH_MIN_MS = 1000;
 
-function StackLayout({ isAuthenticated }: { isAuthenticated: boolean }) {
+function StackLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isAuthenticated}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="projects/new" />
-        <Stack.Screen name="projects/review" />
-        <Stack.Screen name="projects/details" />
-        <Stack.Screen name="projects/submission" />
-        <Stack.Screen name="projects/check-review" />
-        <Stack.Screen name="projects/checking" />
-        <Stack.Screen name="projects/result" />
-        <Stack.Screen name="projects/requirement-detail" />
-        <Stack.Screen name="(account)/settings" />
-      </Stack.Protected>
-      <Stack.Protected guard={!isAuthenticated}>
-        <Stack.Screen name="(auth)/onboarding" />
-        <Stack.Screen name="(auth)/login" />
-        <Stack.Screen name="(auth)/sign-up" />
-        <Stack.Screen name="(auth)/forgot-password" />
-      </Stack.Protected>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(auth)/onboarding" />
+      <Stack.Screen name="(auth)/login" />
+      <Stack.Screen name="(auth)/sign-up" />
+      <Stack.Screen name="(auth)/forgot-password" />
       <Stack.Screen name="(auth)/reset-password" />
+      <Stack.Screen name="projects/new" />
+      <Stack.Screen name="projects/review" />
+      <Stack.Screen name="projects/details" />
+      <Stack.Screen name="projects/submission" />
+      <Stack.Screen name="projects/check-review" />
+      <Stack.Screen name="projects/checking" />
+      <Stack.Screen name="projects/result" />
+      <Stack.Screen name="projects/requirement-detail" />
+      <Stack.Screen name="(account)/settings" />
+      <Stack.Screen name="(account)/terms" />
+      <Stack.Screen name="(account)/privacy" />
     </Stack>
   );
 }
@@ -66,8 +65,7 @@ export default function Layout() {
     return () => clearTimeout(timer);
   }, []);
 
-  const { data: session, isPending: isSessionPending } =
-    authClient.useSession();
+  const { isPending: isSessionPending } = authClient.useSession();
 
   const isReady =
     (fontsLoaded || !!fontsError) && minTimeElapsed && !isSessionPending;
@@ -78,7 +76,7 @@ export default function Layout() {
         <KeyboardProvider>
           <AppThemeProvider>
             <HeroUINativeProvider>
-              <StackLayout isAuthenticated={Boolean(session)} />
+              <StackLayout />
               <Splash fontsLoaded={fontsLoaded} hidden={isReady} />
             </HeroUINativeProvider>
           </AppThemeProvider>

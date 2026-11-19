@@ -84,7 +84,9 @@ export default function SignUpScreen() {
             "Não foi possível criar sua conta. Tente novamente.",
           ),
         );
+        return;
       }
+      router.replace("/(tabs)");
     } catch {
       showError(NETWORK_ERROR_MESSAGE);
     } finally {
@@ -164,7 +166,6 @@ export default function SignUpScreen() {
           <AuthField
             ref={passwordRef}
             label="Senha"
-            className="tracking-[2.5px]"
             value={password}
             onChangeText={setPassword}
             placeholder="••••••••••"

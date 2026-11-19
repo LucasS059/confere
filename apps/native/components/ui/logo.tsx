@@ -9,7 +9,8 @@ type LogoProps = {
 
 export function Logo({ size, appearance = "auto", style }: LogoProps) {
   const { isDark } = useAppTheme();
-  const useLightLogo = appearance === "light" || (appearance === "auto" && isDark);
+  const useLightLogo =
+    appearance === "light" || (appearance === "auto" && isDark);
 
   return (
     <Image

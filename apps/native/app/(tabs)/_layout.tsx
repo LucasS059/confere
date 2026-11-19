@@ -1,11 +1,11 @@
-import { Tabs } from "expo-router";
+import type { Ionicons } from "@expo/vector-icons";
+import { Tabs, useRouter } from "expo-router";
+import type { SFSymbol } from "expo-symbols";
 import type React from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCSSVariable } from "uniwind";
-import type { SFSymbol } from "expo-symbols";
 import { Icon } from "@/components/ui/icon";
-import { Ionicons } from "@expo/vector-icons";
 
 type BottomTabBarProps = Parameters<
   NonNullable<React.ComponentProps<typeof Tabs>["tabBar"]>
@@ -13,6 +13,7 @@ type BottomTabBarProps = Parameters<
 
 const TAB_ITEMS: Array<{
   name: string;
+  href: "/" | "/check" | "/history" | "/profile";
   label: string;
   icon: SFSymbol;
   activeIcon: SFSymbol;
@@ -20,6 +21,7 @@ const TAB_ITEMS: Array<{
 }> = [
   {
     name: "index",
+    href: "/",
     label: "Início",
     icon: "house",
     activeIcon: "house.fill",
@@ -27,6 +29,7 @@ const TAB_ITEMS: Array<{
   },
   {
     name: "check",
+    href: "/check",
     label: "Conferir",
     icon: "checkmark.seal",
     activeIcon: "checkmark.seal.fill",
@@ -34,6 +37,7 @@ const TAB_ITEMS: Array<{
   },
   {
     name: "history",
+    href: "/history",
     label: "Histórico",
     icon: "clock",
     activeIcon: "clock.fill",
@@ -41,6 +45,7 @@ const TAB_ITEMS: Array<{
   },
   {
     name: "profile",
+    href: "/profile",
     label: "Perfil",
     icon: "person",
     activeIcon: "person.fill",
@@ -48,13 +53,8 @@ const TAB_ITEMS: Array<{
   },
 ];
 
-function LiquidGlassTabBar({
-  state,
-  descriptors,
-  navigation,
-  emitter,
-  navigateToTab,
-}: any) {
+function LiquidGlassTabBar({ state, descriptors }: BottomTabBarProps) {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const brandColor = (useCSSVariable("--color-brand") as string) || "#2F6BFF";
   const inactiveColor = (useCSSVariable("--ink2") as string) || "#5B6270";
@@ -65,10 +65,10 @@ function LiquidGlassTabBar({
       style={{ paddingBottom: Math.max(insets.bottom, 16) }}
       className="absolute right-0 bottom-0 left-0 px-5"
     >
-      <View className="h-[62px] flex-row items-center justify-around rounded-[31px] border-[0.5px] border-glass-bd bg-glass px-2 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%]">
+      <View className="h-[62px] flex-row items-center justify-around rounded-[31px] border-[0.5px] border-glass-bd bg-glass px-2 shadow-glass">
         {TAB_ITEMS.map((item) => {
           const routeIndex = state.routes.findIndex(
-            (r: { name: string }) => r.name === item.name,
+            (r) => r.name === item.name,
           );
           if (routeIndex === -1) return null;
 
@@ -78,13 +78,8 @@ function LiquidGlassTabBar({
           const tintColor = isFocused ? brandColor : inactiveColor;
 
           const onPress = () => {
-            const event = (emitter?.emit ?? navigation?.emit)?.({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
-            if (!isFocused && !event?.defaultPrevented) {
-              navigateToTab ? navigateToTab(route.key) : navigation?.navigate?.(route.name, route.params);
+            if (!isFocused) {
+              router.navigate(item.href);
             }
           };
 
@@ -93,7 +88,9 @@ function LiquidGlassTabBar({
               key={item.name}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel ?? item.label}
+              accessibilityLabel={
+                options.tabBarAccessibilityLabel ?? item.label
+              }
               onPress={onPress}
               className="flex-1 items-center justify-center gap-1 py-1.5 active:opacity-75"
             >

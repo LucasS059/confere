@@ -26,6 +26,7 @@ export default function Login() {
   const passwordRef = useRef<TextInputInstance>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const showError = (label: string) => toast.show({ variant: "danger", label });
@@ -45,7 +46,9 @@ export default function Login() {
         showError(
           authErrorMessage(error, "Não foi possível entrar. Tente novamente."),
         );
+        return;
       }
+      router.replace("/(tabs)");
     } catch {
       showError(NETWORK_ERROR_MESSAGE);
     } finally {
@@ -105,25 +108,34 @@ export default function Login() {
           <AuthField
             ref={passwordRef}
             label="Senha"
-            className="tracking-[3px]"
             value={password}
             onChangeText={setPassword}
             placeholder="••••••••"
-            secureTextEntry
+            secureTextEntry={!showPassword}
             autoComplete="current-password"
             textContentType="password"
             returnKeyType="go"
             onSubmitEditing={submit}
             trailing={
-              <Text
-                className="font-instrument-medium text-[13px] text-brand"
+              <Pressable
                 accessibilityRole="button"
-                onPress={() => router.push("/forgot-password")}
+                onPress={() => setShowPassword((prev) => !prev)}
               >
-                Esqueci
-              </Text>
+                <Text className="font-instrument text-[13px] text-ink3">
+                  {showPassword ? "Ocultar" : "Mostrar"}
+                </Text>
+              </Pressable>
             }
           />
+          <View className="items-end px-1">
+            <Text
+              className="font-instrument-medium text-[13px] text-brand"
+              accessibilityRole="button"
+              onPress={() => router.push("/forgot-password")}
+            >
+              Esqueci minha senha
+            </Text>
+          </View>
           <Pressable
             className="mt-1.5 h-[54px] items-center justify-center rounded-[27px] bg-brand shadow-brand-button active:opacity-80"
             accessibilityRole="button"

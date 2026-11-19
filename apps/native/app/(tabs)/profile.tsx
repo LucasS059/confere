@@ -15,7 +15,9 @@ export default function PerfilTabScreen() {
   const { data: projects = [] } = useQuery(trpc.project.list.queryOptions());
 
   const totalProjects = projects.length;
-  const totalConferences = projects.filter((p) => p.latestSubmission !== null).length;
+  const totalConferences = projects.filter(
+    (p) => p.latestSubmission !== null,
+  ).length;
   const totalRequirements = projects.reduce(
     (acc, p) => acc + (p.requirementsCount ?? 0),
     0,
@@ -34,6 +36,7 @@ export default function PerfilTabScreen() {
   async function handleSignOut() {
     await authClient.signOut();
     queryClient.clear();
+    router.replace("/login");
   }
 
   return (
@@ -70,15 +73,21 @@ export default function PerfilTabScreen() {
 
         <View className="mb-6 flex-row gap-3">
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="font-bold text-[20px] text-ink">{totalProjects}</Text>
+            <Text className="font-bold text-[20px] text-ink">
+              {totalProjects}
+            </Text>
             <Text className="text-[12px] text-ink3">projetos</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="font-bold text-[20px] text-ink">{totalConferences}</Text>
+            <Text className="font-bold text-[20px] text-ink">
+              {totalConferences}
+            </Text>
             <Text className="text-[12px] text-ink3">conferências</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="font-bold text-[20px] text-ink">{totalRequirements}</Text>
+            <Text className="font-bold text-[20px] text-ink">
+              {totalRequirements}
+            </Text>
             <Text className="text-center text-[11px] text-ink3">
               requisitos
             </Text>
