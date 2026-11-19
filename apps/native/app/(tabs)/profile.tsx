@@ -82,7 +82,7 @@ export default function PerfilTabScreen() {
             <Text className="font-bold text-[20px] text-ink">
               {totalConferences}
             </Text>
-            <Text className="text-[12px] text-ink3">conferências</Text>
+            <Text className="text-[12px] text-ink3">conferidos</Text>
           </View>
           <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
             <Text className="font-bold text-[20px] text-ink">
