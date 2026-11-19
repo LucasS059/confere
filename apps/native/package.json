@@ -4,8 +4,8 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start --offline",
-    "dev": "expo start --offline --clear",
+    "start": "expo start",
+    "dev": "expo start --clear",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "prebuild": "expo prebuild",
@@ -29,6 +29,7 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "expo": "~58.0.25",
+    "expo-asset": "~58.0.21",
     "expo-constants": "~58.0.16",
     "expo-document-picker": "~58.0.5",
     "expo-font": "~58.0.12",

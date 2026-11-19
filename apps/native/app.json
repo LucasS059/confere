@@ -18,7 +18,8 @@
           "imageWidth": 96
         }
       ],
-      "expo-router"
+      "expo-router",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true,
