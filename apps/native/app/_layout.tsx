@@ -12,7 +12,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -24,7 +24,29 @@ import { queryClient } from "@/lib/trpc";
 
 const SPLASH_MIN_MS = 1000;
 
+// Screens reachable without a session; everything else bounces to login.
+const PUBLIC_SEGMENTS = new Set(["(auth)", "+not-found"]);
+
+// Replaces Stack.Protected (crashed on sign-out in Expo Go): only redirects
+// away from protected screens, never toward them, so login/sign-up keep
+// navigating themselves and a session refetch can't reset the login form.
+function useAuthGuard() {
+  const router = useRouter();
+  // Typed as non-empty, but the root index route yields [].
+  const [first] = useSegments() as string[];
+  const { data: session, isPending } = authClient.useSession();
+  const isPublic = first === undefined || PUBLIC_SEGMENTS.has(first);
+
+  useEffect(() => {
+    if (!isPending && !session && !isPublic) {
+      router.replace("/login");
+    }
+  }, [isPending, session, isPublic, router]);
+}
+
 function StackLayout() {
+  useAuthGuard();
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
