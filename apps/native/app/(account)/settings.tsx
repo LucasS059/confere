@@ -1,3 +1,4 @@
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -110,7 +111,7 @@ export default function SettingsScreen() {
             <View className="flex-row items-center justify-between">
               <Text className="font-medium text-[14px] text-ink">Versão</Text>
               <Text className="font-mono text-[13px] text-ink2">
-                1.0.0 (build 42)
+                {Constants.expoConfig?.version ?? "—"}
               </Text>
             </View>
 
@@ -119,7 +120,7 @@ export default function SettingsScreen() {
             <View className="flex-row items-center justify-between">
               <Text className="font-medium text-[14px] text-ink">Ambiente</Text>
               <Text className="font-mono text-[13px] text-ink2">
-                Desenvolvimento
+                {__DEV__ ? "Desenvolvimento" : "Produção"}
               </Text>
             </View>
 
