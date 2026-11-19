@@ -25,7 +25,18 @@ import { queryClient } from "@/lib/trpc";
 const SPLASH_MIN_MS = 1000;
 
 // Screens reachable without a session; everything else bounces to login.
-const PUBLIC_SEGMENTS = new Set(["(auth)", "+not-found"]);
+// Terms/privacy are public so sign-up can link to them.
+const PUBLIC_ROUTES = new Set(["(account)/terms", "(account)/privacy"]);
+
+function isPublicRoute(segments: string[]) {
+  const [first] = segments;
+  return (
+    first === undefined || // root index (redirector)
+    first === "(auth)" ||
+    first === "+not-found" ||
+    PUBLIC_ROUTES.has(segments.join("/"))
+  );
+}
 
 // Replaces Stack.Protected (crashed on sign-out in Expo Go): only redirects
 // away from protected screens, never toward them, so login/sign-up keep
@@ -33,9 +44,8 @@ const PUBLIC_SEGMENTS = new Set(["(auth)", "+not-found"]);
 function useAuthGuard() {
   const router = useRouter();
   // Typed as non-empty, but the root index route yields [].
-  const [first] = useSegments() as string[];
+  const isPublic = isPublicRoute(useSegments() as string[]);
   const { data: session, isPending } = authClient.useSession();
-  const isPublic = first === undefined || PUBLIC_SEGMENTS.has(first);
 
   useEffect(() => {
     if (!isPending && !session && !isPublic) {
