@@ -84,7 +84,9 @@ export default function SignUpScreen() {
             "Não foi possível criar sua conta. Tente novamente.",
           ),
         );
+        return;
       }
+      router.replace("/(tabs)");
     } catch {
       showError(NETWORK_ERROR_MESSAGE);
     } finally {
@@ -164,7 +166,6 @@ export default function SignUpScreen() {
           <AuthField
             ref={passwordRef}
             label="Senha"
-            className="tracking-[2.5px]"
             value={password}
             onChangeText={setPassword}
             placeholder="••••••••••"
@@ -218,11 +219,19 @@ export default function SignUpScreen() {
             </View>
             <Text className="flex-1 font-instrument text-[12.5px] text-ink2 leading-[18px]">
               Li e aceito os{" "}
-              <Text className="font-instrument-medium text-brand">
+              <Text
+                className="font-instrument-medium text-brand"
+                accessibilityRole="link"
+                onPress={() => router.push("/terms")}
+              >
                 Termos de uso
               </Text>{" "}
               e a{" "}
-              <Text className="font-instrument-medium text-brand">
+              <Text
+                className="font-instrument-medium text-brand"
+                accessibilityRole="link"
+                onPress={() => router.push("/privacy")}
+              >
                 Política de privacidade
               </Text>
               . Meus arquivos não são usados para treinar a IA.

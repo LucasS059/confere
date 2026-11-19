@@ -1,17 +1,17 @@
 import type { AppRouter } from "@confere/api/routers/index";
-import { env } from "@confere/env/native";
 import { QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { Platform } from "react-native";
 import { authClient } from "@/lib/auth/client";
+import { getBaseUrl } from "@/lib/base-url";
 
 export const queryClient = new QueryClient();
 
 const trpcClient = createTRPCClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: `${env.EXPO_PUBLIC_SERVER_URL}/trpc`,
+      url: `${getBaseUrl()}/trpc`,
       fetch: (url, options) =>
         fetch(url, {
           ...options,

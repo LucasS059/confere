@@ -1,8 +1,10 @@
 import { useRouter } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { Alert, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/ui/blob";
 import { CheckMark } from "@/components/ui/check-mark";
+import { completeOnboarding } from "@/lib/onboarding";
 
 const SAMPLE_REQUIREMENTS = [
   {
@@ -35,6 +37,25 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
+  const [isContinuing, setIsContinuing] = useState(false);
+
+  async function continueToLogin() {
+    if (isContinuing) return;
+
+    setIsContinuing(true);
+    try {
+      await completeOnboarding();
+      router.replace("/login");
+    } catch (error) {
+      console.warn("Unable to save onboarding state.", error);
+      setIsContinuing(false);
+      Alert.alert(
+        "Não foi possível continuar",
+        "Tente novamente para salvar esta etapa.",
+      );
+    }
+  }
+
   return (
     <View
       className="flex-1 justify-between overflow-hidden bg-canvas px-6"
@@ -52,19 +73,7 @@ export default function OnboardingScreen() {
         className="top-[240px] -right-[120px] size-[320px] opacity-[0.16] dark:opacity-[0.28]"
       />
 
-      <View className="flex-row justify-end">
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.replace("/login")}
-          className="rounded-full border-[0.5px] border-glass-bd bg-glass px-4 py-1.5 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-80"
-        >
-          <Text className="font-instrument-medium text-[13px] text-ink2">
-            Pular
-          </Text>
-        </Pressable>
-      </View>
-
-      <View className="items-center gap-3.5 px-2">
+      <View className="flex-1 items-center justify-center gap-3.5 px-2">
         <View className="flex-row items-center gap-2">
           <View className="flex-row items-center gap-1.5 rounded-full border border-hair bg-card px-3.5 py-2 shadow-xs">
             <Text className="font-mono-medium text-[11px] text-brand">TXT</Text>
@@ -137,17 +146,12 @@ export default function OnboardingScreen() {
           </Text>
         </View>
 
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center gap-1.5">
-            <View className="h-1.5 w-5 rounded-full bg-brand" />
-            <View className="size-1.5 rounded-full bg-ink3/35" />
-            <View className="size-1.5 rounded-full bg-ink3/35" />
-          </View>
-
+        <View className="items-end">
           <Pressable
             accessibilityRole="button"
-            onPress={() => router.replace("/login")}
-            className="h-[50px] flex-row items-center justify-center rounded-full bg-brand px-6 shadow-brand-button active:opacity-85"
+            disabled={isContinuing}
+            onPress={continueToLogin}
+            className="h-[50px] flex-row items-center justify-center rounded-full bg-brand px-6 shadow-brand-button active:opacity-85 disabled:opacity-60"
           >
             <Text className="font-instrument-semibold text-[15px] text-white">
               Continuar →
