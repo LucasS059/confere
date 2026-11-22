@@ -44,20 +44,22 @@ export default function TermsScreen() {
             O Confere é uma ferramenta de apoio ao estudo e validação preliminar
             de conformidade. A análise automática gerada pela inteligência
             artificial serve como orientação e suporte acadêmico, não
-            substituindo a avaliação final e critérios do orientador, professor
-            ou banca examinadora.
+            substituindo a avaliação final e os requisitos do orientador,
+            professor ou banca examinadora.
           </Text>
         </View>
 
         <View className="gap-3 rounded-3xl border border-line-glass bg-glass p-5 shadow-sm">
           <Text className="font-instrument-semibold text-[17px] text-ink">
-            3. Conteúdo do Usuário e Propriedade Intelectual
+            3. Conteúdo do Usuário e Treinamento da IA
           </Text>
           <Text className="font-instrument text-[14px] text-ink2 leading-[22px]">
-            Você mantém todos os direitos autorais e propriedade intelectual
-            sobre os arquivos, relatórios, monografias ou editais que envia.
-            Você garante possuir os direitos necessários para carregar os
-            documentos para análise.
+            Você mantém os direitos autorais sobre os relatórios, monografias e
+            documentos enviados. Ao submeter arquivos e rubricas na plataforma,
+            você autoriza o Confere a processar e utilizar esses dados e
+            resultados de conferência para alimentar, treinar e aprimorar
+            continuamente o modelo próprio de inteligência artificial do
+            sistema.
           </Text>
         </View>
 

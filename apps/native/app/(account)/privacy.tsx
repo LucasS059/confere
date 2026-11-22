@@ -26,15 +26,17 @@ export default function PrivacyScreen() {
       >
         <View className="gap-3 rounded-3xl border border-line-glass bg-glass p-5 shadow-sm">
           <Text className="font-instrument-semibold text-[17px] text-ink">
-            1. Compromisso com seus Dados Acadêmicos
+            1. Uso dos Dados para Aprimoramento da IA
           </Text>
           <Text className="font-instrument text-[14px] text-ink2 leading-[22px]">
-            No Confere, seus arquivos e trabalhos acadêmicos são tratados com
-            sigilo rigoroso. Seus textos, relatórios e documentos{" "}
+            No Confere, seus arquivos, rubricas e resultados de conferência são
+            tratados com segurança e{" "}
             <Text className="font-semibold text-ink">
-              não são utilizados para treinar modelos públicos de IA
+              podem ser utilizados de forma anonimizada para alimentar, treinar
+              e refinar o modelo próprio de inteligência artificial do sistema
             </Text>
-            .
+            , visando melhorar a precisão na extração de requisitos e na análise
+            de entregas acadêmicas.
           </Text>
         </View>
 
@@ -43,8 +45,8 @@ export default function PrivacyScreen() {
             2. Informações que Coletamos
           </Text>
           <Text className="font-instrument text-[14px] text-ink2 leading-[22px]">
-            Coletamos apenas as informações essenciais para funcionamento da sua
-            conta:
+            Coletamos as informações necessárias para funcionamento da sua conta
+            e evolução das análises:
           </Text>
           <View className="gap-2 pl-2">
             <Text className="font-instrument text-[13.5px] text-ink2">
@@ -56,13 +58,13 @@ export default function PrivacyScreen() {
               <Text className="font-semibold text-ink">
                 Projetos e Entregas:
               </Text>{" "}
-              Título dos projetos, critérios da rubrica cadastrada e arquivos em
-              PDF/DOCX enviados para verificação.
+              Título dos projetos, requisitos da rubrica cadastrada e arquivos
+              enviados para verificação e treinamento do modelo.
             </Text>
             <Text className="font-instrument text-[13.5px] text-ink2">
               • <Text className="font-semibold text-ink">Resultados:</Text>{" "}
-              Notas de cobertura e justificativas de conformidade geradas para
-              cada requisito.
+              Notas de cobertura, citações extraídas e justificativas de
+              conformidade geradas para cada requisito.
             </Text>
           </View>
         </View>
