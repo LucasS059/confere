@@ -1,35 +1,111 @@
-import { useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useToast } from "heroui-native";
 import { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { ScreenHeader } from "@/components/ui/screen-header";
+import { getResultStatusStyle } from "@/lib/format";
+import { trpc } from "@/lib/trpc";
 
 type FilterTab = "todos" | "pendentes" | "atendidos";
-
-interface ResultItem {
-  id: string;
-  title: string;
-  status: "atendido" | "revisar" | "faltando";
-  description?: string;
-  citation?: string;
-  quote?: string;
-}
 
 export default function ConferenceResultScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { toast } = useToast();
+  const { projectId, submissionId } = useLocalSearchParams<{
+    projectId: string;
+    submissionId: string;
+  }>();
   const [tab, setTab] = useState<FilterTab>("todos");
-  const [results] = useState<ResultItem[]>([]);
+
+  const {
+    data: project,
+    isLoading,
+    isError,
+  } = useQuery(
+    trpc.project.getById.queryOptions(
+      { id: projectId ?? "" },
+      { enabled: Boolean(projectId) },
+    ),
+  );
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-canvas">
+        <ActivityIndicator color="#2F6BFF" />
+      </View>
+    );
+  }
+
+  if (isError || !project) {
+    return (
+      <View className="flex-1 bg-canvas">
+        <ScreenHeader title="Resultado" />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center font-semibold text-[16px] text-ink">
+            Projeto não encontrado
+          </Text>
+          <Text className="mt-1 text-center text-[13px] text-ink3">
+            Não foi possível carregar o resultado desta entrega.
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  const submission = submissionId
+    ? project.submissions.find((s) => s.id === submissionId)
+    : project.submissions[0];
+
+  if (!submission) {
+    return (
+      <View className="flex-1 bg-canvas">
+        <ScreenHeader title="Resultado" subtitle={project.name} />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center font-semibold text-[16px] text-ink">
+            {submissionId
+              ? "Entrega não encontrada"
+              : "Nenhuma entrega enviada"}
+          </Text>
+          <Text className="mt-1 text-center text-[13px] text-ink3">
+            {submissionId
+              ? "Esta entrega não existe mais ou foi removida."
+              : "Envie a primeira versão para conferir os requisitos."}
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  const requirementMap = new Map(project.requirements.map((r) => [r.id, r]));
+  const results = submission.results;
 
   const atendidosCount = results.filter((r) => r.status === "atendido").length;
   const revisarCount = results.filter((r) => r.status === "revisar").length;
   const faltandoCount = results.filter((r) => r.status === "faltando").length;
-  const coverage =
-    results.length > 0
-      ? Math.round((atendidosCount / results.length) * 100)
-      : 0;
+  const coverage = submission.coverage;
+
+  const scoreboard = [
+    { label: "Atendidos", count: atendidosCount, dot: "bg-ok" },
+    { label: "Revisar", count: revisarCount, dot: "bg-warn" },
+    { label: "Faltando", count: faltandoCount, dot: "bg-err" },
+  ];
+
+  const filterTabs: { key: FilterTab; label: string }[] = [
+    { key: "todos", label: `Todos ${results.length}` },
+    { key: "pendentes", label: `Pendentes ${revisarCount + faltandoCount}` },
+    { key: "atendidos", label: `Atendidos ${atendidosCount}` },
+  ];
 
   const filtered = results.filter((item) => {
     if (tab === "pendentes") return item.status !== "atendido";
@@ -45,23 +121,12 @@ export default function ConferenceResultScreen() {
       />
       <Blob
         color="#10B981"
-        className="top-[340px] -right-[140px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
+        className="top-[320px] -right-[120px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
       />
 
       <ScreenHeader
-        title="Resultado da conferência"
-        subtitle="relatório de conformidade"
-        rightElement={
-          <Pressable
-            hitSlop={8}
-            className="flex-row items-center gap-1 rounded-xl border border-line-glass bg-glass px-2.5 py-1.5"
-          >
-            <Icon name="doc.text" fallback="document-text" size={14} color="#2F6BFF" />
-            <Text className="font-mono text-[12px] font-bold text-brand">
-              PDF
-            </Text>
-          </Pressable>
-        }
+        title={submission ? `Entrega ${submission.version}` : "Resultado"}
+        subtitle={submission?.filename ?? project.name}
       />
 
       <ScrollView
@@ -69,210 +134,185 @@ export default function ConferenceResultScreen() {
         contentContainerStyle={{
           paddingHorizontal: 20,
           paddingTop: 16,
-          paddingBottom: insets.bottom + 40,
+          paddingBottom: insets.bottom + 110,
+          gap: 16,
         }}
       >
-        <View className="mb-6 flex-row items-center rounded-3xl border border-line-glass bg-glass p-5 shadow-sm">
-          <View className="size-24 items-center justify-center rounded-full border-4 border-brand/30 bg-brand/10">
-            <Text className="text-[26px] font-bold text-brand">
-              {results.length > 0 ? `${coverage}%` : "—"}
+        <View className="flex-row items-center rounded-3xl border border-line-glass bg-glass p-5 shadow-sm">
+          <View className="size-22 items-center justify-center rounded-full border-4 border-brand/25 bg-brand/8">
+            <Text className="font-bold text-[20px] text-ink">
+              {coverage !== null ? `${coverage}%` : "—"}
             </Text>
-            <Text className="text-[10px] uppercase font-bold text-ink3">
-              cobertura
-            </Text>
+            <Text className="text-[11px] text-ink3">cobertura</Text>
           </View>
 
-          <View className="ml-5 flex-1 gap-1.5">
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center gap-2">
-                <View className="size-2 rounded-full bg-ok" />
-                <Text className="text-[13px] text-ink2">Atendidos</Text>
+          <View className="ml-5 flex-1 gap-2">
+            {scoreboard.map((item) => (
+              <View
+                key={item.label}
+                className="flex-row items-center justify-between"
+              >
+                <View className="flex-row items-center gap-2">
+                  <View className={`size-2 rounded-full ${item.dot}`} />
+                  <Text className="text-[13.5px] text-ink2">{item.label}</Text>
+                </View>
+                <Text className="font-bold text-[14px] text-ink">
+                  {item.count}
+                </Text>
               </View>
-              <Text className="font-mono text-[13px] font-bold text-ink">
-                {atendidosCount}
-              </Text>
-            </View>
-
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center gap-2">
-                <View className="size-2 rounded-full bg-warn" />
-                <Text className="text-[13px] text-ink2">Revisar</Text>
-              </View>
-              <Text className="font-mono text-[13px] font-bold text-ink">
-                {revisarCount}
-              </Text>
-            </View>
-
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center gap-2">
-                <View className="size-2 rounded-full bg-err" />
-                <Text className="text-[13px] text-ink2">Faltando</Text>
-              </View>
-              <Text className="font-mono text-[13px] font-bold text-ink">
-                {faltandoCount}
-              </Text>
-            </View>
+            ))}
           </View>
-        </View>
-
-        <View className="mb-4 flex-row gap-2">
-          <Pressable
-            onPress={() => setTab("todos")}
-            className={`flex-1 items-center justify-center rounded-2xl py-2.5 border ${
-              tab === "todos"
-                ? "border-brand bg-brand"
-                : "border-line-glass bg-glass"
-            }`}
-          >
-            <Text
-              className={`text-[13px] font-semibold ${
-                tab === "todos" ? "text-white" : "text-ink2"
-              }`}
-            >
-              Todos {results.length}
-            </Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => setTab("pendentes")}
-            className={`flex-1 items-center justify-center rounded-2xl py-2.5 border ${
-              tab === "pendentes"
-                ? "border-brand bg-brand"
-                : "border-line-glass bg-glass"
-            }`}
-          >
-            <Text
-              className={`text-[13px] font-semibold ${
-                tab === "pendentes" ? "text-white" : "text-ink2"
-              }`}
-            >
-              Pendentes {revisarCount + faltandoCount}
-            </Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => setTab("atendidos")}
-            className={`flex-1 items-center justify-center rounded-2xl py-2.5 border ${
-              tab === "atendidos"
-                ? "border-brand bg-brand"
-                : "border-line-glass bg-glass"
-            }`}
-          >
-            <Text
-              className={`text-[13px] font-semibold ${
-                tab === "atendidos" ? "text-white" : "text-ink2"
-              }`}
-            >
-              Atendidos {atendidosCount}
-            </Text>
-          </Pressable>
         </View>
 
         {results.length === 0 ? (
-          <View className="items-center rounded-3xl border border-line-glass bg-glass p-8 text-center shadow-sm">
+          <View className="items-center rounded-3xl border border-line-glass bg-glass px-6 py-8 shadow-sm">
             <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
               <Icon
-                name="checkmark.circle"
-                fallback="checkmark-done-circle-outline"
-                size={24}
+                name="checkmark.seal"
+                fallback="checkmark-circle-outline"
+                size={22}
                 color="#2F6BFF"
               />
             </View>
-            <Text className="text-[16px] font-semibold text-ink">
-              Nenhuma conferência processada
+            <Text className="font-semibold text-[16px] text-ink">
+              Aguardando conferência
             </Text>
-            <Text className="mt-1 text-center text-[13px] text-ink3 leading-relaxed">
-              Inicie uma nova conferência enviando um arquivo para conferir os
-              itens.
+            <Text className="mt-1 text-center text-[13px] text-ink3 leading-[19px]">
+              Inicie a análise para comparar esta entrega com os{" "}
+              {project.requirements.length} requisitos da rubrica.
             </Text>
+            <Pressable
+              onPress={() =>
+                toast.show({
+                  id: "check-pending",
+                  label: "Análise automática em breve.",
+                })
+              }
+              className="mt-5 h-[46px] items-center justify-center rounded-full bg-brand px-6 shadow-brand-button active:opacity-85"
+            >
+              <Text className="font-semibold text-[14px] text-white">
+                Iniciar conferência
+              </Text>
+            </Pressable>
           </View>
         ) : (
-          <View className="gap-3">
-            {filtered.map((item) => {
-              const isRevisar = item.status === "revisar";
-              const isAtendido = item.status === "atendido";
-
-              return (
-                <Pressable
-                  key={item.id}
-                  onPress={() => router.push("/projects/requirement-detail")}
-                  className="rounded-2xl border border-line-glass bg-glass p-4 shadow-sm active:opacity-85"
-                >
-                  <View className="flex-row items-start justify-between gap-2">
-                    <View className="flex-1 flex-row items-start gap-2.5">
-                      <View
-                        className={`mt-1.5 size-2 rounded-full ${
-                          isAtendido
-                            ? "bg-ok"
-                            : isRevisar
-                            ? "bg-warn"
-                            : "bg-err"
-                        }`}
-                      />
-                      <Text className="flex-1 text-[15px] font-semibold leading-snug text-ink">
-                        {item.title}
-                      </Text>
-                    </View>
-
-                    <View
-                      className={`rounded-xl px-2.5 py-1 ${
-                        isAtendido
-                          ? "bg-ok/10"
-                          : isRevisar
-                          ? "bg-warn/10"
-                          : "bg-err/10"
+          <>
+            <View className="flex-row rounded-2xl border border-line-glass bg-glass p-1 shadow-sm">
+              {filterTabs.map((item) => {
+                const active = tab === item.key;
+                return (
+                  <Pressable
+                    key={item.key}
+                    onPress={() => setTab(item.key)}
+                    className={`flex-1 items-center justify-center rounded-xl py-2 ${
+                      active ? "bg-card shadow-sm" : ""
+                    }`}
+                  >
+                    <Text
+                      className={`text-[12.5px] ${
+                        active
+                          ? "font-semibold text-ink"
+                          : "font-medium text-ink3"
                       }`}
                     >
-                      <Text
-                        className={`text-[11px] font-bold uppercase tracking-wider ${
-                          isAtendido
-                            ? "text-ok"
-                            : isRevisar
-                            ? "text-warn"
-                            : "text-err"
-                        }`}
-                      >
-                        {item.status}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {item.description ? (
-                    <Text className="mt-2 text-[13px] leading-relaxed text-ink2">
-                      {item.description}
+                      {item.label}
                     </Text>
-                  ) : null}
+                  </Pressable>
+                );
+              })}
+            </View>
 
-                  {item.citation ? (
-                    <View className="mt-3 flex-row items-center justify-between border-t border-line-glass pt-2.5">
-                      <Text className="font-mono text-[12px] text-ink3">
-                        {item.citation}
-                      </Text>
-                      <Pressable
-                        onPress={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        <Text className="text-[12px] font-semibold text-brand">
-                          Abrir no PDF
+            <View className="overflow-hidden rounded-3xl border border-line-glass bg-glass shadow-sm">
+              {filtered.map((item, idx) => {
+                const style = getResultStatusStyle(item.status);
+
+                return (
+                  <Pressable
+                    key={item.id}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/projects/requirement-detail",
+                        params: {
+                          projectId: project.id,
+                          submissionId: submission.id,
+                          resultId: item.id,
+                        },
+                      })
+                    }
+                    className={`p-4 active:bg-card/50 ${
+                      idx < filtered.length - 1
+                        ? "border-line-glass border-b"
+                        : ""
+                    }`}
+                  >
+                    <View className="flex-row items-center justify-between gap-3">
+                      <View className="flex-1 flex-row items-center gap-2.5">
+                        <View
+                          className={`size-2 shrink-0 rounded-full ${style.dot}`}
+                        />
+                        <Text
+                          numberOfLines={2}
+                          className="flex-1 font-semibold text-[14.5px] text-ink"
+                        >
+                          {requirementMap.get(item.requirementId)?.title ??
+                            "Requisito"}
                         </Text>
-                      </Pressable>
-                    </View>
-                  ) : null}
+                      </View>
 
-                  {item.quote ? (
-                    <View className="mt-2 rounded-xl bg-canvas/60 p-2.5">
-                      <Text className="text-[12px] italic text-ink2 leading-relaxed">
-                        {item.quote}
-                      </Text>
+                      <View
+                        className={`rounded-full px-2.5 py-0.5 ${style.bg}`}
+                      >
+                        <Text
+                          className={`font-semibold text-[11.5px] ${style.text}`}
+                        >
+                          {style.label}
+                        </Text>
+                      </View>
                     </View>
-                  ) : null}
-                </Pressable>
-              );
-            })}
-          </View>
+
+                    {item.feedback ? (
+                      <Text className="mt-1.5 pl-4.5 text-[13px] text-ink2 leading-[19px]">
+                        {item.feedback}
+                      </Text>
+                    ) : null}
+
+                    {item.quote ? (
+                      <View className="mt-2 ml-4.5 rounded-2xl bg-card/70 p-3">
+                        <Text
+                          numberOfLines={2}
+                          className="text-[12.5px] text-ink2 italic leading-[18px]"
+                        >
+                          “{item.quote}”
+                        </Text>
+                      </View>
+                    ) : null}
+                  </Pressable>
+                );
+              })}
+            </View>
+          </>
         )}
       </ScrollView>
+
+      <View
+        pointerEvents="box-none"
+        style={{ paddingBottom: Math.max(insets.bottom, 18) }}
+        className="absolute right-0 bottom-0 left-0 px-5"
+      >
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "/projects/submission",
+              params: { projectId: project.id },
+            })
+          }
+          className="h-[52px] items-center justify-center rounded-full bg-brand shadow-brand-button active:opacity-85"
+        >
+          <Text className="font-semibold text-[15px] text-white">
+            Enviar nova entrega
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }

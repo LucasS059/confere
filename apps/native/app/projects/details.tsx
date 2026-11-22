@@ -11,21 +11,33 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { ScreenHeader } from "@/components/ui/screen-header";
+import { formatShortDate, getCoverageColor } from "@/lib/format";
 import { trpc } from "@/lib/trpc";
+
+const STATUS_LABELS: Record<string, string> = {
+  concluido: "Conferido",
+  processando: "Analisando",
+  erro: "Erro na análise",
+  aguardando_analise: "Aguardando análise",
+};
 
 export default function ProjectDetailsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { projectId } = useLocalSearchParams<{ projectId: string }>();
 
-  const { data: item, isLoading } = useQuery(
+  const {
+    data: project,
+    isLoading,
+    isError,
+  } = useQuery(
     trpc.project.getById.queryOptions(
-      { id: projectId || "" },
+      { id: projectId ?? "" },
       { enabled: Boolean(projectId) },
     ),
   );
 
-  if (isLoading || !item) {
+  if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-canvas">
         <ActivityIndicator color="#2F6BFF" />
@@ -33,8 +45,27 @@ export default function ProjectDetailsScreen() {
     );
   }
 
-  const submissions = item.submissions || [];
-  const requirements = item.requirements || [];
+  if (isError || !project) {
+    return (
+      <View className="flex-1 bg-canvas">
+        <ScreenHeader title="Projeto" />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center font-semibold text-[16px] text-ink">
+            Projeto não encontrado
+          </Text>
+          <Text className="mt-1 text-center text-[13px] text-ink3">
+            Verifique sua conexão ou volte para a lista de projetos.
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  const { submissions, requirements } = project;
+
+  const latestEvaluated =
+    submissions.find((sub) => sub.coverage !== null) ?? null;
+  const latestCoverage = latestEvaluated?.coverage ?? null;
 
   return (
     <View className="flex-1 overflow-hidden bg-canvas">
@@ -44,82 +75,101 @@ export default function ProjectDetailsScreen() {
       />
       <Blob
         color="#10B981"
-        className="top-[300px] -right-[120px] size-[300px] opacity-[0.14] dark:opacity-[0.22]"
+        className="top-[320px] -right-[120px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
       />
 
-      <ScreenHeader title="Detalhes do Projeto" />
+      <ScreenHeader title="Projeto" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: 20,
           paddingTop: 16,
-          paddingBottom: insets.bottom + 120,
+          paddingBottom: insets.bottom + 110,
+          gap: 18,
         }}
       >
-        <View className="mb-6 gap-1">
-          <Text className="font-mono text-[11px] uppercase tracking-wider text-brand">
-            Projeto Acadêmico
+        <View className="rounded-3xl border border-line-glass bg-glass p-5 shadow-sm">
+          <Text className="font-bold text-[22px] text-ink leading-[28px]">
+            {project.name}
           </Text>
-          <Text className="text-[24px] font-bold tracking-tight text-ink">
-            {item.name}
-          </Text>
-          <Text className="text-[13px] text-ink2">
-            Rubrica: {item.sourceType} ({requirements.length} critérios cadastrados)
+          <Text className="mt-1 text-[13px] text-ink2">
+            {project.description
+              ? `${project.description} · ${formatShortDate(project.createdAt)}`
+              : `Criado ${formatShortDate(project.createdAt)}`}
           </Text>
         </View>
 
-        <View className="mb-6 flex-row gap-3">
-          <View className="flex-1 rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="text-[22px] font-bold text-ink">
+        <View className="flex-row gap-3">
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/projects/review",
+                params: { projectId: project.id },
+              })
+            }
+            className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm active:opacity-80"
+          >
+            <Text className="font-bold text-[20px] text-ink">
               {requirements.length}
             </Text>
-            <Text className="text-[12px] text-ink3">requisitos</Text>
-          </View>
-          <View className="flex-1 rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="text-[22px] font-bold text-ink">
+            <Text className="text-[12px] text-ink3">
+              {requirements.length === 1 ? "requisito" : "requisitos"}
+            </Text>
+          </Pressable>
+
+          <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
+            <Text className="font-bold text-[20px] text-ink">
               {submissions.length}
             </Text>
-            <Text className="text-[12px] text-ink3">entregas</Text>
-          </View>
-          <View className="flex-1 rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
-            <Text className="text-[22px] font-bold text-ink">
-              {submissions[0]?.coverage != null
-                ? `${submissions[0].coverage}%`
-                : "—"}
+            <Text className="text-[12px] text-ink3">
+              {submissions.length === 1 ? "entrega" : "entregas"}
             </Text>
-            <Text className="text-[12px] text-ink3">última nota</Text>
+          </View>
+
+          <View className="flex-1 items-center rounded-2xl border border-line-glass bg-glass p-3.5 shadow-sm">
+            <Text
+              className={`font-bold text-[20px] ${getCoverageColor(latestCoverage)}`}
+            >
+              {latestCoverage !== null ? `${latestCoverage}%` : "—"}
+            </Text>
+            <Text className="text-[12px] text-ink3">cobertura</Text>
           </View>
         </View>
 
-        {/* Atalho para Requisitos */}
         <Pressable
-          onPress={() => {
+          onPress={() =>
             router.push({
               pathname: "/projects/review",
-              params: { projectId: item.id },
-            });
-          }}
-          className="mb-6 flex-row items-center justify-between rounded-2xl border border-line-glass bg-glass p-4 active:bg-card/60"
+              params: { projectId: project.id },
+            })
+          }
+          className="flex-row items-center justify-between gap-3 rounded-3xl border border-line-glass bg-glass p-4 shadow-sm active:opacity-80"
         >
-          <View className="flex-row items-center gap-3">
-            <View className="size-9 items-center justify-center rounded-xl bg-brand/10">
-              <Icon
-                name="list.bullet.clipboard"
-                fallback="list"
-                size={18}
-                color="#2F6BFF"
-              />
-            </View>
-            <View>
-              <Text className="text-[15px] font-bold text-ink">
-                Requisitos da Rubrica
-              </Text>
-              <Text className="text-[12px] text-ink2">
-                Ver ou adicionar critérios informados pelo orientador
-              </Text>
-            </View>
+          <View className="size-10 items-center justify-center rounded-xl bg-brand/10">
+            <Icon
+              name="checklist"
+              fallback="list-outline"
+              size={18}
+              color="#2F6BFF"
+            />
           </View>
+
+          <View className="flex-1">
+            <Text className="font-semibold text-[15px] text-ink">
+              Rubrica e requisitos
+            </Text>
+            <Text numberOfLines={1} className="mt-0.5 text-[12.5px] text-ink2">
+              {requirements.length === 0
+                ? "Toque para extrair ou adicionar requisitos"
+                : `${requirements.length} ${
+                    requirements.length === 1
+                      ? "requisito cadastrado"
+                      : "requisitos cadastrados"
+                  }`}
+            </Text>
+          </View>
+
           <Icon
             name="chevron.forward"
             fallback="chevron-forward"
@@ -128,105 +178,111 @@ export default function ProjectDetailsScreen() {
           />
         </Pressable>
 
-        {/* Seção de Entregas do Trabalho */}
-        <View className="mb-3 flex-row items-center justify-between">
-          <Text className="text-[17px] font-semibold text-ink">
-            Entregas Realizadas
+        <View className="gap-2.5">
+          <Text className="px-1 font-bold text-[12px] text-ink3 uppercase tracking-wider">
+            Entregas
           </Text>
-          <Pressable
-            onPress={() => {
-              router.push({
-                pathname: "/projects/submission",
-                params: { projectId: item.id },
-              });
-            }}
-          >
-            <Text className="text-[13px] font-medium text-brand">
-              + Nova entrega
-            </Text>
-          </Pressable>
-        </View>
 
-        {submissions.length === 0 ? (
-          <View className="items-center justify-center rounded-2xl border border-line-glass bg-glass p-6 text-center">
-            <Text className="text-[14px] font-semibold text-ink">
-              Nenhuma entrega cadastrada ainda
-            </Text>
-            <Text className="mt-1 text-center text-[12px] text-ink2">
-              Cadastre os dados da primeira versão. Upload e análise ainda indisponíveis.
-            </Text>
-            <Pressable
-              onPress={() => {
-                router.push({
-                  pathname: "/projects/submission",
-                  params: { projectId: item.id },
-                });
-              }}
-              className="mt-3 rounded-full bg-brand px-4 py-2"
-            >
-              <Text className="text-[12px] font-semibold text-white">
-                Cadastrar entrega do relatório
+          {submissions.length === 0 ? (
+            <View className="items-center gap-1 rounded-3xl border border-line-glass bg-glass px-6 py-8 shadow-sm">
+              <Text className="font-semibold text-[15px] text-ink">
+                Nenhuma entrega enviada
               </Text>
-            </Pressable>
-          </View>
-        ) : (
-          <View className="gap-2.5">
-            {submissions.map((sub) => (
-              <View
-                key={sub.id}
-                className="flex-row items-center justify-between rounded-2xl border border-line-glass bg-glass p-4"
-              >
-                <View className="flex-row items-center gap-3">
-                  <View className="size-10 items-center justify-center rounded-xl bg-err/10">
-                    <Icon
-                      name="doc.text.fill"
-                      fallback="document-text"
-                      size={20}
-                      color="#EF4444"
-                    />
-                  </View>
-                  <View>
-                    <Text className="text-[14px] font-bold text-ink">
-                      {sub.filename}
-                    </Text>
-                    <Text className="text-[11px] text-ink3">
-                      Versão {sub.version}
-                    </Text>
-                  </View>
-                </View>
-                <View className="rounded-full bg-glass px-2.5 py-1">
-                  <Text className="font-mono text-[11px] font-bold text-ink2">
-                    {sub.status === "concluido"
-                      ? "Conferido"
-                      : sub.status === "erro"
-                        ? "Erro na análise"
-                        : sub.status === "processando"
-                          ? "Processando"
-                          : "Aguardando análise"}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
+              <Text className="text-center text-[13px] text-ink3">
+                Toque no botão abaixo para enviar a primeira versão.
+              </Text>
+            </View>
+          ) : (
+            <View className="overflow-hidden rounded-3xl border border-line-glass bg-glass shadow-sm">
+              {submissions.map((sub, idx) => {
+                // Compara com submissions[idx + 1] pois a lista vem ordenada da mais recente para a mais antiga.
+                const prevSub = submissions[idx + 1];
+                const delta =
+                  sub.coverage !== null && prevSub && prevSub.coverage !== null
+                    ? sub.coverage - prevSub.coverage
+                    : null;
+                const statusText =
+                  STATUS_LABELS[sub.status] ?? "Aguardando análise";
+
+                return (
+                  <Pressable
+                    key={sub.id}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/projects/result",
+                        params: {
+                          projectId: project.id,
+                          submissionId: sub.id,
+                        },
+                      })
+                    }
+                    className={`flex-row items-center justify-between gap-3 px-4 py-4 active:bg-card/50 ${
+                      idx < submissions.length - 1
+                        ? "border-line-glass border-b"
+                        : ""
+                    }`}
+                  >
+                    <View className="flex-1 flex-row items-center gap-3">
+                      <View className="size-10 items-center justify-center rounded-full border-2 border-brand/25 bg-brand/10">
+                        <Text className="font-bold text-[11px] text-brand">
+                          {sub.version.split(" ")[0]}
+                        </Text>
+                      </View>
+
+                      <View className="flex-1">
+                        <Text
+                          numberOfLines={1}
+                          className="font-semibold text-[14.5px] text-ink"
+                        >
+                          {sub.version} · {sub.filename}
+                        </Text>
+                        <Text
+                          numberOfLines={1}
+                          className="mt-0.5 text-[12px] text-ink2"
+                        >
+                          {formatShortDate(sub.createdAt)} · {statusText}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View className="items-end">
+                      <Text className="font-bold text-[14px] text-ink">
+                        {sub.coverage !== null ? `${sub.coverage}%` : "—"}
+                      </Text>
+                      {delta !== null && delta !== 0 && (
+                        <Text
+                          className={`font-semibold text-[11px] ${
+                            delta > 0 ? "text-ok" : "text-err"
+                          }`}
+                        >
+                          {delta > 0 ? `+${delta}` : delta}
+                        </Text>
+                      )}
+                    </View>
+                  </Pressable>
+                );
+              })}
+            </View>
+          )}
+        </View>
       </ScrollView>
 
-      {/* Botão de Envio de Nova Versão */}
       <View
-        style={{ paddingBottom: Math.max(insets.bottom, 16) }}
-        className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-glass p-4 backdrop-blur-md"
+        pointerEvents="box-none"
+        style={{ paddingBottom: Math.max(insets.bottom, 18) }}
+        className="absolute right-0 bottom-0 left-0 px-5"
       >
         <Pressable
-          onPress={() => {
+          onPress={() =>
             router.push({
               pathname: "/projects/submission",
-              params: { projectId: item.id },
-            });
-          }}
-          className="h-[52px] items-center justify-center rounded-2xl bg-brand shadow-brand-button active:opacity-85"
+              params: { projectId: project.id },
+            })
+          }
+          className="h-[52px] items-center justify-center rounded-full bg-brand shadow-brand-button active:opacity-85"
         >
-          <Text className="font-instrument-semibold text-[15px] text-white">
-            Cadastrar nova versão do trabalho
+          <Text className="font-semibold text-[15px] text-white">
+            Nova entrega
           </Text>
         </Pressable>
       </View>

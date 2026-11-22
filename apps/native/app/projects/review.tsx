@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCSSVariable } from "uniwind";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { ScreenHeader } from "@/components/ui/screen-header";
@@ -20,27 +21,62 @@ export default function ReviewRequirementsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { toast } = useToast();
+  const placeholderColor = useCSSVariable("--ink3") as string | undefined;
   const { projectId } = useLocalSearchParams<{ projectId: string }>();
-
-  const [newTitle, setNewTitle] = useState("");
-  const [isAdding, setIsAdding] = useState(false);
-
   const queryClient = useQueryClient();
 
-  // Busca projeto do banco
-  const { data: projectData, isLoading } = useQuery(
+  const [isEditingRubric, setIsEditingRubric] = useState(false);
+  const [rubricDraft, setRubricDraft] = useState("");
+  const [isAddingReq, setIsAddingReq] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+
+  const {
+    data: project,
+    isLoading,
+    isError,
+  } = useQuery(
     trpc.project.getById.queryOptions(
-      { id: projectId || "" },
+      { id: projectId ?? "" },
       { enabled: Boolean(projectId) },
     ),
   );
 
-  const toggleMutation = useMutation(
-    trpc.project.toggleRequirement.mutationOptions({
+  function refreshProject() {
+    queryClient.invalidateQueries(
+      trpc.project.getById.queryFilter({ id: projectId ?? "" }),
+    );
+    queryClient.invalidateQueries(trpc.project.list.queryFilter());
+  }
+
+  const updateRubricMutation = useMutation(
+    trpc.project.updateRubric.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(
-          trpc.project.getById.queryFilter({ id: projectId || "" }),
-        );
+        refreshProject();
+        setIsEditingRubric(false);
+        toast.show({ id: "rubric-saved", label: "Rubrica atualizada!" });
+      },
+      onError: (err) => {
+        toast.show({
+          id: "rubric-error",
+          variant: "danger",
+          label: err.message || "Erro ao salvar rubrica",
+        });
+      },
+    }),
+  );
+
+  const deleteReqMutation = useMutation(
+    trpc.project.deleteRequirement.mutationOptions({
+      onSuccess: () => {
+        refreshProject();
+        toast.show({ id: "req-deleted", label: "Requisito excluído!" });
+      },
+      onError: (err) => {
+        toast.show({
+          id: "req-error",
+          variant: "danger",
+          label: err.message || "Erro ao excluir requisito",
+        });
       },
     }),
   );
@@ -48,36 +84,74 @@ export default function ReviewRequirementsScreen() {
   const addMutation = useMutation(
     trpc.project.addRequirement.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(
-          trpc.project.getById.queryFilter({ id: projectId || "" }),
-        );
+        refreshProject();
         setNewTitle("");
-        setIsAdding(false);
-        toast.show({ label: "Requisito adicionado!" });
+        setIsAddingReq(false);
+        toast.show({ id: "req-added", label: "Requisito adicionado!" });
       },
       onError: (err) => {
-        toast.show({ variant: "danger", label: err.message || "Erro ao adicionar" });
+        toast.show({
+          id: "req-error",
+          variant: "danger",
+          label: err.message || "Erro ao adicionar requisito",
+        });
       },
     }),
   );
 
-  function handleToggle(requirementId: string, currentChecked: boolean) {
-    toggleMutation.mutate({
-      requirementId,
-      checked: !currentChecked,
-    });
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-canvas">
+        <ActivityIndicator color="#2F6BFF" />
+      </View>
+    );
   }
 
-  function handleAddRequirement() {
-    if (!newTitle.trim() || !projectId) return;
-    addMutation.mutate({
-      projectId,
-      title: newTitle.trim(),
-    });
+  if (isError || !project) {
+    return (
+      <View className="flex-1 bg-canvas">
+        <ScreenHeader title="Rubrica e requisitos" />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center font-semibold text-[16px] text-ink">
+            Projeto não encontrado
+          </Text>
+          <Text className="mt-1 text-center text-[13px] text-ink3">
+            Não foi possível carregar os requisitos deste projeto.
+          </Text>
+        </View>
+      </View>
+    );
   }
 
-  const items = projectData?.requirements || [];
-  const selectedCount = items.filter((i) => i.checked).length;
+  const items = project.requirements;
+
+  function openRubricEdit() {
+    if (isEditingRubric) {
+      setIsEditingRubric(false);
+      return;
+    }
+    setRubricDraft(project?.rawRubric ?? "");
+    setIsEditingRubric(true);
+  }
+
+  function saveRubric() {
+    const trimmed = rubricDraft.trim();
+    if (!trimmed || !projectId) {
+      toast.show({
+        id: "rubric-error",
+        variant: "danger",
+        label: "A rubrica não pode ficar vazia",
+      });
+      return;
+    }
+    updateRubricMutation.mutate({ projectId, rawRubric: trimmed });
+  }
+
+  function addRequirement() {
+    const title = newTitle.trim();
+    if (!title || !projectId) return;
+    addMutation.mutate({ projectId, title });
+  }
 
   return (
     <View className="flex-1 overflow-hidden bg-canvas">
@@ -86,150 +160,198 @@ export default function ReviewRequirementsScreen() {
         className="-top-[120px] -left-[80px] size-[360px] opacity-[0.16] dark:opacity-[0.28]"
       />
       <Blob
-        color="#F59E0B"
-        className="top-[320px] -right-[140px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
+        color="#10B981"
+        className="top-[320px] -right-[120px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
       />
 
-      <ScreenHeader
-        title="Revisar requisitos"
-        subtitle={projectData?.name || "Requisitos da rubrica"}
-      />
+      <ScreenHeader title="Rubrica e requisitos" subtitle={project.name} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           paddingHorizontal: 20,
           paddingTop: 16,
-          paddingBottom: insets.bottom + 120,
+          paddingBottom: insets.bottom + 110,
+          gap: 18,
         }}
       >
-        <View className="mb-4 flex-row items-center justify-between">
-          <Text className="text-[14px] text-ink2">
-            Critérios selecionados:{" "}
-            <Text className="font-bold text-ink">
-              {selectedCount}/{items.length}
+        <View className="rounded-3xl border border-line-glass bg-glass p-4 shadow-sm">
+          <View className="mb-2.5 flex-row items-center justify-between">
+            <Text className="font-semibold text-[15px] text-ink">
+              Rubrica cadastrada
             </Text>
-          </Text>
+            <Pressable onPress={openRubricEdit} hitSlop={8}>
+              <Text className="font-semibold text-[13px] text-brand">
+                {isEditingRubric ? "Cancelar" : "Editar"}
+              </Text>
+            </Pressable>
+          </View>
 
-          <Pressable
-            onPress={() => setIsAdding(!isAdding)}
-            className="flex-row items-center gap-1 rounded-xl bg-brand/10 px-3 py-1.5 active:opacity-75"
-          >
-            <Icon name="plus" fallback="add" size={14} color="#2F6BFF" />
-            <Text className="text-[13px] font-semibold text-brand">
-              Adicionar
-            </Text>
-          </Pressable>
-        </View>
-
-        {isAdding ? (
-          <View className="mb-4 rounded-2xl border border-line-glass bg-glass p-3 shadow-sm">
-            <TextInput
-              value={newTitle}
-              onChangeText={setNewTitle}
-              placeholder="Descreva o critério da rubrica..."
-              placeholderTextColor="#94A3B8"
-              autoFocus
-              className="mb-3 font-instrument text-[14px] text-ink"
-            />
-            <View className="flex-row justify-end gap-2">
+          {isEditingRubric ? (
+            <View className="gap-3">
+              <TextInput
+                value={rubricDraft}
+                onChangeText={setRubricDraft}
+                placeholder="Digite os requisitos da rubrica..."
+                placeholderTextColor={placeholderColor}
+                multiline
+                autoFocus
+                textAlignVertical="top"
+                className="min-h-[130px] rounded-2xl border border-line-glass bg-card/70 p-3 text-[14px] text-ink leading-[20px] web:outline-none"
+              />
               <Pressable
-                onPress={() => setIsAdding(false)}
-                className="rounded-xl px-3 py-1.5"
+                onPress={saveRubric}
+                disabled={updateRubricMutation.isPending}
+                className="h-[44px] items-center justify-center rounded-full bg-brand active:opacity-85"
               >
-                <Text className="text-[13px] text-ink2">Cancelar</Text>
-              </Pressable>
-              <Pressable
-                onPress={handleAddRequirement}
-                disabled={addMutation.isPending}
-                className="rounded-xl bg-brand px-3 py-1.5"
-              >
-                {addMutation.isPending ? (
+                {updateRubricMutation.isPending ? (
                   <ActivityIndicator color="#fff" size="small" />
                 ) : (
-                  <Text className="text-[13px] font-semibold text-white">
-                    Salvar
+                  <Text className="font-semibold text-[14px] text-white">
+                    Salvar rubrica
                   </Text>
                 )}
               </Pressable>
             </View>
-          </View>
-        ) : null}
+          ) : (
+            <>
+              <Text className="text-[14px] text-ink2 leading-[21px]">
+                {project.rawRubric}
+              </Text>
 
-        {isLoading ? (
-          <ActivityIndicator className="my-10" color="#2F6BFF" />
-        ) : items.length === 0 ? (
-          <View className="items-center justify-center rounded-3xl border border-line-glass bg-glass p-8 text-center my-6">
-            <Icon
-              name="list.bullet.rectangle"
-              fallback="list-outline"
-              size={36}
-              color="#94A3B8"
-            />
-            <Text className="mt-3 text-[16px] font-bold text-ink">
-              Nenhum requisito cadastrado
-            </Text>
-            <Text className="mt-1 text-center text-[13px] text-ink2">
-              Clique em "+ Adicionar" acima para cadastrar os critérios da rubrica.
-            </Text>
-          </View>
-        ) : (
-          <View className="gap-2.5">
-            {items.map((item) => (
               <Pressable
-                key={item.id}
-                onPress={() => handleToggle(item.id, item.checked)}
-                className="flex-row items-center gap-3.5 rounded-2xl border border-line-glass bg-glass p-4 shadow-sm active:bg-card/60"
+                onPress={() =>
+                  toast.show({
+                    id: "extract-pending",
+                    label: "Extração automática em breve.",
+                  })
+                }
+                className="mt-3.5 h-[42px] flex-row items-center justify-center gap-2 rounded-full bg-brand/10 active:opacity-80"
               >
-                <View
-                  className={`size-6 items-center justify-center rounded-lg border ${
-                    item.checked
-                      ? "border-brand bg-brand"
-                      : "border-line bg-card"
-                  }`}
-                >
-                  {item.checked ? (
-                    <Icon
-                      name="checkmark"
-                      fallback="checkmark"
-                      size={14}
-                      color="#fff"
-                    />
-                  ) : null}
-                </View>
-
-                <Text
-                  className={`flex-1 text-[15px] ${
-                    item.checked
-                      ? "font-medium text-ink"
-                      : "text-ink3 line-through"
-                  }`}
-                >
-                  {item.title}
+                <Icon
+                  name="arrow.clockwise"
+                  fallback="refresh"
+                  size={14}
+                  color="#2F6BFF"
+                />
+                <Text className="font-semibold text-[13.5px] text-brand">
+                  Extrair requisitos da rubrica
                 </Text>
               </Pressable>
-            ))}
+            </>
+          )}
+        </View>
+
+        {isAddingReq && (
+          <View className="gap-3 rounded-3xl border border-line-glass bg-glass p-4 shadow-sm">
+            <TextInput
+              value={newTitle}
+              onChangeText={setNewTitle}
+              placeholder="Descreva o requisito..."
+              placeholderTextColor={placeholderColor}
+              autoFocus
+              className="rounded-2xl border border-line-glass bg-card/70 px-3.5 py-2.5 text-[14px] text-ink web:outline-none"
+            />
+            <Pressable
+              onPress={addRequirement}
+              disabled={addMutation.isPending}
+              className="h-[42px] items-center justify-center rounded-full bg-brand active:opacity-85"
+            >
+              {addMutation.isPending ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <Text className="font-semibold text-[13.5px] text-white">
+                  Adicionar requisito
+                </Text>
+              )}
+            </Pressable>
           </View>
         )}
+
+        <View className="gap-2.5">
+          <View className="flex-row items-center justify-between px-1">
+            <Text className="font-bold text-[12px] text-ink3 uppercase tracking-wider">
+              Requisitos ({items.length})
+            </Text>
+            <Pressable
+              onPress={() => {
+                setIsAddingReq((prev) => !prev);
+                setNewTitle("");
+              }}
+              hitSlop={8}
+            >
+              <Text className="font-semibold text-[13px] text-brand">
+                {isAddingReq ? "Cancelar" : "+ Adicionar"}
+              </Text>
+            </Pressable>
+          </View>
+
+          {items.length === 0 ? (
+            <View className="items-center gap-1 rounded-3xl border border-line-glass bg-glass px-6 py-8 shadow-sm">
+              <Text className="font-semibold text-[15px] text-ink">
+                Nenhum requisito cadastrado
+              </Text>
+              <Text className="text-center text-[13px] text-ink3">
+                Extraia da rubrica acima ou toque no + para adicionar.
+              </Text>
+            </View>
+          ) : (
+            <View className="overflow-hidden rounded-3xl border border-line-glass bg-glass shadow-sm">
+              {items.map((item, idx) => (
+                <View
+                  key={item.id}
+                  className={`flex-row items-center justify-between gap-3 px-4 py-3.5 ${
+                    idx < items.length - 1 ? "border-line-glass border-b" : ""
+                  }`}
+                >
+                  <View className="flex-1 flex-row items-start gap-3">
+                    <View className="mt-0.5 size-6 items-center justify-center rounded-lg bg-brand/12">
+                      <Text className="font-bold text-[12px] text-brand">
+                        {idx + 1}
+                      </Text>
+                    </View>
+
+                    <Text
+                      numberOfLines={3}
+                      className="flex-1 font-medium text-[14.5px] text-ink leading-[20px]"
+                    >
+                      {item.title}
+                    </Text>
+                  </View>
+
+                  <Pressable
+                    hitSlop={8}
+                    disabled={deleteReqMutation.isPending}
+                    onPress={() =>
+                      deleteReqMutation.mutate({ requirementId: item.id })
+                    }
+                    className="p-1 active:opacity-60"
+                  >
+                    <Icon
+                      name="trash"
+                      fallback="trash-outline"
+                      size={16}
+                      color="#94A3B8"
+                    />
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
       </ScrollView>
 
-      {/* Barra de Ação Inferior */}
       <View
-        style={{ paddingBottom: Math.max(insets.bottom, 16) }}
-        className="absolute bottom-0 left-0 right-0 border-t border-line-glass bg-glass p-4 backdrop-blur-md"
+        pointerEvents="box-none"
+        style={{ paddingBottom: Math.max(insets.bottom, 18) }}
+        className="absolute right-0 bottom-0 left-0 px-5"
       >
         <Pressable
-          onPress={() => {
-            router.push({
-              pathname: "/projects/submission",
-              params: { projectId: projectId || "" },
-            });
-          }}
-          className="h-[52px] items-center justify-center rounded-2xl bg-brand shadow-brand-button active:opacity-85"
+          onPress={() => router.back()}
+          className="h-[52px] items-center justify-center rounded-full bg-brand shadow-brand-button active:opacity-85"
         >
-          <Text className="font-instrument-semibold text-[15px] text-white">
-            Avançar para entrega do trabalho
-          </Text>
+          <Text className="font-semibold text-[15px] text-white">Concluir</Text>
         </Pressable>
       </View>
     </View>
