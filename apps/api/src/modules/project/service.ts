@@ -330,6 +330,18 @@ export const ProjectService = {
       input.fileUrl ??
       `local://${buildSubmissionKey(input.projectId, input.filename)}`;
 
+    // A chave vem do cliente: só aceita arquivos sob o prefixo deste projeto.
+    const keyPrefix = `submissions/${input.projectId}/`;
+    if (
+      !resolvedFileUrl.startsWith(keyPrefix) &&
+      !resolvedFileUrl.startsWith(`local://${keyPrefix}`)
+    ) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Arquivo da entrega inválido para este projeto",
+      });
+    }
+
     const versionDisplay = input.label?.trim()
       ? `${input.version.trim()} · ${input.label.trim()}`
       : input.version.trim();

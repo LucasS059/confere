@@ -6,12 +6,20 @@ import { cors } from "@elysiajs/cors";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Elysia } from "elysia";
 
-const ALLOWED_REDIRECT_PREFIXES = [
-  "confere://",
-  "exp://",
-  "http://localhost:8081",
-  env.CORS_ORIGIN,
-];
+const APP_SCHEMES = new Set(
+  env.NODE_ENV === "production" ? ["confere:"] : ["confere:", "exp:"],
+);
+const WEB_ORIGINS = new Set(
+  env.NODE_ENV === "production"
+    ? [new URL(env.CORS_ORIGIN).origin]
+    : [new URL(env.CORS_ORIGIN).origin, "http://localhost:8081"],
+);
+
+// Compara protocolo/origin já parseados: prefixo de string aceitaria "http://localhost:8081@evil.com".
+function isAllowedRedirect(url: URL): boolean {
+  if (APP_SCHEMES.has(url.protocol)) return true;
+  return WEB_ORIGINS.has(url.origin);
+}
 
 function escapeHtml(value: string): string {
   return value
@@ -40,19 +48,15 @@ new Elysia()
   // Página intermediária HTTP porque o Safari no iOS bloqueia redirecionamento 302 direto para exp:// ou confere://.
   .get("/reset-app", ({ query, set }) => {
     const { to, token, error } = query;
-    const isAllowed =
-      typeof to === "string" &&
-      ALLOWED_REDIRECT_PREFIXES.some((prefix) => to.startsWith(prefix));
-
-    if (!isAllowed) {
+    let target: URL;
+    try {
+      target = new URL(typeof to === "string" ? to : "");
+    } catch {
       set.status = 400;
       return "Link de redirecionamento inválido.";
     }
 
-    let target: URL;
-    try {
-      target = new URL(to);
-    } catch {
+    if (!isAllowedRedirect(target)) {
       set.status = 400;
       return "Link de redirecionamento inválido.";
     }
