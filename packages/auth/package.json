@@ -11,15 +11,17 @@
   "type": "module",
   "scripts": {},
   "devDependencies": {
-    "typescript": "^6",
-    "@confere/config": "workspace:*"
+    "@confere/config": "workspace:*",
+    "@types/nodemailer": "^8.0.2",
+    "typescript": "^6"
   },
   "dependencies": {
-    "dotenv": "catalog:",
-    "zod": "catalog:",
-    "@confere/env": "workspace:*",
+    "@better-auth/expo": "catalog:",
     "@confere/db": "workspace:*",
+    "@confere/env": "workspace:*",
     "better-auth": "catalog:",
-    "@better-auth/expo": "catalog:"
+    "dotenv": "catalog:",
+    "nodemailer": "^10.6.1",
+    "zod": "catalog:"
   }
 }

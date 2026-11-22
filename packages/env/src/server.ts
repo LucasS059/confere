@@ -20,8 +20,8 @@ export const env = createEnv({
 
     CORS_ORIGIN: z.url(),
 
-    RESEND_API_KEY: z.string().min(1).optional(),
-    EMAIL_FROM: z.string().min(1).default("Confere <onboarding@resend.dev>"),
+    GMAIL_USER: z.email().optional(),
+    GMAIL_APP_PASSWORD: z.string().min(1).optional(),
     NODE_ENV: z
       .enum(["development", "production", "test"])
       .default("development"),

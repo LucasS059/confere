@@ -118,7 +118,7 @@ export default function SignUpScreen() {
       >
         <ScreenHeader
           title="Criar conta"
-          onBack={() => router.replace("/login")}
+          onBack={() => router.dismissTo("/login")}
           safeTop={false}
         />
 
@@ -234,7 +234,7 @@ export default function SignUpScreen() {
               >
                 Política de privacidade
               </Text>
-              . Meus arquivos não são usados para treinar a IA.
+              .
             </Text>
           </Pressable>
 
@@ -270,7 +270,7 @@ export default function SignUpScreen() {
           <Text
             className="font-instrument-semibold text-brand"
             accessibilityRole="link"
-            onPress={() => router.replace("/login")}
+            onPress={() => router.dismissTo("/login")}
           >
             Entrar
           </Text>

@@ -1,3 +1,4 @@
+import { createURL } from "expo-linking";
 import { useRouter } from "expo-router";
 import { useToast } from "heroui-native";
 import { useState } from "react";
@@ -10,8 +11,7 @@ import { ScreenHeader } from "@/components/ui/screen-header";
 import { authClient } from "@/lib/auth/client";
 import { NETWORK_ERROR_MESSAGE } from "@/lib/auth/error-messages";
 import { forgotPasswordSchema } from "@/lib/auth/schemas";
-
-const RESET_REDIRECT_URL = "confere://reset-password";
+import { getBaseUrl } from "@/lib/base-url";
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
@@ -31,9 +31,11 @@ export default function ForgotPasswordScreen() {
 
     setIsSubmitting(true);
     try {
+      const appUrl = createURL("reset-password");
+      const redirectTo = `${getBaseUrl()}/reset-app?to=${encodeURIComponent(appUrl)}`;
       const { error } = await authClient.requestPasswordReset({
         email: parsed.data.email,
-        redirectTo: RESET_REDIRECT_URL,
+        redirectTo,
       });
       if (error) {
         toast.show({
@@ -46,7 +48,7 @@ export default function ForgotPasswordScreen() {
         variant: "success",
         label: "Se houver uma conta com esse e-mail, enviamos o link.",
       });
-      router.replace("/login");
+      router.dismissTo("/login");
     } catch {
       toast.show({ variant: "danger", label: NETWORK_ERROR_MESSAGE });
     } finally {
@@ -78,7 +80,7 @@ export default function ForgotPasswordScreen() {
       >
         <ScreenHeader
           title="Recuperar senha"
-          onBack={() => router.replace("/login")}
+          onBack={() => router.dismissTo("/login")}
           safeTop={false}
         />
 
@@ -128,7 +130,7 @@ export default function ForgotPasswordScreen() {
           <Text
             className="font-instrument-semibold text-brand"
             accessibilityRole="link"
-            onPress={() => router.replace("/login")}
+            onPress={() => router.dismissTo("/login")}
           >
             Entrar
           </Text>

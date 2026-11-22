@@ -1,4 +1,5 @@
 import { env } from "@confere/env/server";
+import nodemailer from "nodemailer";
 
 interface SendEmailInput {
   to: string;
@@ -7,31 +8,36 @@ interface SendEmailInput {
   text: string;
 }
 
-// Envio de e-mail
 export async function sendEmail({ to, subject, html, text }: SendEmailInput) {
-  if (!env.RESEND_API_KEY) {
+  const user = env.GMAIL_USER;
+  const pass = env.GMAIL_APP_PASSWORD;
+
+  if (Boolean(user) !== Boolean(pass)) {
+    throw new Error("Configure GMAIL_USER e GMAIL_APP_PASSWORD juntos no .env");
+  }
+
+  if (!user || !pass) {
     if (env.NODE_ENV === "production") {
-      throw new Error("RESEND_API_KEY não configurada");
+      throw new Error("GMAIL_USER e GMAIL_APP_PASSWORD não configurados");
     }
     console.log(`[email:dev] para=${to} assunto="${subject}"\n${text}`);
     return;
   }
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ from: env.EMAIL_FROM, to, subject, html, text }),
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user, pass },
   });
 
-  if (!response.ok) {
-    throw new Error(`Falha ao enviar e-mail (${response.status})`);
-  }
+  await transporter.sendMail({
+    from: `Confere <${user}>`,
+    to,
+    subject,
+    text,
+    html,
+  });
 }
 
-// Texto do e-mail de reset
 export function resetPasswordEmail(url: string) {
   return {
     subject: "Redefinir sua senha no Confere",

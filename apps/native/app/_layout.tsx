@@ -59,19 +59,12 @@ function StackLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="(auth)/onboarding" />
-      <Stack.Screen name="(auth)/login" />
-      <Stack.Screen name="(auth)/sign-up" />
-      <Stack.Screen name="(auth)/forgot-password" />
-      <Stack.Screen name="(auth)/reset-password" />
-      <Stack.Screen name="projects/new" />
+      <Stack.Screen name="index" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="(auth)" options={{ gestureEnabled: false }} />
       <Stack.Screen name="projects/review" />
       <Stack.Screen name="projects/details" />
       <Stack.Screen name="projects/submission" />
-      <Stack.Screen name="projects/check-review" />
-      <Stack.Screen name="projects/checking" />
       <Stack.Screen name="projects/result" />
       <Stack.Screen name="projects/requirement-detail" />
       <Stack.Screen name="(account)/settings" />

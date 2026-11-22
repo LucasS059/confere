@@ -17,6 +17,7 @@ export function createAuth() {
     // Origens permitidas
     trustedOrigins: [
       env.CORS_ORIGIN,
+      env.BETTER_AUTH_URL,
       "confere://",
       "confere://*",
       "exp://",
