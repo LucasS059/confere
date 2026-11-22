@@ -13,7 +13,7 @@ type BottomTabBarProps = Parameters<
 
 const TAB_ITEMS: Array<{
   name: string;
-  href: "/(tabs)" | "/check" | "/history" | "/profile";
+  href: "/(tabs)" | "/projects" | "/check" | "/profile";
   label: string;
   icon: SFSymbol;
   activeIcon: SFSymbol;
@@ -28,20 +28,20 @@ const TAB_ITEMS: Array<{
     fallback: "home-outline",
   },
   {
-    name: "check",
-    href: "/check",
-    label: "Conferir",
-    icon: "checkmark.seal",
-    activeIcon: "checkmark.seal.fill",
-    fallback: "checkmark-circle-outline",
+    name: "projects",
+    href: "/projects",
+    label: "Projetos",
+    icon: "folder",
+    activeIcon: "folder.fill",
+    fallback: "folder-outline",
   },
   {
-    name: "history",
-    href: "/history",
-    label: "Histórico",
-    icon: "clock",
-    activeIcon: "clock.fill",
-    fallback: "time-outline",
+    name: "check",
+    href: "/check",
+    label: "Novo projeto",
+    icon: "plus.circle",
+    activeIcon: "plus.circle.fill",
+    fallback: "add-circle-outline",
   },
   {
     name: "profile",
@@ -53,7 +53,7 @@ const TAB_ITEMS: Array<{
   },
 ];
 
-function LiquidGlassTabBar({ state, descriptors }: BottomTabBarProps) {
+function BottomPillTabBar({ state, descriptors }: BottomTabBarProps) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const brandColor = (useCSSVariable("--color-brand") as string) || "#2F6BFF";
@@ -65,7 +65,7 @@ function LiquidGlassTabBar({ state, descriptors }: BottomTabBarProps) {
       style={{ paddingBottom: Math.max(insets.bottom, 16) }}
       className="absolute right-0 bottom-0 left-0 px-5"
     >
-      <View className="h-[62px] flex-row items-center justify-around rounded-[31px] border-[0.5px] border-glass-bd bg-glass px-2 shadow-glass">
+      <View className="h-[62px] flex-row items-center justify-around rounded-full border border-line-glass bg-card px-2 shadow-black/10 shadow-md">
         {TAB_ITEMS.map((item) => {
           const routeIndex = state.routes.findIndex(
             (r) => r.name === item.name,
@@ -101,10 +101,11 @@ function LiquidGlassTabBar({ state, descriptors }: BottomTabBarProps) {
                 color={tintColor}
               />
               <Text
+                numberOfLines={1}
                 className={
                   isFocused
-                    ? "font-instrument-semibold text-[11px] text-brand"
-                    : "font-instrument text-[11px] text-ink2"
+                    ? "font-semibold text-[11px] text-brand"
+                    : "text-[11px] text-ink2"
                 }
               >
                 {item.label}
@@ -120,14 +121,14 @@ function LiquidGlassTabBar({ state, descriptors }: BottomTabBarProps) {
 export default function TabsLayout() {
   return (
     <Tabs
-      tabBar={(props) => <LiquidGlassTabBar {...props} />}
+      tabBar={(props) => <BottomPillTabBar {...props} />}
       screenOptions={{
         headerShown: false,
       }}
     >
       <Tabs.Screen name="index" options={{ title: "Início" }} />
-      <Tabs.Screen name="check" options={{ title: "Conferir" }} />
-      <Tabs.Screen name="history" options={{ title: "Histórico" }} />
+      <Tabs.Screen name="projects" options={{ title: "Projetos" }} />
+      <Tabs.Screen name="check" options={{ title: "Novo projeto" }} />
       <Tabs.Screen name="profile" options={{ title: "Perfil" }} />
     </Tabs>
   );

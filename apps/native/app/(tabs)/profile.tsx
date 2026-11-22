@@ -123,20 +123,20 @@ export default function PerfilTabScreen() {
           <View className="mx-3.5 h-[1px] bg-line-glass" />
 
           <Pressable
-            onPress={() => router.push("/history")}
+            onPress={() => router.navigate("/projects")}
             className="flex-row items-center justify-between rounded-2xl p-3.5 active:bg-card/50"
           >
             <View className="flex-row items-center gap-3">
               <View className="size-9 items-center justify-center rounded-xl bg-ok/10">
                 <Icon
-                  name="clock"
-                  fallback="time-outline"
+                  name="folder"
+                  fallback="folder-outline"
                   size={18}
                   color="#10B981"
                 />
               </View>
               <Text className="font-medium text-[15px] text-ink">
-                Histórico de Conferências
+                Meus projetos
               </Text>
             </View>
             <Icon

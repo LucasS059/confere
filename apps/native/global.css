@@ -14,9 +14,10 @@
   --font-instrument: "Inter_400Regular";
   --font-instrument-medium: "Inter_500Medium";
   --font-instrument-semibold: "Inter_600SemiBold";
+  --font-instrument-bold: "Inter_700Bold";
 
-  --font-mono: "DMMono_400Regular", monospace;
-  --font-mono-medium: "DMMono_500Medium", monospace;
+  --font-mono: "Inter_500Medium";
+  --font-mono-medium: "Inter_600SemiBold";
 
   --color-brand: #2f6bff;
   --color-brand-soft: rgba(47, 107, 255, 0.12);

@@ -4,277 +4,275 @@ import { useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
-  RefreshControl,
   ScrollView,
   Text,
   TextInput,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Circle } from "react-native-svg";
 import { useCSSVariable } from "uniwind";
+import { ProjectRow } from "@/components/projects/project-row";
 import { Blob } from "@/components/ui/blob";
 import { Icon } from "@/components/ui/icon";
 import { authClient } from "@/lib/auth/client";
 import { trpc } from "@/lib/trpc";
 
-function CoverageRing({ coverage }: { coverage: number }) {
-  const size = 56;
-  const strokeWidth = 5;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progressLength = circumference * (coverage / 100);
-
-  return (
-    <View className="size-14 items-center justify-center">
-      <Svg
-        width={size}
-        height={size}
-        style={{ transform: [{ rotate: "-90deg" }] }}
-      >
-        <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke="rgba(30, 158, 98, 0.2)"
-          strokeWidth={strokeWidth}
-          fill="none"
-        />
-        <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke="#1E9E62"
-          strokeWidth={strokeWidth}
-          fill="none"
-          strokeDasharray={`${progressLength} ${circumference}`}
-          strokeLinecap="round"
-        />
-      </Svg>
-      <Text className="absolute font-instrument-semibold text-[13px] text-ink">
-        {coverage}%
-      </Text>
-    </View>
-  );
-}
+const RECENT_LIMIT = 5;
 
 export default function HomeProjectsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { data: session } = authClient.useSession();
   const placeholderColor = useCSSVariable("--ink3") as string | undefined;
+  const { data: session } = authClient.useSession();
   const [search, setSearch] = useState("");
 
   const {
     data: projects = [],
     isLoading,
     isError,
-    isRefetching,
     refetch,
   } = useQuery(trpc.project.list.queryOptions());
 
-  const firstName = session?.user?.name
-    ? session.user.name.trim().split(" ")[0]
-    : "Estudante";
+  const rawName = (session?.user as { name?: string } | undefined)?.name;
+  const firstName = rawName?.trim().split(/\s+/)[0] || "Estudante";
 
-  const initials = session?.user?.name
-    ? session.user.name
+  const initials = rawName
+    ? rawName
         .trim()
         .split(" ")
-        .map((n) => n[0])
+        .map((n: string) => n[0])
         .filter(Boolean)
         .slice(0, 2)
         .join("")
         .toUpperCase()
     : "ES";
 
-  const filtered = projects.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()),
+  const filteredProjects = projects.filter((p) =>
+    p.name.toLowerCase().includes(search.trim().toLowerCase()),
   );
+  const displayedProjects = search.trim()
+    ? filteredProjects
+    : filteredProjects.slice(0, RECENT_LIMIT);
+
+  const featuredWithSub =
+    projects.find((p) => p.latestSubmission !== null) ?? null;
 
   return (
     <View className="flex-1 overflow-hidden bg-canvas">
       <Blob
         color="#2F6BFF"
-        className="-top-[120px] -left-[100px] size-[420px] opacity-[0.20] dark:opacity-[0.35]"
+        className="-top-[120px] -left-[80px] size-[360px] opacity-[0.16] dark:opacity-[0.28]"
       />
       <Blob
-        color="#1E9E62"
-        className="top-[320px] -right-[160px] size-[380px] opacity-[0.16] dark:opacity-[0.26]"
+        color="#10B981"
+        className="top-[320px] -right-[120px] size-[300px] opacity-[0.12] dark:opacity-[0.20]"
       />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={() => {
-              refetch();
-            }}
-          />
-        }
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
-          gap: 20,
-          paddingTop: Math.max(insets.top + 16, 44),
+          gap: 16,
+          paddingTop: Math.max(insets.top + 16, 48),
           paddingHorizontal: 20,
-          paddingBottom: insets.bottom + 90,
+          paddingBottom: insets.bottom + 110,
         }}
       >
-        {/* Cabeçalho */}
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center gap-3">
-            <View className="size-11 items-center justify-center rounded-full bg-brand-gradient shadow-brand-tile">
-              <Text className="font-instrument-bold text-sm text-white">
-                {initials}
-              </Text>
-            </View>
-            <View>
-              <Text className="font-instrument text-ink3 text-xs">
-                Bem-vindo de volta
-              </Text>
-              <Text className="font-instrument-semibold text-[17px] text-ink leading-tight">
-                {firstName}
-              </Text>
-            </View>
+        <View className="flex-row items-center justify-between rounded-3xl border border-line-glass bg-glass p-5 shadow-sm">
+          <View className="flex-1 pr-3">
+            <Text numberOfLines={1} className="font-bold text-[22px] text-ink">
+              Olá, {firstName}
+            </Text>
+            <Text className="mt-1 text-[13px] text-ink2 leading-[18px]">
+              Confira seus trabalhos com a rubrica antes de enviar
+            </Text>
           </View>
 
           <Pressable
-            onPress={() => router.push("/projects/new")}
-            className="flex-row items-center gap-1.5 rounded-full bg-brand px-3.5 py-2 shadow-brand-button active:opacity-85"
+            onPress={() => router.navigate("/profile")}
+            className="size-11 items-center justify-center rounded-full bg-brand shadow-brand/30 shadow-md active:opacity-80"
           >
-            <Icon name="plus" fallback="add" size={14} color="#ffffff" />
-            <Text className="font-instrument-semibold text-white text-xs">
-              Novo projeto
-            </Text>
+            <Text className="font-bold text-[14px] text-white">{initials}</Text>
           </Pressable>
         </View>
 
-        {/* Barra de Busca */}
-        <View className="h-11 flex-row items-center gap-2 rounded-2xl border border-hair bg-card px-3.5 shadow-xs">
+        <View className="h-[44px] flex-row items-center gap-2.5 rounded-full border border-line-glass bg-glass px-4 shadow-sm">
           <Icon
             name="magnifyingglass"
-            fallback="search"
-            size={15}
-            color="#94A3B8"
+            fallback="search-outline"
+            size={16}
+            color="#8A91A0"
           />
           <TextInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Buscar entre meus projetos..."
+            placeholder="Buscar projetos..."
             placeholderTextColor={placeholderColor}
-            className="flex-1 font-instrument text-ink text-sm web:outline-none"
+            className="flex-1 text-[14px] text-ink web:outline-none"
           />
+          {search.length > 0 && (
+            <Pressable onPress={() => setSearch("")} hitSlop={8}>
+              <Icon
+                name="xmark.circle.fill"
+                fallback="close-circle"
+                size={16}
+                color="#8A91A0"
+              />
+            </Pressable>
+          )}
         </View>
 
-        {/* Lista de Projetos */}
+        {featuredWithSub?.latestSubmission && !search.trim() && (
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/projects/details",
+                params: { projectId: featuredWithSub.id },
+              })
+            }
+            className="rounded-3xl border border-line-glass bg-glass p-5 shadow-sm active:opacity-85"
+          >
+            <View className="flex-row items-center justify-between gap-3">
+              <View className="flex-1">
+                <Text className="font-bold text-[11px] text-brand uppercase tracking-wider">
+                  {featuredWithSub.latestSubmission.coverage !== null
+                    ? "Conferido"
+                    : "Pendente"}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  className="mt-1 font-bold text-[17px] text-ink"
+                >
+                  {featuredWithSub.name}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  className="mt-0.5 text-[12.5px] text-ink2"
+                >
+                  {featuredWithSub.latestSubmission.version} ·{" "}
+                  {featuredWithSub.latestSubmission.filename}
+                </Text>
+              </View>
+
+              <View className="size-13 items-center justify-center rounded-full border-[3px] border-brand/25 bg-brand/10">
+                <Text className="font-bold text-[13px] text-ink">
+                  {featuredWithSub.latestSubmission.coverage !== null
+                    ? `${featuredWithSub.latestSubmission.coverage}%`
+                    : "—"}
+                </Text>
+              </View>
+            </View>
+
+            {(featuredWithSub.latestSubmission.faltandoCount > 0 ||
+              featuredWithSub.latestSubmission.revisarCount > 0) && (
+              <View className="mt-3 flex-row items-center gap-2">
+                {featuredWithSub.latestSubmission.faltandoCount > 0 && (
+                  <View className="rounded-full bg-err/12 px-2.5 py-0.5">
+                    <Text className="font-semibold text-[11.5px] text-err">
+                      {featuredWithSub.latestSubmission.faltandoCount} faltando
+                    </Text>
+                  </View>
+                )}
+                {featuredWithSub.latestSubmission.revisarCount > 0 && (
+                  <View className="rounded-full bg-warn/15 px-2.5 py-0.5">
+                    <Text className="font-semibold text-[11.5px] text-warn">
+                      {featuredWithSub.latestSubmission.revisarCount} revisar
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )}
+          </Pressable>
+        )}
+
         <View className="gap-2.5">
-          <Text className="px-1 font-instrument text-ink2 text-xs uppercase tracking-wider">
-            Meus Projetos Cadastrados
-          </Text>
+          <View className="flex-row items-center justify-between px-1">
+            <Text className="font-bold text-[12px] text-ink3 uppercase tracking-wider">
+              {search.trim() ? "Resultados" : "Projetos recentes"}
+            </Text>
+            {projects.length > RECENT_LIMIT && !search.trim() ? (
+              <Pressable
+                onPress={() => router.navigate("/projects")}
+                hitSlop={8}
+              >
+                <Text className="font-semibold text-[13px] text-brand">
+                  Ver todos ({projects.length})
+                </Text>
+              </Pressable>
+            ) : (
+              <Pressable onPress={() => router.navigate("/check")} hitSlop={8}>
+                <Text className="font-semibold text-[13px] text-brand">
+                  + Novo
+                </Text>
+              </Pressable>
+            )}
+          </View>
 
           {isLoading ? (
             <ActivityIndicator className="my-10" color="#2F6BFF" />
           ) : isError ? (
-            <View className="my-4 items-center rounded-3xl border border-line-glass bg-glass p-8">
-              <Text className="font-instrument-semibold text-[16px] text-ink">
+            <View className="items-center rounded-3xl border border-line-glass bg-glass p-6 shadow-sm">
+              <Text className="font-semibold text-[15px] text-ink">
                 Não foi possível carregar os projetos
               </Text>
-              <Text className="mt-1 text-center font-instrument text-[13px] text-ink2">
-                Confira sua conexão e tente novamente.
-              </Text>
               <Pressable
-                onPress={() => refetch()}
-                className="mt-4 rounded-full bg-brand px-5 py-2.5 shadow-brand-button active:opacity-85"
+                onPress={() => {
+                  void refetch();
+                }}
+                className="mt-3 rounded-full bg-brand px-5 py-2.5"
               >
-                <Text className="font-instrument-semibold text-[13px] text-white">
+                <Text className="font-semibold text-[13px] text-white">
                   Tentar novamente
                 </Text>
               </Pressable>
             </View>
-          ) : projects.length > 0 && filtered.length === 0 ? (
-            <Text className="my-6 text-center font-instrument text-[13px] text-ink2">
-              Nenhum projeto encontrado para "{search}".
-            </Text>
-          ) : filtered.length === 0 ? (
-            <View className="my-4 items-center justify-center rounded-3xl border border-line-glass bg-glass p-8 text-center">
-              <Icon
-                name="folder.badge.plus"
-                fallback="folder-open-outline"
-                size={40}
-                color="#94A3B8"
-              />
-              <Text className="mt-3 font-bold text-[16px] text-ink">
-                Nenhum projeto cadastrado ainda
+          ) : displayedProjects.length === 0 ? (
+            <View className="items-center justify-center rounded-3xl border border-line-glass bg-glass px-6 py-9 shadow-sm">
+              <View className="mb-3 size-12 items-center justify-center rounded-2xl bg-brand/10">
+                <Icon
+                  name="folder.badge.plus"
+                  fallback="folder-open-outline"
+                  size={22}
+                  color="#2F6BFF"
+                />
+              </View>
+              <Text className="font-semibold text-[16px] text-ink">
+                {search.trim()
+                  ? "Nenhum projeto encontrado"
+                  : "Nenhum projeto cadastrado"}
               </Text>
-              <Text className="mt-1 text-center text-[13px] text-ink2 leading-relaxed">
-                Crie seu primeiro projeto colando a rubrica ou critérios
-                informados pelo seu professor.
+              <Text className="mt-1 text-center text-[13px] text-ink3">
+                {search.trim()
+                  ? "Tente buscar por outro nome."
+                  : "Crie seu primeiro projeto para conferir suas entregas."}
               </Text>
-              <Pressable
-                onPress={() => router.push("/projects/new")}
-                className="mt-4 rounded-full bg-brand px-5 py-2.5 shadow-brand-button active:opacity-85"
-              >
-                <Text className="font-instrument-semibold text-[13px] text-white">
-                  Cadastrar primeiro projeto
-                </Text>
-              </Pressable>
+              {!search.trim() && (
+                <Pressable
+                  onPress={() => router.navigate("/check")}
+                  className="mt-4 rounded-full bg-brand px-5 py-2.5"
+                >
+                  <Text className="font-semibold text-[13.5px] text-white">
+                    + Novo projeto
+                  </Text>
+                </Pressable>
+              )}
             </View>
           ) : (
-            filtered.map((item) => (
-              <Pressable
-                key={item.id}
-                onPress={() => {
-                  router.push({
-                    pathname: "/projects/details",
-                    params: { projectId: item.id },
-                  });
-                }}
-                className="rounded-3xl border border-line-glass bg-glass p-4 shadow-sm active:bg-card/60"
-              >
-                <View className="flex-row items-start justify-between gap-3">
-                  <View className="flex-1 gap-1">
-                    <View className="flex-row items-center gap-2">
-                      <View className="rounded-md bg-brand/10 px-2 py-0.5">
-                        <Text className="font-bold font-mono text-[10px] text-brand uppercase">
-                          {item.sourceType}
-                        </Text>
-                      </View>
-                      <Text className="text-[12px] text-ink3">
-                        {item.requirementsCount} requisitos
-                      </Text>
-                    </View>
-
-                    <Text className="font-bold text-[17px] text-ink">
-                      {item.name}
-                    </Text>
-
-                    {item.latestSubmission ? (
-                      <Text className="text-[13px] text-ink2">
-                        Última entrega: {item.latestSubmission.filename} (
-                        {item.latestSubmission.version})
-                      </Text>
-                    ) : (
-                      <Text className="text-[13px] text-ink3">
-                        Nenhuma entrega em PDF realizada ainda
-                      </Text>
-                    )}
-                  </View>
-
-                  {item.latestSubmission?.coverage != null ? (
-                    <CoverageRing coverage={item.latestSubmission.coverage} />
-                  ) : (
-                    <View className="size-11 items-center justify-center rounded-2xl bg-brand/5">
-                      <Icon
-                        name="chevron.forward"
-                        fallback="chevron-forward"
-                        size={16}
-                        color="#94A3B8"
-                      />
-                    </View>
-                  )}
-                </View>
-              </Pressable>
-            ))
+            <View className="overflow-hidden rounded-3xl border border-line-glass bg-glass shadow-sm">
+              {displayedProjects.map((item, idx) => (
+                <ProjectRow
+                  key={item.id}
+                  project={item}
+                  showDivider={idx < displayedProjects.length - 1}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/projects/details",
+                      params: { projectId: item.id },
+                    })
+                  }
+                />
+              ))}
+            </View>
           )}
         </View>
       </ScrollView>

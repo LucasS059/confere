@@ -10,8 +10,6 @@ type ScreenHeaderProps = {
   subtitle?: string;
   onBack?: () => void;
   rightSlot?: ReactNode;
-  rightElement?: ReactNode;
-  // Desligue quando a tela já aplica a área segura do topo
   safeTop?: boolean;
 };
 
@@ -20,7 +18,6 @@ export function ScreenHeader({
   subtitle,
   onBack,
   rightSlot,
-  rightElement,
   safeTop = true,
 }: ScreenHeaderProps) {
   const router = useRouter();
@@ -35,36 +32,42 @@ export function ScreenHeader({
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.replace("/(tabs)" as any);
+      router.replace("/(tabs)");
     }
   };
 
   return (
     <View
-      className={`flex-row items-center justify-between gap-3 ${safeTop ? "px-5" : ""}`}
+      className={`flex-row items-center justify-between gap-3 ${safeTop ? "px-5 pb-2" : ""}`}
       style={safeTop ? { paddingTop: Math.max(insets.top + 8, 44) } : undefined}
     >
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Voltar"
         onPress={handleBack}
-        className="size-10 items-center justify-center rounded-full border-[0.5px] border-glass-bd bg-glass shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%] active:opacity-75"
+        hitSlop={8}
+        className="size-10 items-center justify-center rounded-full border border-line-glass bg-glass shadow-sm active:opacity-75"
       >
-        <Icon name="chevron.backward" fallback="chevron-back" size={18} color={inkColor} />
+        <Icon
+          name="chevron.backward"
+          fallback="chevron-back"
+          size={18}
+          color={inkColor}
+        />
       </Pressable>
 
-      <View className="min-w-[148px] items-center justify-center rounded-full border-[0.5px] border-glass-bd bg-glass px-6 py-2.5 shadow-glass backdrop-blur-[18px] backdrop-saturate-[180%]">
-        <Text className="font-instrument-semibold text-[13px] text-ink">
+      <View className="min-w-[160px] max-w-[240px] items-center justify-center rounded-full border border-line-glass bg-glass px-5 py-2 shadow-sm">
+        <Text numberOfLines={1} className="font-semibold text-[14px] text-ink">
           {title}
         </Text>
         {subtitle ? (
-          <Text className="font-instrument text-[11px] text-ink2">
+          <Text numberOfLines={1} className="text-[11px] text-ink3">
             {subtitle}
           </Text>
         ) : null}
       </View>
 
-      {rightSlot || rightElement ? rightSlot || rightElement : <View className="size-10" />}
+      {rightSlot ?? <View className="size-10" />}
     </View>
   );
 }
