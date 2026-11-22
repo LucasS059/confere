@@ -4,11 +4,39 @@ import { TRPCError } from "@trpc/server";
 import type { ProjectModel } from "./model";
 
 function generateId(): string {
-  return Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+  return crypto.randomUUID();
 }
 
-export abstract class ProjectService {
-  static async listUserProjects(userId: string) {
+function buildSubmissionKey(projectId: string, filename: string): string {
+  const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+  return `submissions/${projectId}/${Date.now()}-${safeName}`;
+}
+
+// Em dev sem S3 configurado, retorna null para permitir fallback local em getUploadUrl.
+async function getOptionalS3Bucket() {
+  const s3Bucket = process.env.S3_BUCKET?.trim();
+  if (!s3Bucket) {
+    if (process.env.NODE_ENV === "production") {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Armazenamento S3 não configurado no servidor",
+      });
+    }
+    return null;
+  }
+
+  const { createS3BucketFromEnv } = await import("@confere/storage");
+  return createS3BucketFromEnv({
+    S3_BUCKET: s3Bucket,
+    S3_REGION: process.env.S3_REGION,
+    S3_ENDPOINT: process.env.S3_ENDPOINT,
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
+  });
+}
+
+export const ProjectService = {
+  async listUserProjects(userId: string) {
     const projects = await db.query.project.findMany({
       where: eq(project.userId, userId),
       orderBy: [desc(project.createdAt)],
@@ -16,35 +44,56 @@ export abstract class ProjectService {
         requirements: true,
         submissions: {
           orderBy: [desc(submission.createdAt)],
-          limit: 1,
+          with: {
+            results: true,
+          },
         },
       },
     });
 
     return projects.map((p) => {
+      // A relação submissions já vem ordenada da mais recente para a mais antiga.
       const latest = p.submissions[0];
+      const latestResults = latest?.results ?? [];
+      const atendidosCount = latestResults.filter(
+        (r) => r.status === "atendido",
+      ).length;
+      const revisarCount = latestResults.filter(
+        (r) => r.status === "revisar",
+      ).length;
+      const faltandoCount = latestResults.filter(
+        (r) => r.status === "faltando",
+      ).length;
+
       return {
         id: p.id,
         name: p.name,
+        description: p.description,
         rawRubric: p.rawRubric,
         sourceType: p.sourceType,
         createdAt: p.createdAt,
         requirementsCount: p.requirements.length,
+        submissionsCount: p.submissions.length,
         latestSubmission: latest
           ? {
               id: latest.id,
               version: latest.version,
               filename: latest.filename,
+              fileSize: latest.fileSize,
+              totalPages: latest.totalPages,
               coverage: latest.coverage,
               status: latest.status,
               createdAt: latest.createdAt,
+              atendidosCount,
+              revisarCount,
+              faltandoCount,
             }
           : null,
       };
     });
-  }
+  },
 
-  static async getProjectById(userId: string, projectId: string) {
+  async getProjectById(userId: string, projectId: string) {
     const item = await db.query.project.findFirst({
       where: and(eq(project.id, projectId), eq(project.userId, userId)),
       with: {
@@ -68,9 +117,9 @@ export abstract class ProjectService {
     }
 
     return item;
-  }
+  },
 
-  static async createProject(
+  async createProject(
     userId: string,
     input: typeof ProjectModel.createInput._output,
   ) {
@@ -89,7 +138,6 @@ export abstract class ProjectService {
       })
       .returning();
 
-    // Requisitos iniciais (se informados ou extraídos)
     const reqs =
       input.initialRequirements?.filter((r) => r.trim().length > 0) || [];
     if (reqs.length > 0) {
@@ -104,7 +152,6 @@ export abstract class ProjectService {
       );
     }
 
-    // Se o aluno anexou o trabalho inicial logo no cadastro
     let initialSub = null;
     if (input.initialSubmission) {
       const [createdSub] = await db
@@ -127,9 +174,29 @@ export abstract class ProjectService {
       ...newProject,
       submission: initialSub,
     };
-  }
+  },
 
-  static async addRequirement(
+  async updateRubric(
+    userId: string,
+    input: typeof ProjectModel.updateRubricInput._output,
+  ) {
+    const [updated] = await db
+      .update(project)
+      .set({ rawRubric: input.rawRubric.trim() })
+      .where(and(eq(project.id, input.projectId), eq(project.userId, userId)))
+      .returning();
+
+    if (!updated) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Projeto não encontrado",
+      });
+    }
+
+    return updated;
+  },
+
+  async addRequirement(
     userId: string,
     input: typeof ProjectModel.addRequirementInput._output,
   ) {
@@ -156,9 +223,9 @@ export abstract class ProjectService {
       .returning();
 
     return item;
-  }
+  },
 
-  static async toggleRequirement(
+  async toggleRequirement(
     userId: string,
     input: typeof ProjectModel.toggleRequirementInput._output,
   ) {
@@ -181,9 +248,70 @@ export abstract class ProjectService {
       .returning();
 
     return updated;
-  }
+  },
 
-  static async addSubmission(
+  async deleteRequirement(
+    userId: string,
+    input: typeof ProjectModel.deleteRequirementInput._output,
+  ) {
+    const req = await db.query.requirement.findFirst({
+      where: eq(requirement.id, input.requirementId),
+      with: { project: true },
+    });
+
+    if (!req || req.project.userId !== userId) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Requisito não encontrado ou sem permissão",
+      });
+    }
+
+    const [deleted] = await db
+      .delete(requirement)
+      .where(eq(requirement.id, input.requirementId))
+      .returning();
+
+    return deleted;
+  },
+
+  async getUploadUrl(
+    userId: string,
+    input: typeof ProjectModel.getUploadUrlInput._output,
+  ) {
+    const proj = await db.query.project.findFirst({
+      where: and(eq(project.id, input.projectId), eq(project.userId, userId)),
+    });
+
+    if (!proj) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Projeto não pertence ao usuário",
+      });
+    }
+
+    const key = buildSubmissionKey(input.projectId, input.filename);
+    const s3 = await getOptionalS3Bucket();
+
+    if (s3) {
+      const uploadUrl = await s3.getUploadSignedUrl(
+        key,
+        input.contentType || "application/octet-stream",
+      );
+      return {
+        mode: "s3" as const,
+        uploadUrl,
+        key,
+      };
+    }
+
+    return {
+      mode: "local" as const,
+      uploadUrl: null,
+      key: `local://${key}`,
+    };
+  },
+
+  async addSubmission(
     userId: string,
     input: typeof ProjectModel.addSubmissionInput._output,
   ) {
@@ -198,13 +326,22 @@ export abstract class ProjectService {
       });
     }
 
+    const resolvedFileUrl =
+      input.fileUrl ??
+      `local://${buildSubmissionKey(input.projectId, input.filename)}`;
+
+    const versionDisplay = input.label?.trim()
+      ? `${input.version.trim()} · ${input.label.trim()}`
+      : input.version.trim();
+
     const [sub] = await db
       .insert(submission)
       .values({
         id: generateId(),
         projectId: input.projectId,
         filename: input.filename,
-        version: input.version,
+        version: versionDisplay,
+        fileUrl: resolvedFileUrl,
         fileSize: input.fileSize,
         totalPages: input.totalPages,
         status: "aguardando_analise",
@@ -213,5 +350,5 @@ export abstract class ProjectService {
       .returning();
 
     return sub;
-  }
-}
+  },
+};

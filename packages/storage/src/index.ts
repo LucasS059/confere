@@ -124,6 +124,24 @@ export class S3Bucket extends Bucket<GetObjectCommandOutput> {
       },
     );
   }
+
+  getUploadSignedUrl(
+    key: string,
+    contentType?: string,
+    expiresIn = 900,
+  ): Promise<string> {
+    return getSignedUrl(
+      this.client,
+      new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+        ...(contentType ? { ContentType: contentType } : {}),
+      }),
+      {
+        expiresIn,
+      },
+    );
+  }
 }
 
 export function createS3BucketFromEnv(env: S3BucketEnv): S3Bucket {

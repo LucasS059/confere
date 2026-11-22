@@ -21,6 +21,7 @@
     "@confere/env": "workspace:*",
     "@confere/auth": "workspace:*",
     "@confere/db": "workspace:*",
+    "@confere/storage": "workspace:*",
     "@trpc/server": "catalog:",
     "@trpc/client": "catalog:"
   }

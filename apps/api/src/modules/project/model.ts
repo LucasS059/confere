@@ -8,7 +8,6 @@ export namespace ProjectModel {
     sourceType: z.enum(["Texto", "PDF/DOCX"]).default("Texto"),
     rubricFilename: z.string().optional(),
     initialRequirements: z.array(z.string()).optional(),
-    // Entrega inicial opcional vinculada à criação
     initialSubmission: z
       .object({
         filename: z.string().min(1),
@@ -17,6 +16,11 @@ export namespace ProjectModel {
         version: z.string().default("v1"),
       })
       .optional(),
+  });
+
+  export const updateRubricInput = z.object({
+    projectId: z.string().min(1),
+    rawRubric: z.string().min(1, "A rubrica não pode ficar vazia"),
   });
 
   export const addRequirementInput = z.object({
@@ -30,12 +34,23 @@ export namespace ProjectModel {
     checked: z.boolean(),
   });
 
+  export const deleteRequirementInput = z.object({
+    requirementId: z.string().min(1),
+  });
+
   export const addSubmissionInput = z.object({
     projectId: z.string().min(1),
     filename: z.string().min(1),
     version: z.string().default("v1"),
+    label: z.string().optional(),
     fileSize: z.string().optional(),
     totalPages: z.number().optional(),
+    fileUrl: z.string().optional(),
+  });
+
+  export const getUploadUrlInput = z.object({
+    projectId: z.string().min(1),
+    filename: z.string().min(1),
+    contentType: z.string().optional(),
   });
 }
-

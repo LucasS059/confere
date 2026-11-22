@@ -20,6 +20,12 @@ export const projectRouter = router({
       ProjectService.createProject(ctx.session.user.id, input),
     ),
 
+  updateRubric: protectedProcedure
+    .input(ProjectModel.updateRubricInput)
+    .mutation(({ ctx, input }) =>
+      ProjectService.updateRubric(ctx.session.user.id, input),
+    ),
+
   addRequirement: protectedProcedure
     .input(ProjectModel.addRequirementInput)
     .mutation(({ ctx, input }) =>
@@ -32,10 +38,21 @@ export const projectRouter = router({
       ProjectService.toggleRequirement(ctx.session.user.id, input),
     ),
 
+  deleteRequirement: protectedProcedure
+    .input(ProjectModel.deleteRequirementInput)
+    .mutation(({ ctx, input }) =>
+      ProjectService.deleteRequirement(ctx.session.user.id, input),
+    ),
+
+  getUploadUrl: protectedProcedure
+    .input(ProjectModel.getUploadUrlInput)
+    .mutation(({ ctx, input }) =>
+      ProjectService.getUploadUrl(ctx.session.user.id, input),
+    ),
+
   addSubmission: protectedProcedure
     .input(ProjectModel.addSubmissionInput)
     .mutation(({ ctx, input }) =>
       ProjectService.addSubmission(ctx.session.user.id, input),
     ),
 });
-
